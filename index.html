@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>现金流游戏 - 中文版</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);min-height:100vh;padding:20px;color:#333}
+.container{max-width:1200px;margin:0 auto;background:#f0f2f5;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.3);overflow:hidden}
+.header{background:linear-gradient(135deg,#1a5276,#2e86c1);color:#fff;padding:25px 30px;display:flex;justify-content:space-between;align-items:center}
+.header-left h1{font-size:1.8em;margin-bottom:5px}
+.header-left p{font-size:.95em;opacity:.85}
+.header-right{text-align:right}
+.month-badge{background:rgba(255,255,255,0.15);padding:8px 20px;border-radius:20px;display:inline-block;font-size:1em}
+.month-badge span{font-size:1.3em;font-weight:700;margin:0 4px}
+.progress-bar-mount{height:6px;background:rgba(255,255,255,0.2);border-radius:3px;margin-top:8px;overflow:hidden}
+.progress-bar-fill{height:100%;background:#f1c40f;border-radius:3px;transition:width .5s ease}
+.game-area{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:20px}
+.panel{background:#fff;border-radius:15px;padding:20px;box-shadow:0 2px 10px rgba(0,0,0,0.08)}
+.panel h2{color:#2c3e50;font-size:1.2em;margin-bottom:15px;border-bottom:2px solid #e8e8e8;padding-bottom:10px;display:flex;align-items:center;gap:8px}
+.character-badge{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#8e44ad,#9b59b6);color:#fff;padding:6px 16px;border-radius:20px;font-size:.85em;font-weight:600;margin-bottom:12px}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:15px}
+.stat-item{background:#f8f9fa;padding:12px 15px;border-radius:10px}
+.stat-label{font-size:.8em;color:#888;margin-bottom:3px}
+.stat-value{font-size:1.3em;font-weight:700;color:#2c3e50}
+.stat-value.income{color:#27ae60}
+.stat-value.expense{color:#e74c3c}
+.stat-value.balance{color:#2980b9}
+.stat-value.passive{color:#8e44ad}
+.dice-section{text-align:center;padding:15px 0;border-top:1px solid #eee;border-bottom:1px solid #eee;margin:15px 0}
+.round-info{margin-bottom:15px}
+.round-info .round-label{font-size:.9em;color:#666}
+.round-info .round-num{font-size:2em;font-weight:700;color:#2c3e50}
+.dice-wrap{display:flex;align-items:center;justify-content:center;gap:20px}
+.dice{width:80px;height:80px;background:#fff;border:3px solid #34495e;border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:2.5em;font-weight:700;color:#2c3e50;cursor:pointer;transition:all .3s ease;box-shadow:0 4px 12px rgba(0,0,0,0.15);user-select:none}
+.dice:hover{transform:scale(1.08);box-shadow:0 6px 20px rgba(0,0,0,0.2)}
+.dice.rolling{animation:roll .6s ease-in-out}
+@keyframes roll{0%{transform:rotate(0deg) scale(0.8)}25%{transform:rotate(90deg) scale(1.1)}50%{transform:rotate(180deg) scale(0.9)}75%{transform:rotate(270deg) scale(1.05)}100%{transform:rotate(360deg) scale(1)}}
+.roll-btn{background:#3498db;color:#fff;border:none;padding:12px 28px;border-radius:25px;font-size:1em;font-weight:600;cursor:pointer;transition:all .3s ease;box-shadow:0 4px 12px rgba(52,152,219,0.3)}
+.roll-btn:hover{background:#2980b9;transform:translateY(-2px)}
+.roll-btn:disabled{background:#bdc3c7;cursor:not-allowed;transform:none;box-shadow:none}
+.event-card{background:#fff;border-radius:12px;padding:18px;margin:15px 0;border-left:4px solid #f39c12;box-shadow:0 2px 8px rgba(0,0,0,0.06);transition:all .3s ease}
+.event-card .event-type-badge{display:inline-block;padding:4px 12px;border-radius:12px;font-size:.75em;font-weight:600;margin-bottom:8px}
+.badge-opportunity{background:#d5f5e3;color:#1e8449}
+.badge-risk{background:#fadbd8;color:#c0392b}
+.badge-income{background:#d4efdf;color:#1a7a42}
+.badge-expense{background:#fce4ec;color:#c62828}
+.badge-investment{background:#e8daef;color:#7d3c98}
+.badge-emergency{background:#fdebd0;color:#b9770e}
+.badge-learning{background:#d6eaf8;color:#2e86c1}
+.badge-debt{background:#f9e79f;color:#b7950b}
+.badge-life{background:#f5b7b1;color:#922b21}
+.badge-career{background:#d5f5e3;color:#1a7a42}
+.event-card .event-title{font-size:1.15em;font-weight:700;color:#2c3e50;margin-bottom:8px}
+.event-card .event-desc{color:#555;font-size:.9em;line-height:1.6;margin-bottom:12px}
+.event-card .event-impact{font-size:.85em;padding:8px 12px;background:#f8f9fa;border-radius:8px;margin-top:8px}
+.event-card .event-impact .positive{color:#27ae60}
+.event-card .event-impact .negative{color:#e74c3c}
+.choice-area{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px}
+.choice-btn{padding:10px 20px;border:2px solid #ddd;border-radius:10px;background:#fff;cursor:pointer;font-size:.9em;font-weight:500;transition:all .2s ease;color:#333;flex:1;min-width:120px}
+.choice-btn:hover{border-color:#3498db;background:#eaf2f8;transform:translateY(-1px)}
+.choice-btn.primary{border-color:#27ae60;background:#eafaf1;color:#1e8449}
+.choice-btn.primary:hover{background:#d5f5e3;border-color:#1e8449}
+.choice-btn.danger{border-color:#e74c3c;background:#fdedec;color:#c0392b}
+.choice-btn.danger:hover{background:#fadbd8;border-color:#c0392b}
+.choice-btn.loan{border-color:#f39c12;background:#fef9e7;color:#b9770e}
+.choice-btn.loan:hover{background:#fdebd0;border-color:#b9770e}
+.choice-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.log-area{margin-top:15px;max-height:150px;overflow-y:auto;background:#f8f9fa;border-radius:8px;padding:10px}
+.log-entry{font-size:.82em;padding:4px 0;border-bottom:1px solid #eee;color:#555}
+.log-entry:last-child{border-bottom:none}
+.tables-grid{display:grid;gap:15px}
+.table-card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+.table-card h3{background:#2c3e50;color:#fff;padding:12px 15px;font-size:.95em;display:flex;justify-content:space-between;align-items:center}
+.table-card h3 .subtotal{font-size:.85em;opacity:.85}
+.table-body{padding:8px 0}
+.table-row{display:flex;justify-content:space-between;padding:8px 15px;border-bottom:1px solid #f0f0f0;font-size:.88em;transition:background .2s}
+.table-row:hover{background:#f8f9fa}
+.table-row:last-child{border-bottom:none}
+.table-row .label{color:#555}
+.table-row .amount{font-weight:600;color:#2c3e50}
+.table-row .amount.positive{color:#27ae60}
+.table-row .amount.negative{color:#e74c3c}
+.table-row .amount.passive-income{color:#8e44ad}
+.table-row.total-row{background:#f8f9fa;font-weight:700;border-top:2px solid #ddd;margin-top:4px}
+.table-row.total-row .amount{font-size:1.05em}
+/* Character Selection */
+.char-select-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:2000;display:flex;align-items:center;justify-content:center}
+.char-select-modal{background:#fff;border-radius:24px;padding:40px;max-width:750px;width:90%;max-height:90vh;overflow-y:auto;box-shadow:0 30px 60px rgba(0,0,0,0.4)}
+.char-select-modal h2{font-size:1.8em;text-align:center;color:#2c3e50;margin-bottom:8px}
+.char-select-modal .sub{text-align:center;color:#888;font-size:.95em;margin-bottom:25px}
+.char-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.char-card{border:2px solid #e0e0e0;border-radius:16px;padding:18px;cursor:pointer;transition:all .3s ease;text-align:center}
+.char-card:hover{border-color:#3498db;box-shadow:0 4px 15px rgba(52,152,219,0.15);transform:translateY(-2px)}
+.char-card .char-emoji{font-size:2.5em;margin-bottom:8px}
+.char-card .char-name{font-size:1.1em;font-weight:700;color:#2c3e50;margin-bottom:4px}
+.char-card .char-desc{font-size:.8em;color:#888;margin-bottom:8px}
+.char-card .char-stats{font-size:.78em;color:#555;line-height:1.7}
+.char-card .char-stats .pos{color:#27ae60}
+.char-card .char-stats .neg{color:#e74c3c}
+.char-card.selected{border-color:#27ae60;background:#eafaf1;box-shadow:0 4px 15px rgba(39,174,96,0.15)}
+.char-card .char-tag{display:inline-block;padding:2px 10px;border-radius:10px;font-size:.7em;font-weight:600;margin-top:6px;background:#eee;color:#666}
+.char-card .char-tag.easy{background:#d5f5e3;color:#1e8449}
+.char-card .char-tag.medium{background:#fef9e7;color:#b9770e}
+.char-card .char-tag.hard{background:#fadbd8;color:#c0392b}
+.start-btn{display:block;width:100%;margin-top:20px;padding:14px;border:none;border-radius:12px;font-size:1.15em;font-weight:700;color:#fff;background:linear-gradient(135deg,#27ae60,#2ecc71);cursor:pointer;transition:all .3s ease;box-shadow:0 4px 15px rgba(39,174,96,0.3)}
+.start-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(39,174,96,0.4)}
+.start-btn:disabled{background:#bdc3c7;cursor:not-allowed;transform:none;box-shadow:none}
+/* Victory Modal */
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);z-index:999;display:none}
+.modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border-radius:20px;padding:40px;text-align:center;box-shadow:0 30px 60px rgba(0,0,0,0.3);z-index:1000;display:none;max-width:500px;width:90%}
+.modal h2{font-size:2em;margin-bottom:15px}
+.modal .emoji-big{font-size:4em;margin-bottom:15px}
+.modal p{color:#555;line-height:1.6;margin-bottom:20px}
+.restart-btn{background:#2e86c1;color:#fff;border:none;padding:14px 35px;border-radius:25px;font-size:1.1em;font-weight:600;cursor:pointer;transition:all .3s ease}
+.restart-btn:hover{background:#1a5276;transform:scale(1.05)}
+.fade-in{animation:fadeIn .5s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.flash-green{animation:flashGreen 1.5s ease}
+@keyframes flashGreen{0%{background-color:transparent}30%{background-color:rgba(39,174,96,0.15)}100%{background-color:transparent}}
+.flash-red{animation:flashRed 1.5s ease}
+@keyframes flashRed{0%{background-color:transparent}30%{background-color:rgba(231,76,60,0.15)}100%{background-color:transparent}}
+.settlement-banner{background:linear-gradient(135deg,#2ecc71,#27ae60);color:#fff;padding:15px 20px;border-radius:12px;margin:15px 0;display:none}
+.settlement-banner .settlement-title{font-size:1.1em;font-weight:700;margin-bottom:8px}
+.settlement-banner .settlement-detail{font-size:.9em;opacity:.95;line-height:1.6}
+@media(max-width:768px){.game-area,.char-grid{grid-template-columns:1fr}.header{flex-direction:column;text-align:center;gap:10px}.header-right{text-align:center}}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="header-left">
+      <h1>🏦 现金流游戏</h1>
+      <p>目标：被动收入 ≥ 月支出 → 跳出老鼠赛跑</p>
+    </div>
+    <div class="header-right">
+      <div class="month-badge">📅 第 <span id="currentMonth">1</span> 个月</div>
+      <div class="progress-bar-mount"><div class="progress-bar-fill" id="monthProgress" style="width:0%"></div></div>
+      <div style="font-size:.75em;opacity:.7;margin-top:4px">本月进度: <span id="roundInMonth">0</span>/5 轮</div>
+    </div>
+  </div>
+  <div class="game-area">
+    <div>
+      <div class="panel">
+        <h2>📊 关键指标</h2>
+        <div class="character-badge" id="charBadge">🧑‍💼 上班族</div>
+        <div class="stats-grid">
+          <div class="stat-item"><div class="stat-label">💵 现金余额</div><div class="stat-value balance" id="cashBalance">¥0</div></div>
+          <div class="stat-item"><div class="stat-label">📈 被动收入</div><div class="stat-value passive" id="passiveIncome">¥0</div></div>
+          <div class="stat-item"><div class="stat-label">💰 月总收入</div><div class="stat-value income" id="totalIncome">¥0</div></div>
+          <div class="stat-item"><div class="stat-label">📉 月总支出</div><div class="stat-value expense" id="totalExpense">¥0</div></div>
+        </div>
+        <div class="dice-section">
+          <div class="round-info"><span class="round-label">第 </span><span class="round-num" id="totalRound">0</span><span class="round-label"> 轮</span></div>
+          <div class="dice-wrap">
+            <div class="dice" id="dice">🎲</div>
+            <button class="roll-btn" id="rollBtn">🎲 掷骰子</button>
+          </div>
+        </div>
+        <div id="eventCard" class="event-card fade-in">
+          <div class="event-type-badge badge-opportunity">💡 提示</div>
+          <div class="event-title">选择你的角色</div>
+          <div class="event-desc">游戏尚未开始，请先选择人生角色。<br>不同职业有不同的收入、支出和初始资金。</div>
+        </div>
+        <div class="settlement-banner" id="settlementBanner">
+          <div class="settlement-title">📅 月度结算</div>
+          <div class="settlement-detail" id="settlementDetail">详情</div>
+        </div>
+        <div id="choiceArea" class="choice-area"></div>
+        <div class="log-area" id="logArea"><div class="log-entry">🎮 请先选择角色开始游戏</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="tables-grid">
+        <!-- 胜利进度移到最上方 -->
+        <div class="table-card">
+          <h3>🏆 胜利进度</h3>
+          <div class="table-body" style="padding:12px 15px">
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:.88em"><span class="label">🎯 被动收入</span><span class="amount passive-income" id="victoryPassive">¥0</span></div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:.88em"><span class="label">⚖️ 目标：超过月支出</span><span class="amount negative" id="victoryTarget">¥0</span></div>
+            <div style="position:relative;height:28px;background:#f0f0f0;border-radius:14px;overflow:hidden;margin-bottom:4px"><div id="victoryBarFill" style="position:absolute;top:0;left:0;height:100%;width:0%;background:linear-gradient(90deg,#f39c12,#2ecc71);border-radius:14px;transition:width .8s ease"></div><div style="position:absolute;top:0;left:0;right:0;height:100%;display:flex;align-items:center;justify-content:center;font-size:.8em;font-weight:700;color:#333;text-shadow:0 0 4px rgba(255,255,255,0.8)" id="victoryBarLabel">🔴 0%</div></div>
+            <div style="display:flex;justify-content:space-between;font-size:.78em;color:#888;margin-bottom:6px"><span>🟢 达成: 被动收入 ≥ 支出</span><span id="victoryGapLabel" style="font-weight:600">差距: ¥0</span></div>
+            <div style="text-align:center;padding:6px 0;border-radius:8px;background:#f8f9fa;font-size:.85em" id="victoryStatus">🏃‍♂️ 继续积累资产...</div>
+          </div>
+        </div>
+        <div class="table-card">
+          <h3>📋 资产负债表 <span class="subtotal" id="netWorthLabel">净资产: ¥0</span></h3>
+          <div class="table-body">
+            <div class="table-row" style="background:#eafaf1;font-weight:700"><span class="label">🏠 资产</span><span class="amount positive" id="totalAssets">¥0</span></div>
+            <div class="table-row"><span class="label">&nbsp;&nbsp;💵 现金</span><span class="amount" id="assetCash">¥0</span></div>
+            <div class="table-row"><span class="label">&nbsp;&nbsp;📊 投资组合</span><span class="amount" id="assetInvestments">¥0</span></div>
+            <div class="table-row"><span class="label">&nbsp;&nbsp;🏘️ 房产</span><span class="amount" id="assetRealEstate">¥0</span></div>
+            <div class="table-row"><span class="label">&nbsp;&nbsp;🚗 车辆</span><span class="amount" id="assetVehicle">¥0</span></div>
+            <div class="table-row" style="background:#fdedec;font-weight:700;margin-top:8px"><span class="label">💳 负债</span><span class="amount negative" id="totalLiabilities">¥0</span></div>
+            <div class="table-row"><span class="label">&nbsp;&nbsp;🏦 贷款</span><span class="amount negative" id="liabLoans">¥0</span></div>
+            <div class="table-row"><span class="label">&nbsp;&nbsp;💳 信用卡欠款</span><span class="amount negative" id="liabCredit">¥0</span></div>
+          </div>
+        </div>
+        <div class="table-card">
+          <h3>💰 损益表 (月度) <span class="subtotal" id="cashFlowLabel">月现金流: ¥0</span></h3>
+          <div class="table-body">
+            <div class="table-row" style="background:#eafaf1;font-weight:700"><span class="label">📈 收入</span><span class="amount positive" id="totalIncomeReport">¥0</span></div>
+            <div class="table-row"><span class="label">&nbsp;&nbsp;💼 工资收入</span><span class="amount" id="incomeSalary">¥0</span></div>
+            <div class="table-row"><span class="label">&nbsp;&nbsp;📊 投资分红</span><span class="amount passive-income" id="incomeDividend">¥0</span></div>
+            <div class="table-row"><span class="label">&nbsp;&nbsp;🏘️ 租金收入</span><span class="amount passive-income" id="incomeRent">¥0</span></div>
+            <div class="table-row"><span class="label">&nbsp;&nbsp;🛠️ 副业收入</span><span class="amount passive-income" id="incomeSide">¥0</span></div>
+            <div class="table-row" style="background:#fdedec;font-weight:700;margin-top:8px"><span class="label">📉 支出</span><span class="amount negative" id="totalExpenseReport">¥0</span></div>
+            <div class="table-row"><span class="label">&nbsp;&nbsp;🏠 生活费用</span><span class="amount negative" id="expLiving">¥0</span></div>
+            <div class="table-row"><span class="label">&nbsp;&nbsp;🏦 贷款月供</span><span class="amount negative" id="expLoan">¥0</span></div>
+            <div class="table-row"><span class="label">&nbsp;&nbsp;💳 信用卡利息</span><span class="amount negative" id="expCredit">¥0</span></div>
+            <div class="table-row"><span class="label">&nbsp;&nbsp;👶 子女费用</span><span class="amount negative" id="expChild">¥0</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-overlay" id="modalOverlay"></div>
+<div class="modal" id="bankruptcyModal">
+  <div class="emoji-big">💸</div>
+  <h2>宣告破产</h2>
+  <p>你的债务已经失控，资不抵债，现金流断裂。<br>游戏结束！<br><br><b>坚持了 <span id="bankruptcyMonth">1</span> 个月 · <span id="bankruptcyRound">1</span> 轮</b></p>
+  <button class="restart-btn" onclick="showCharSelect()">🔄 重新开始</button>
+</div>
+<div class="modal" id="victoryModal">
+  <div class="emoji-big">🎉</div>
+  <h2>恭喜获得财务自由！</h2>
+  <p>你的被动收入已经超过了月支出！<br>从"老鼠赛跑"中成功脱离！<br><br><b>第 <span id="victoryMonth">1</span> 个月 · <span id="victoryRound">1</span> 轮</b></p>
+  <button class="restart-btn" onclick="showCharSelect()">🔄 重新开始</button>
+</div>
+
+<!-- Character Selection Overlay -->
+<div class="char-select-overlay" id="charSelectOverlay">
+  <div class="char-select-modal">
+    <h2>🎭 选择你的人生角色</h2>
+    <p class="sub">不同职业有不同的收入、支出和初始资金，难度各不相同</p>
+    <div class="char-grid" id="charGrid"></div>
+    <button class="start-btn" id="startBtn" disabled>👤 请先选择一个角色</button>
+  </div>
+</div>
+
+<script>
+// ===== 角色定义 =====
+const CHARACTERS = [
+  {
+    id:'janitor',emoji:'🧹',name:'保洁员',tag:'hard',tagText:'困难',
+    desc:'生活在城市底层的保洁工人，收入仅够维持基本生活。',
+    salary:3200,living:2500,cash:2000,
+    loan:0,loanPay:0,credit:0,creditInt:0,
+    child:0,vehicle:0
+  },
+  {
+    id:'worker',emoji:'🧑‍🔧',name:'工厂工人',tag:'medium',tagText:'普通',
+    desc:'工厂流水线工人，收入稳定但增长空间有限。',
+    salary:5500,living:3800,cash:5000,
+    loan:5000,loanPay:200,credit:0,creditInt:0,
+    child:600,vehicle:0
+  },
+  {
+    id:'office',emoji:'🧑‍💼',name:'上班族',tag:'medium',tagText:'普通',
+    desc:'普通白领，有稳定工作和少量储蓄。',
+    salary:8000,living:4500,cash:10000,
+    loan:0,loanPay:0,credit:0,creditInt:0,
+    child:0,vehicle:0
+  },
+  {
+    id:'teacher',emoji:'👩‍🏫',name:'教师',tag:'medium',tagText:'普通',
+    desc:'中学教师，收入一般但稳定，有寒暑假补贴。',
+    salary:7000,living:3500,cash:8000,
+    loan:0,loanPay:0,credit:0,creditInt:0,
+    child:0,vehicle:0
+  },
+  {
+    id:'engineer',emoji:'👨‍💻',name:'工程师',tag:'easy',tagText:'轻松',
+    desc:'IT工程师，高收入但工作压力大，消费也不低。',
+    salary:15000,living:8000,cash:20000,
+    loan:100000,loanPay:4000,credit:0,creditInt:0,
+    child:1000,vehicle:2000
+  },
+  {
+    id:'doctor',emoji:'👨‍⚕️',name:'医生',tag:'easy',tagText:'轻松',
+    desc:'主任医师，收入丰厚，但房贷车贷也很高。',
+    salary:22000,living:10000,cash:30000,
+    loan:200000,loanPay:8000,credit:0,creditInt:0,
+    child:2000,vehicle:3000
+  }
+];
+
+// ===== 游戏状态 =====
+let G = null;
+
+function initGame(charId) {
+  const C = CHARACTERS.find(c=>c.id===charId);
+  G = {
+    charId: charId,
+    cash: C.cash,
+    investments: 0,
+    realEstate: 0,
+    vehicle: C.vehicle,
+    loans: C.loan,
+    creditCard: C.credit,
+    salary: C.salary,
+    dividendIncome: 0,
+    rentIncome: 0,
+    sideIncome: 0,
+    childExpense: C.child,
+    livingExpense: C.living,
+    loanPayment: C.loanPay,
+    creditInterest: C.creditInt,
+    vehicleExpense: 0, // 车贷月供（如果贷款买车）
+    round: 0,
+    month: 1,
+    roundInMonth: 0,
+    phase: 'waiting',
+    currentEvent: null,
+    log: [],
+    hasChildren: C.child > 0,
+    hasInsurance: false
+  };
+  document.getElementById('charSelectOverlay').style.display='none';
+  document.getElementById('charBadge').innerHTML = `${C.emoji} ${C.name}`;
+  document.getElementById('eventCard').innerHTML = `
+    <div class="event-type-badge badge-opportunity">🎯 游戏开始</div>
+    <div class="event-title">欢迎，${C.emoji}${C.name}！</div>
+    <div class="event-desc">
+      你的月收入 <b>¥${C.salary.toLocaleString()}</b>，月支出 <b>¥${calcTotalExpense().toLocaleString()}</b>。<br>
+      🎯 目标：让被动收入 ≥ ${calcTotalExpense().toLocaleString()} 元，实现财务自由！<br>
+      每5轮为一个月，月底发放工资结算现金流。<br>
+      掷骰子开始你的财务之旅！
+    </div>`;
+  addLog(`🎮 ${C.emoji}${C.name} 开始了财务自由之旅！目标：被动收入 ≥ ¥${calcTotalExpense().toLocaleString()}/月`);
+  updateAll();
+}
+
+function calcTotalExpense() {
+  if(!G) return 0;
+  return G.livingExpense + G.loanPayment + G.creditInterest + G.childExpense + G.vehicleExpense;
+}
+function calcTotalPassive() {
+  if(!G) return 0;
+  return G.dividendIncome + G.rentIncome + G.sideIncome;
+}
+function calcTotalIncome() {
+  if(!G) return 0;
+  return G.salary + calcTotalPassive();
+}
+
+// ===== 事件定义（16种，重平衡） =====
+const EVENTS = [
+// 1: 加薪
+{
+  id:'raise',title:'💼 绩效考核',badge:'badge-career',badgeText:'💪 职业发展',
+  desc:'年底绩效考核，你的表现不错，有加薪机会。',
+  choices:[
+    {text:'✅ 主动争取加薪',type:'primary',
+      effect:()=>{const increase=500+Math.floor(Math.random()*1000);G.salary+=increase;addLog(`加薪成功！月工资 +¥${increase}`);return{cashDelta:0,msg:`月工资增加 ¥${increase}`};}},
+    {text:'🤝 谦让，接受小幅加薪',type:'',
+      effect:()=>{const increase=300+Math.floor(Math.random()*500);G.salary+=increase;addLog(`接受加薪 ¥${increase}/月`);return{cashDelta:0,msg:`月工资增加 ¥${increase}`};}},
+    {text:'❌ 维持现状',type:'danger',
+      effect:()=>{addLog('放弃加薪机会');return{cashDelta:0,msg:'放弃加薪机会，保持现状'};}}
+  ]
+},
+// 2: 股票投资
+{
+  id:'stock',title:'📈 股票投资',badge:'badge-investment',badgeText:'💰 投资机会',
+  desc:G&&G.investments>0?'股市波动中，你可以买入或卖出股票。':'朋友推荐了一只蓝筹股，预计年化收益6%。',
+  choices:[
+    {text:'📤 全部卖出获利',type:'primary',condition:()=>G&&G.investments>=2000,require:"持有投资≥¥2,000",
+      effect:()=>{const profit=Math.floor(G.investments*0.03);G.cash+=G.investments+profit;G.dividendIncome=Math.max(0,G.dividendIncome-Math.round(G.investments*0.06/12));addLog(`卖出投资！获利 ¥${profit}`);G.investments=0;return{cashDelta:G.cash,msg:`卖出投资获利 ¥${profit}`};}},
+    {text:'📤 卖出50%',type:'',condition:()=>G&&G.investments>=3000,require:"持有投资≥¥3,000",
+      effect:()=>{const sell=Math.floor(G.investments*0.5);const p=Math.floor(sell*0.02);G.cash+=sell+p;G.dividendIncome=Math.max(0,G.dividendIncome-Math.round(sell*0.06/12));G.investments-=sell;addLog(`卖出50%投资，获利 ¥${p}`);return{cashDelta:sell+p,msg:`卖出50%投资，获利 ¥${p}`};}},
+    {text:'💪 投入 ¥5,000',type:'primary',condition:()=>G&&G.cash>=3000,require:"需≥¥3,000",
+      effect:()=>{const a=5000;G.cash-=a;G.investments+=a;G.dividendIncome+=Math.round(a*0.06/12);addLog(`投资 ¥${a}，月分红 +¥${Math.round(a*0.06/12)}`);return{cashDelta:-a,msg:`投资 ¥${a}，月收益 ¥${Math.round(a*0.06/12)}`};}},
+    {text:'🔥 大额投入 ¥20,000',type:'primary',condition:()=>G&&G.cash>=12000,require:"需≥¥12,000",
+      effect:()=>{const a=20000;G.cash-=a;G.investments+=a;G.dividendIncome+=Math.round(a*0.07/12);addLog(`大额投资 ¥${a}，月分红 +¥${Math.round(a*0.07/12)}`);return{cashDelta:-a,msg:`投资 ¥${a}，月收益 ¥${Math.round(a*0.07/12)}（收益率更高）`};}},
+    {text:'💰 投入 ¥2,000',type:'',condition:()=>G&&G.cash>=1000,require:"需≥¥1,000",
+      effect:()=>{const a=2000;G.cash-=a;G.investments+=a;G.dividendIncome+=Math.round(a*0.06/12);addLog(`投资 ¥${a}，月分红 +¥${Math.round(a*0.06/12)}`);return{cashDelta:-a,msg:`投资 ¥${a}，月收益 ¥${Math.round(a*0.06/12)}`};}},
+    {text:'❌ 不操作',type:'danger',effect:()=>{addLog('放弃操作');return{cashDelta:0,msg:'放弃操作'}}}
+  ]
+},
+// 3: 房产投资
+{
+  id:'realestate',title:'🏘️ 房产投资',badge:'badge-investment',badgeText:'🏠 资产投资',
+  desc:G&&G.realEstate>0?'有新的楼盘开盘，你也可以考虑出售现有房产。':'一套小户型公寓：总价 ¥300,000，月租 ¥1,800。首付30%=¥90,000，月供约 ¥1,200。',
+  choices:[
+    {text:'🏠 出售房产套现',type:'primary',condition:()=>G&&G.realEstate>=100000,require:"持有房产",
+      effect:()=>{const app=Math.floor(G.realEstate*0.15);G.cash+=G.realEstate+app;G.rentIncome=Math.max(0,G.rentIncome-1800);addLog(`出售房产！获现 ¥${G.realEstate+app}（含增值 ¥${app}）`);G.realEstate=0;return{cashDelta:G.cash,msg:`出售房产获现 ¥${G.realEstate+app}（含增值 ¥${app}）`};}},
+    {text:'🏠 全款现金买入',type:'primary',condition:()=>G&&G.cash>=300000,require:"需≥¥300,000",
+      effect:()=>{G.cash-=300000;G.realEstate+=300000;G.rentIncome+=1800;addLog(`全款购房！无贷款，月租 +¥1,800`);return{cashDelta:-300000,msg:`全款付清，月租 ¥1,800`};}},
+    {text:'🏠 首付贷款买入',type:'loan',condition:()=>G&&G.cash>=5000,require:"需≥¥5,000",
+      effect:()=>{const dp=90000;const loan=210000;const actual=Math.min(dp,G.cash+10000);const extra=dp-actual;const total=loan+Math.max(0,extra);G.cash-=actual;G.loans+=total;G.realEstate+=300000;G.rentIncome+=1800;const mp=Math.round(total*0.045/12);G.loanPayment+=mp;addLog(`购房！首付 ¥${actual}，贷款 ¥${total}，月供 +¥${mp}，月租 +¥1,800`);return{cashDelta:-actual,msg:`首付 ¥${actual}，月供 ¥${mp}，月租 ¥1,800`};}},
+    {text:'❌ 不操作',type:'danger',effect:()=>{addLog('放弃操作');return{cashDelta:0,msg:'放弃'}}}
+  ]
+},
+// 4: 日常消费
+{
+  id:'shopping',title:'🛍️ 购物季',badge:'badge-expense',badgeText:'⚠️ 消费诱惑',
+  desc:'电商大促！各种商品都在打折。',
+  choices:[
+    {text:'💳 刷信用卡买买买',type:'danger',
+      effect:()=>{const a=2000+Math.floor(Math.random()*3000);G.creditCard+=a;G.creditInterest+=Math.round(a*0.18/12);addLog(`刷信用卡 ¥${a}，月利息 +¥${Math.round(a*0.18/12)}`);return{cashDelta:0,msg:`消费 ¥${a}，信用卡利息增加`};}},
+    {text:'💵 现金适度消费 ¥500',type:'',condition:()=>G&&G.cash>=500,require:"需≥¥500",
+      effect:()=>{G.cash-=500;addLog('适度消费 ¥500');return{cashDelta:-500,msg:'现金消费 ¥500'};}},
+    {text:'🙅 忍住不买',type:'primary',
+      effect:()=>{addLog('克制消费');return{cashDelta:0,msg:'省钱就是赚钱'};}}
+  ]
+},
+// 5: 意外收入
+{
+  id:'bonus',title:'🎁 意外之财',badge:'badge-income',badgeText:'🎉 好事发生',
+  desc:'你获得了红包/退税/奖金！',
+  choices:[
+    {text:'🎊 全部收下',type:'primary',
+      effect:()=>{const a=500+Math.floor(Math.random()*1500);G.cash+=a;addLog(`意外收入 +¥${a}`);return{cashDelta:a,msg:`获得 ¥${a}`};}},
+    {text:'📈 投入投资',type:'primary',
+      effect:()=>{const a=500+Math.floor(Math.random()*1500);G.investments+=Math.floor(a*0.8);G.dividendIncome+=Math.round(a*0.8*0.06/12);G.cash+=Math.floor(a*0.2);addLog(`¥${a} 其中80%投入投资`);return{cashDelta:Math.floor(a*0.2),msg:`¥${Math.floor(a*0.8)} 投入投资`};}}
+  ]
+},
+// 6: 紧急支出
+{
+  id:'emergency',title:'🚑 意外事故',badge:'badge-emergency',badgeText:'⚠️ 突发状况',
+  desc:'家里水管爆了/车子需要维修！费用 ¥3,000。',
+  choices:[
+    {text:'💵 现金支付',type:'',condition:()=>G&&G.cash>=3000,require:"需≥¥3,000",effect:()=>{G.cash-=3000;addLog('应急 -¥3,000（现金）');return{cashDelta:-3000,msg:'现金支付 ¥3,000'};}},
+    {text:'🏦 贷款支付',type:'loan',condition:()=>G&&G.cash<3000,effect:()=>{const s=3000-G.cash;G.cash=0;G.loans+=s;const mp=Math.round(s*0.06/12);G.loanPayment+=mp;addLog(`应急贷款 ¥${s}，月供 +¥${mp}`);return{cashDelta:-G.cash,msg:`贷款 ¥${s}`};}},
+    {text:'💳 刷信用卡',type:'danger',effect:()=>{G.creditCard+=3000;G.creditInterest+=Math.round(3000*0.18/12);addLog(`应急刷信用卡，月利息 +¥${Math.round(3000*0.18/12)}`);return{cashDelta:0,msg:'信用卡垫付 ¥3,000'};}}
+  ]
+},
+// 7: 副业
+{
+  id:'sidehustle',title:'🛠️ 副业机会',badge:'badge-opportunity',badgeText:'🌟 额外收入',
+  desc:'朋友邀请你周末一起做点小生意。',
+  choices:[
+    {text:'🚀 投入 ¥1,000',type:'primary',condition:()=>G&&G.cash>=1000,require:"需≥¥1,000",
+      effect:()=>{G.cash-=1000;const inc=300+Math.floor(Math.random()*700);G.sideIncome+=inc;addLog(`副业 +¥${inc}/月`);return{cashDelta:-1000,msg:`月副业收入 +¥${inc}`};}},
+    {text:'🃏 小额尝试 ¥300',type:'',condition:()=>G&&G.cash>=300,require:"需≥¥300",
+      effect:()=>{G.cash-=300;const inc=100+Math.floor(Math.random()*300);G.sideIncome+=inc;addLog(`副业尝试 +¥${inc}/月`);return{cashDelta:-300,msg:`月副业收入 +¥${inc}`};}},
+    {text:'❌ 不参与',type:'danger',effect:()=>{addLog('放弃副业');return{cashDelta:0,msg:'放弃副业'};}}
+  ]
+},
+// 8: 市场波动
+{
+  id:'market',title:'📉 市场波动',badge:'badge-risk',badgeText:'⚡ 风险事件',
+  desc:'股市大幅波动！你的投资组合价值变动。',
+  choices:[
+    {text:'🫣 持有不动',type:'primary',effect:()=>{addLog('坚持长期投资');return{cashDelta:0,msg:'长期持有'};}},
+    {text:'😱 恐慌卖出',type:'danger',condition:()=>G&&G.investments>0,
+      effect:()=>{const loss=Math.floor(G.investments*0.1);G.cash+=G.investments-loss;G.dividendIncome=Math.max(0,G.dividendIncome-G.dividendIncome*0.3);addLog(`恐慌卖出！亏损 ¥${loss}`);G.investments=0;return{cashDelta:G.cash,msg:`卖出亏损 ¥${loss}`};}},
+    {text:'📈 逆势加仓 ¥2,000',type:'primary',condition:()=>G&&G.cash>=2000,require:"需≥¥2,000",
+      effect:()=>{const a=Math.min(G.cash,2000);G.cash-=a;G.investments+=a;G.dividendIncome+=Math.round(a*0.08/12);addLog(`加仓 ¥${a}`);return{cashDelta:-a,msg:`加仓 ¥${a}`};}}
+  ]
+},
+// 9: 学习提升
+{
+  id:'learning',title:'📚 培训班',badge:'badge-learning',badgeText:'🎓 自我投资',
+  desc:'有职业技能培训班，可以提升收入潜力。',
+  choices:[
+    {text:'📖 报名 ¥2,000',type:'primary',condition:()=>G&&G.cash>=2000,require:"需≥¥2,000",
+      effect:()=>{G.cash-=2000;const b=300+Math.floor(Math.random()*500);G.salary+=Math.floor(b*0.3);G.dividendIncome+=Math.floor(b*0.3);G.sideIncome+=Math.floor(b*0.4);addLog(`学习提升！综合收入 +¥${b}/月`);return{cashDelta:-2000,msg:`综合收入 +¥${b}/月`};}},
+    {text:'❌ 不参加',type:'danger',effect:()=>{addLog('放弃学习');return{cashDelta:0,msg:'放弃学习'};}}
+  ]
+},
+// 10: 债务处理
+{
+  id:'debt',title:'💳 债务日',badge:'badge-debt',badgeText:'💸 债务管理',
+  desc:'银行推出优惠活动。',
+  choices:[
+    {text:'💪 还贷 ¥5,000',type:'primary',condition:()=>G&&G.loans>=5000&&G.cash>=5000,require:"贷款≥¥5,000",
+      effect:()=>{const p=5000;G.cash-=p;G.loans-=p;G.loanPayment=Math.round(G.loans*0.045/12);addLog(`还贷 ¥${p}，月供降低`);return{cashDelta:-p,msg:`还贷 ¥${p}`};}},
+    {text:'💪 还贷 ¥20,000',type:'primary',condition:()=>G&&G.loans>=20000&&G.cash>=20000,require:"贷款≥¥20,000",
+      effect:()=>{const p=20000;G.cash-=p;G.loans-=p;G.loanPayment=Math.round(G.loans*0.045/12);addLog(`大额还贷 ¥${p}，月供大幅降低`);return{cashDelta:-p,msg:`还贷 ¥${p}`};}},
+    {text:'💳 还信用卡',type:'primary',condition:()=>G&&G.creditCard>0&&G.cash>=1000,
+      effect:()=>{const p=Math.min(G.cash,G.creditCard);G.cash-=p;G.creditCard-=p;G.creditInterest=Math.round(G.creditCard*0.18/12);addLog(`还信用卡 ¥${p}`);return{cashDelta:-p,msg:`还信用卡 ¥${p}`};}},
+    {text:'📤 卖出投资还债',type:'loan',condition:()=>G&&G.investments>=3000,require:"持有投资≥¥3,000",
+      effect:()=>{const s=Math.min(G.investments,20000);G.cash+=s;G.investments-=s;G.dividendIncome=Math.max(0,G.dividendIncome-Math.round(s*0.06/12));if(G.loans>0){const d=Math.min(s,G.loans);G.loans-=d;G.loanPayment=Math.round(G.loans*0.045/12);addLog(`卖出 ¥${s} 投资还贷 ¥${d}`);return{cashDelta:s,msg:`还贷 ¥${d}`};}addLog(`卖出 ¥${s} 投资`);return{cashDelta:s,msg:'现金增加'};}},
+    {text:'⏰ 暂不处理',type:'',effect:()=>{addLog('暂不处理债务');return{cashDelta:0,msg:'保持现状'}}}
+  ]
+},
+// 11: 社交
+{
+  id:'social',title:'🎉 行业聚会',badge:'badge-opportunity',badgeText:'🤝 人脉拓展',
+  desc:'行业精英聚会，参加需要购置正装。',
+  choices:[
+    {text:'💼 参加 ¥800',type:'primary',condition:()=>G&&G.cash>=800,require:"需≥¥800",
+      effect:()=>{G.cash-=800;const t=Math.random();if(t<0.3){const b=300+Math.floor(Math.random()*500);G.salary+=b;addLog(`人脉带来加薪 ¥${b}/月`);return{cashDelta:-800,msg:`加薪 ¥${b}/月`};}else if(t<0.6){const inc=200+Math.floor(Math.random()*400);G.sideIncome+=inc;addLog(`人脉带来副业 ¥${inc}/月`);return{cashDelta:-800,msg:`副业 +¥${inc}/月`};}else{addLog('人脉暂无直接收益');return{cashDelta:-800,msg:'拓展人脉，长期受益'}}}},
+    {text:'❌ 不去',type:'danger',effect:()=>{addLog('放弃社交');return{cashDelta:0,msg:'放弃'}}}
+  ]
+},
+// 12: 保险
+{
+  id:'insurance',title:'🛡️ 保险推销',badge:'badge-life',badgeText:'🛡️ 风险管理',
+  desc:'保险代理人推荐健康险，每月 ¥200，生病可报销80%。',
+  choices:[
+    {text:'✅ 购买保险',type:'primary',condition:()=>G&&G.cash>=2000,require:"需≥¥2,000",
+      effect:()=>{const monthly=200;G.livingExpense+=monthly;G.hasInsurance=true;addLog(`购买保险，月支出 +¥${monthly}`);return{cashDelta:-2000,msg:'年缴 ¥2,000，月均 ¥200'};}},
+    {text:'❌ 不买',type:'danger',effect:()=>{addLog('放弃保险');return{cashDelta:0,msg:'自担风险'};}}
+  ]
+},
+// 13: 孩子出生
+{
+  id:'baby',title:'👶 新生命降临',badge:'badge-life',badgeText:'🎊 家庭大事',
+  desc:'恭喜！你家迎来了新成员！孩子每月需要奶粉、尿布等开支。',
+  choices:[
+    {text:'🎉 开心迎接（增加支出）',type:'primary',
+      effect:()=>{const cost=600+Math.floor(Math.random()*400);G.childExpense+=cost;G.hasChildren=true;addLog(`孩子出生！月支出 +¥${cost}`);return{cashDelta:0,msg:`月支出增加 ¥${cost}，但家庭更幸福了 ❤️`};}},
+    {text:'😅 暂时不要孩子',type:'danger',
+      effect:()=>{addLog('决定暂时不要孩子');return{cashDelta:0,msg:'保持现状'};}}
+  ]
+},
+// 14: 购车贷款
+{
+  id:'carloan',title:'🚗 购车计划',badge:'badge-debt',badgeText:'🚗 大宗消费',
+  desc:'你需要一辆代步车。新车总价 ¥100,000，贷款70%分3年还清，月供约 ¥1,500。',
+  choices:[
+    {text:'🚗 贷款买车',type:'loan',condition:()=>G&&G.cash>=15000,require:"需≥¥15,000",
+      effect:()=>{const dp=30000;const loan=70000;G.cash-=dp;G.loans+=loan;G.vehicleExpense+=1500;G.vehicle+=100000;addLog(`贷款买车！首付 ¥${dp}，月供 ¥1,500`);return{cashDelta:-dp,msg:`首付 ¥${dp}，月供 ¥1,500`};}},
+    {text:'🚲 买辆电动车',type:'',condition:()=>G&&G.cash>=2000,require:"需≥¥2,000",
+      effect:()=>{G.cash-=2000;addLog('买电动车 ¥2,000，无后续费用');return{cashDelta:-2000,msg:'电动车 ¥2,000'};}},
+    {text:'🚶 继续步行/公交',type:'primary',
+      effect:()=>{addLog('省钱，继续公共交通');return{cashDelta:0,msg:'省下购车费用'};}}
+  ]
+},
+// 15: 被裁员
+{
+  id:'layoff',title:'⚠️ 公司裁员',badge:'badge-risk',badgeText:'⚡ 职业危机',
+  desc:G&&G.salary>=15000?'公司裁员波及到你。好在你的专业技能抢手，很快能找到新工作。':'公司经营不善，你被裁员了！',
+  choices:[
+    {text:'💪 投简历找新工作',type:'primary',
+      effect:()=>{
+        const ratio = G.salary>=15000 ? 0.85 : G.salary>=8000 ? 0.8 : 0.7;
+        const newSalary=Math.floor(G.salary*ratio);
+        G.salary=newSalary;
+        addLog(`被裁员后找到新工作，工资 ¥${newSalary}/月`);
+        return{cashDelta:0,msg:`新工作工资 ¥${newSalary}/月`};
+      }},
+    {text:'💼 领补偿金后创业',type:'loan',condition:()=>G&&G.cash>=2000,require:"需≥¥2,000",
+      effect:()=>{
+        const ratio=G.salary>=15000?0.7:G.salary>=8000?0.6:0.5;
+        const severance=Math.floor(G.salary*1.5);G.cash+=severance;
+        const newInc=Math.floor(G.salary*ratio);
+        G.salary=newInc;
+        addLog(`领补偿 ¥${severance}，创业收入 ¥${newInc}/月`);
+        return{cashDelta:severance,msg:`补偿 ¥${severance}，创业收入 ¥${newInc}/月`};
+      }}
+  ]
+},
+// 16: 中奖
+{
+  id:'lottery',title:'🎰 刮刮乐',badge:'badge-income',badgeText:'🍀 小幸运',
+  desc:'路过彩票店顺手买了一张刮刮乐。',
+  choices:[
+    {text:'🎊 买一张 ¥10',type:'primary',condition:()=>G&&G.cash>=10,require:"需¥10",
+      effect:()=>{G.cash-=10;const win=Math.random();if(win<0.02){const prize=2000+Math.floor(Math.random()*3000);G.cash+=prize;addLog(`🎉🎉🎉 大奖！¥${prize}`);return{cashDelta:prize-10,msg:`🎉 中大奖 ¥${prize}！`};}else if(win<0.10){const prize=100+Math.floor(Math.random()*400);G.cash+=prize;addLog(`🎉 中奖！¥${prize}`);return{cashDelta:prize-10,msg:`中奖 ¥${prize}`};}else if(win<0.30){const prize=10+Math.floor(Math.random()*40);G.cash+=prize;addLog(`🍀 小奖 ¥${prize}`);return{cashDelta:prize-10,msg:`小奖 ¥${prize}`};}else{addLog('没中奖');return{cashDelta:-10,msg:'没中奖，损失 ¥10'};}}},
+    {text:'❌ 不买',type:'danger',effect:()=>{addLog('不买彩票');return{cashDelta:0,msg:'理性消费'};}}
+  ]
+},
+// 17: 生病住院
+{
+  id:'sick',title:'🏥 生病住院',badge:'badge-emergency',badgeText:'🩺 健康危机',
+  desc:G&&G.hasInsurance?'你不舒服去医院检查，需要住院治疗几天。\n好在你有保险，可以报销大部分费用。':'你突然生病需要住院治疗，医药费 ¥6,000。',
+  choices:[
+    {text:'🏥 住院治疗',type:G&&G.hasInsurance?'primary':'danger',
+      effect:()=>{
+        const total=4000+Math.floor(Math.random()*4000);
+        if(G.hasInsurance){
+          const pay=Math.round(total*0.2);
+          G.cash-=pay;
+          addLog(`住院治疗！总费用 ¥${total}，保险报销80%，自付 ¥${pay}`);
+          return{cashDelta:-pay,msg:`总费 ¥${total}，保险报销后自付 ¥${pay}`};
+        }else{
+          const pay=total;
+          G.cash-=pay;
+          addLog(`住院治疗！无保险，全额自付 ¥${pay}`);
+          return{cashDelta:-pay,msg:`无保险，全额自付 ¥${pay}`};
+        }
+      }},
+    {text:'💊 硬扛着不去',type:'',
+      effect:()=>{G.salary=Math.floor(G.salary*0.8);addLog(`硬扛不去医院，身体变差，工资降为 ¥${G.salary}/月`);return{cashDelta:0,msg:'工资降低20%'};}}
+  ]
+},
+// 18: 房市热潮
+{
+  id:'boom',title:'🏠 房市热潮',badge:'badge-investment',badgeText:'📈 市场利好',
+  desc:'房地产市场突然火爆，房价大涨！如果你有房产，现在是绝佳的出售时机。',
+  choices:[
+    {text:'🏠 趁高出售房产',type:'primary',condition:()=>G&&G.realEstate>=100000,require:"持有房产",effect:()=>{const premium=Math.floor(G.realEstate*0.35);G.cash+=G.realEstate+premium;G.rentIncome=Math.max(0,G.rentIncome-1800);addLog(`房市热潮中出售房产！获现 ¥${G.realEstate+premium}，溢价 ¥${premium}`);G.realEstate=0;return{cashDelta:G.cash,msg:`溢价 ¥${premium}，共获现 ¥${G.cash}`};}},
+    {text:'🏠 继续持有收租',type:'',
+      effect:()=>{const boost=Math.floor(G.rentIncome*0.3);G.rentIncome+=boost;addLog(`租金上涨 +¥${boost}/月`);return{cashDelta:0,msg:`租金上涨 ¥${boost}/月`};}},
+    {text:'❌ 与我无关',type:'danger',effect:()=>{addLog('观望房市');return{cashDelta:0,msg:'保持现状'}}}
+  ]
+},
+// 19: 商业投资
+{
+  id:'venture',title:'💼 商业投资',badge:'badge-investment',badgeText:'🚀 高风险高回报',
+  desc:'朋友介绍了一个有潜力的创业项目，需要一笔资金入股。',
+  choices:[
+    {text:'🚀 大额投入 ¥80,000',type:'primary',condition:()=>G&&G.cash>=30000,require:"需≥¥30,000",
+      effect:()=>{const a=80000;G.cash-=a;const r=Math.random();if(r<0.3){const inc=5000+Math.floor(Math.random()*5000);G.dividendIncome+=inc;addLog(`🎉 创业成功！月分红 +¥${inc}`);return{cashDelta:-a,msg:`成功！月分红 +¥${inc}`};}else if(r<0.6){const inc=1000+Math.floor(Math.random()*2000);G.dividendIncome+=inc;addLog(`创业略有起色，月分红 +¥${inc}`);return{cashDelta:-a,msg:`月分红 +¥${inc}`};}else{G.cash+=Math.floor(a*0.3);addLog(`创业失败，仅回收 ¥${Math.floor(a*0.3)}`);return{cashDelta:-Math.floor(a*0.7),msg:`失败，回收 ¥${Math.floor(a*0.3)}`};}}},
+    {text:'💵 适度投入 ¥30,000',type:'primary',condition:()=>G&&G.cash>=10000,require:"需≥¥10,000",
+      effect:()=>{const a=30000;G.cash-=a;const r=Math.random();if(r<0.25){const inc=2000+Math.floor(Math.random()*3000);G.dividendIncome+=inc;addLog(`🎉 创业成功！月分红 +¥${inc}`);return{cashDelta:-a,msg:`成功！月分红 +¥${inc}`};}else if(r<0.55){const inc=500+Math.floor(Math.random()*1000);G.dividendIncome+=inc;addLog(`创业略有起色，月分红 +¥${inc}`);return{cashDelta:-a,msg:`月分红 +¥${inc}`};}else{G.cash+=Math.floor(a*0.3);addLog(`创业失败，回收 ¥${Math.floor(a*0.3)}`);return{cashDelta:-Math.floor(a*0.7),msg:`失败，回收 ¥${Math.floor(a*0.3)}`};}}},
+    {text:'❌ 不投',type:'danger',effect:()=>{addLog('放弃商业投资');return{cashDelta:0,msg:'放弃'}}}
+  ]
+}
+];
+
+// ===== 辅助函数 =====
+function addLog(t){if(!G)return;G.log.push(t);if(G.log.length>50)G.log.shift();renderLog();}
+function renderLog(){const a=document.getElementById('logArea');a.innerHTML=G.log.slice(-15).map(t=>`<div class="log-entry">${t}</div>`).join('');a.scrollTop=a.scrollHeight;}
+function formatMoney(n){return'¥'+Math.round(n).toLocaleString();}
+
+const POSITIVE_RISE=new Set(['cashBalance','passiveIncome','totalIncome','totalIncomeReport','totalAssets','assetCash','assetInvestments','assetRealEstate','incomeSalary','incomeDividend','incomeRent','incomeSide','netWorthLabel','victoryPassive','assetVehicle']);
+const NEGATIVE_RISE=new Set(['totalExpense','totalExpenseReport','totalLiabilities','liabLoans','liabCredit','expLiving','expLoan','expCredit','victoryTarget','expChild']);
+
+function flashValue(id,val){
+  const el=document.getElementById(id);if(!el)return;
+  const raw=el.getAttribute('data-raw');
+  if(raw===null){el.setAttribute('data-raw',String(val));return;}
+  const prev=parseFloat(raw)||0;
+  if(prev===val)return;
+  el.setAttribute('data-raw',String(val));
+  const isGood=POSITIVE_RISE.has(id)?(val>prev):NEGATIVE_RISE.has(id)?(val<prev):(val>prev);
+  el.classList.remove('flash-green','flash-red');void el.offsetWidth;el.classList.add(isGood?'flash-green':'flash-red');
+}
+
+function updateAll(){
+  if(!G)return;
+  const tp=calcTotalPassive(),ti=calcTotalIncome(),te=calcTotalExpense();
+  flashValue('cashBalance',G.cash);document.getElementById('cashBalance').textContent=formatMoney(G.cash);
+  flashValue('passiveIncome',tp);document.getElementById('passiveIncome').textContent=formatMoney(tp);
+  flashValue('totalIncome',ti);document.getElementById('totalIncome').textContent=formatMoney(ti);
+  flashValue('totalExpense',te);document.getElementById('totalExpense').textContent=formatMoney(te);
+  document.getElementById('totalRound').textContent=G.round;
+  document.getElementById('currentMonth').textContent=G.month;
+  document.getElementById('roundInMonth').textContent=G.roundInMonth;
+  document.getElementById('monthProgress').style.width=(G.roundInMonth/5*100)+'%';
+  const ta=G.cash+G.investments+G.realEstate+G.vehicle,tl=G.loans+G.creditCard,nw=ta-tl;
+  flashValue('totalAssets',ta);document.getElementById('totalAssets').textContent=formatMoney(ta);
+  flashValue('assetCash',G.cash);document.getElementById('assetCash').textContent=formatMoney(G.cash);
+  flashValue('assetInvestments',G.investments);document.getElementById('assetInvestments').textContent=formatMoney(G.investments);
+  flashValue('assetRealEstate',G.realEstate);document.getElementById('assetRealEstate').textContent=formatMoney(G.realEstate);
+  flashValue('assetVehicle',G.vehicle);document.getElementById('assetVehicle').textContent=formatMoney(G.vehicle);
+  flashValue('totalLiabilities',tl);document.getElementById('totalLiabilities').textContent=formatMoney(tl);
+  flashValue('liabLoans',G.loans);document.getElementById('liabLoans').textContent=formatMoney(G.loans);
+  flashValue('liabCredit',G.creditCard);document.getElementById('liabCredit').textContent=formatMoney(G.creditCard);
+  document.getElementById('netWorthLabel').textContent='净资产: '+formatMoney(nw);
+  flashValue('totalIncomeReport',ti);document.getElementById('totalIncomeReport').textContent=formatMoney(ti);
+  flashValue('incomeSalary',G.salary);document.getElementById('incomeSalary').textContent=formatMoney(G.salary);
+  flashValue('incomeDividend',G.dividendIncome);document.getElementById('incomeDividend').textContent=formatMoney(G.dividendIncome);
+  flashValue('incomeRent',G.rentIncome);document.getElementById('incomeRent').textContent=formatMoney(G.rentIncome);
+  flashValue('incomeSide',G.sideIncome);document.getElementById('incomeSide').textContent=formatMoney(G.sideIncome);
+  flashValue('totalExpenseReport',te);document.getElementById('totalExpenseReport').textContent=formatMoney(te);
+  flashValue('expLiving',G.livingExpense);document.getElementById('expLiving').textContent=formatMoney(G.livingExpense);
+  flashValue('expLoan',G.loanPayment);document.getElementById('expLoan').textContent=formatMoney(G.loanPayment);
+  flashValue('expCredit',G.creditInterest);document.getElementById('expCredit').textContent=formatMoney(G.creditInterest);
+  flashValue('expChild',G.childExpense);document.getElementById('expChild').textContent=formatMoney(G.childExpense);
+  document.getElementById('cashFlowLabel').textContent='月现金流: '+formatMoney(ti-te);
+  flashValue('victoryPassive',tp);document.getElementById('victoryPassive').textContent=formatMoney(tp);
+  flashValue('victoryTarget',te);document.getElementById('victoryTarget').textContent=formatMoney(te);
+  const gap=te-tp,ratio=te>0?Math.min(1,tp/te):0;
+  document.getElementById('victoryBarFill').style.width=(ratio*100)+'%';
+  const bl=document.getElementById('victoryBarLabel'),se=document.getElementById('victoryStatus'),gl=document.getElementById('victoryGapLabel');
+  if(gap<=0){bl.textContent='🎉 100% 已达成！';se.innerHTML='🎉 财务自由！';se.style.background='#d5f5e3';gl.textContent='✅ 已达成！';gl.style.color='#27ae60';}
+  else if(ratio>=0.8){bl.textContent=`🟢 ${Math.round(ratio*100)}%`;se.innerHTML='🔥 接近目标！';se.style.background='#fef9e7';gl.textContent=`差距: ${formatMoney(gap)}`;gl.style.color='#f39c12';}
+  else if(ratio>=0.5){bl.textContent=`🟡 ${Math.round(ratio*100)}%`;se.innerHTML='💪 进度过半！';se.style.background='#fef9e7';gl.textContent=`差距: ${formatMoney(gap)}`;gl.style.color='#f39c12';}
+  else if(ratio>=0.25){bl.textContent=`🟠 ${Math.round(ratio*100)}%`;se.innerHTML='🏃‍♂️ 继续加油！';se.style.background='#f8f9fa';gl.textContent=`差距: ${formatMoney(gap)}`;gl.style.color='#e67e22';}
+  else{bl.textContent=`🔴 ${Math.round(ratio*100)}%`;se.innerHTML='🐭 还在老鼠赛跑';se.style.background='#fdedec';gl.textContent=`差距: ${formatMoney(gap)}`;gl.style.color='#e74c3c';}
+}
+
+function rollDice(){
+  if(!G||G.phase!=='waiting')return;
+  const dice=document.getElementById('dice'),btn=document.getElementById('rollBtn');
+  dice.classList.add('rolling');btn.disabled=true;document.getElementById('settlementBanner').style.display='none';
+  setTimeout(()=>{
+    const r=Math.floor(Math.random()*6)+1;
+    dice.textContent='🎲 '+r;dice.classList.remove('rolling');
+    G.round++;G.roundInMonth++;
+    G.currentEvent=EVENTS[(G.round-1)%EVENTS.length];
+    showEvent(G.currentEvent);updateAll();btn.disabled=false;G.phase='choosing';
+  },600);
+}
+
+function showEvent(event){
+  const card=document.getElementById('eventCard');
+  card.innerHTML=`
+    <div class="event-type-badge ${event.badge}">${event.badgeText}</div>
+    <div class="event-title">${event.title}</div>
+    <div class="event-desc">${event.desc.replace(/\\n/g,'<br>')}</div>`;
+  card.className='event-card fade-in';
+  const ca=document.getElementById('choiceArea');ca.innerHTML='';
+  (typeof event.choices==='function'?event.choices():event.choices).forEach(c=>{
+    if(c.condition&&!c.condition())return;
+    const btn=document.createElement('button');
+    btn.className='choice-btn'+(c.type?' '+c.type:'');
+    btn.innerHTML=c.text+(c.require?`<br><span style="font-size:.72em;font-weight:400;opacity:.6">${c.require}</span>`:'');
+    btn.onclick=()=>handleChoice(event,c);
+    ca.appendChild(btn);
+  });
+}
+
+function handleChoice(event,choice){
+  if(G.phase!=='choosing')return;
+  G.phase='processing';document.getElementById('choiceArea').innerHTML='';
+  const result=choice.effect();
+  // 自动处理余额负数：转为贷款
+  if(G.cash<0){const s=Math.round(Math.abs(G.cash));G.loans+=s;const mp=Math.round(s*0.06/12);G.loanPayment+=mp;addLog(`💳 余额不足，自动贷款 ¥${s}，月供 +¥${mp}`);G.cash=0;}
+  if(result===null){showEvent(event);G.phase='choosing';return;}
+  document.getElementById('eventCard').innerHTML+=`<div class="event-impact">📍 ${choice.text}<br>💫 ${result.msg}</div>`;
+  updateAll();
+  // 🚨 每轮破产检测：现金为0、现金流为负、净资产为负 → 立即破产
+  if(checkBankruptcy()){setTimeout(()=>showBankruptcy(),500);G.phase='settling';return;}
+  const tp=calcTotalPassive(),te=calcTotalExpense();
+  if(tp>=te){G.phase='settling';setTimeout(()=>showVictory(),500);return;}
+  if(G.roundInMonth>=5){G.phase='settling';setTimeout(()=>doMonthlySettlement(),800);}
+  else{G.phase='waiting';setTimeout(()=>{document.getElementById('dice').textContent='🎲';},500);}
+}
+
+function doMonthlySettlement(){
+  const ti=calcTotalIncome(),te=calcTotalExpense(),cf=ti-te;
+  G.cash+=cf;
+  if(G.cash<0){const s=Math.abs(G.cash);G.loans+=s;const mp=Math.round(s*0.06/12);G.loanPayment+=mp;addLog(`💳 入不敷出！贷款 ¥${s}，月供 +¥${mp}`);G.cash=0;}
+  const banner=document.getElementById('settlementBanner');banner.style.display='block';
+  const d=document.getElementById('settlementDetail');
+  const cfDisp=cf>=0?`+¥${cf.toLocaleString()}`:`-¥${Math.abs(cf).toLocaleString()}`;
+  d.innerHTML=`📊 收入 <b>${formatMoney(ti)}</b> &nbsp;|&nbsp; 支出 <b>${formatMoney(te)}</b> &nbsp;|&nbsp; 现金流 <b class="${cf>=0?'positive':'negative'}">${cfDisp}</b><br>💵 现金余额 <b>${formatMoney(G.cash)}</b>`;
+  updateAll();addLog(`📅 第${G.month}月结算：现金流${cfDisp}，余额 ${formatMoney(G.cash)}`);
+  const tp=calcTotalPassive();
+  if(tp>=te){setTimeout(()=>showVictory(),1500);return;}
+  // 破产检测
+  if(checkBankruptcy()){setTimeout(()=>showBankruptcy(),1500);return;}
+  G.month++;G.roundInMonth=0;G.phase='waiting';
+  setTimeout(()=>{document.getElementById('dice').textContent='🎲';document.getElementById('monthProgress').style.width='0%';updateAll();document.getElementById('eventCard').innerHTML=`<div class="event-type-badge badge-opportunity">📅 新的一月</div><div class="event-title">第 ${G.month} 个月开始</div><div class="event-desc">🎯 目标：被动收入 ≥ ${formatMoney(te)}<br>掷骰子开始新月份！</div>`;},2000);
+}
+
+function showVictory(){
+  document.getElementById('victoryMonth').textContent=G.month;
+  document.getElementById('victoryRound').textContent=G.round;
+  document.getElementById('modalOverlay').style.display='block';
+  document.getElementById('victoryModal').style.display='block';
+}
+
+// 破产检测：现金≤0、现金流为负、净资产≤0 → 立即破产
+function checkBankruptcy(){
+  if(!G) return false;
+  if(G.cash>0) return false;        // 还有现金，不破产
+  const ta=G.cash+G.investments+G.realEstate+G.vehicle;
+  const tl=G.loans+G.creditCard;
+  const te=calcTotalExpense(),ti=calcTotalIncome();
+  if(ta-tl<=0 && ti<te) return true;  // 净资产≤0 且 入不敷出
+  if(G.loans>G.salary*18 && ti<te) return true; // 贷款超1.5年工资且入不敷出
+  return false;
+}
+
+function showBankruptcy(){
+  document.getElementById('bankruptcyMonth').textContent=G.month;
+  document.getElementById('bankruptcyRound').textContent=G.round;
+  document.getElementById('modalOverlay').style.display='block';
+  document.getElementById('bankruptcyModal').style.display='block';
+}
+
+function showCharSelect(){
+  document.getElementById('modalOverlay').style.display='none';
+  document.getElementById('victoryModal').style.display='none';
+  document.getElementById('bankruptcyModal').style.display='none';
+  G=null;
+  const grid=document.getElementById('charGrid');grid.innerHTML='';
+  CHARACTERS.forEach(c=>{
+    const card=document.createElement('div');card.className='char-card';card.dataset.id=c.id;
+    card.innerHTML=`
+      <div class="char-emoji">${c.emoji}</div>
+      <div class="char-name">${c.name}</div>
+      <div class="char-desc">${c.desc}</div>
+      <div class="char-stats">
+        月薪 <span class="pos">${c.salary.toLocaleString()}</span> ·
+        支出 <span class="neg">${(c.living+c.loanPay+c.child).toLocaleString()}</span><br>
+        现金 <span class="pos">${c.cash.toLocaleString()}</span> ·
+        贷款 <span class="neg">${c.loan.toLocaleString()}</span>
+      </div>
+      <div class="char-tag ${c.tag}">${c.tagText}</div>`;
+    card.onclick=()=>{
+      document.querySelectorAll('.char-card').forEach(el=>el.classList.remove('selected'));
+      card.classList.add('selected');
+      document.getElementById('startBtn').disabled=false;
+      document.getElementById('startBtn').textContent=`🚀 开始游戏 - ${c.emoji} ${c.name}`;
+      document.getElementById('startBtn').onclick=()=>initGame(c.id);
+    };
+    grid.appendChild(card);
+  });
+  document.getElementById('charSelectOverlay').style.display='flex';
+  document.getElementById('startBtn').disabled=true;
+  document.getElementById('startBtn').textContent='👤 请先选择一个角色';
+}
+
+// ===== 初始化 =====
+document.getElementById('rollBtn').addEventListener('click',rollDice);
+document.getElementById('dice').addEventListener('click',rollDice);
+showCharSelect();
+</script>
+<div style="text-align:center;padding:12px;color:#999;font-size:.8em;border-top:1px solid #eee;background:#fff">
+  游戏设计 &middot; 开发：<strong>喝不够养乐多</strong> &copy; 2026
+</div>
+</body>
+</html>
