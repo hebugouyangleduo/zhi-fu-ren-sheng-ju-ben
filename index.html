@@ -149,7 +149,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Micr
 .settlement-banner{background:linear-gradient(135deg,#2ecc71,#27ae60);color:#fff;padding:15px 20px;border-radius:12px;margin:15px 0;display:none}
 .settlement-banner .settlement-title{font-size:1.1em;font-weight:700;margin-bottom:8px}
 .settlement-banner .settlement-detail{font-size:.9em;opacity:.95;line-height:1.6}
-@media(max-width:768px){.game-area,.char-grid{grid-template-columns:1fr}.header{flex-direction:column;text-align:center;gap:10px}.header-right{text-align:center}}
+@media(max-width:768px){.game-area,.char-grid{grid-template-columns:1fr}.header{flex-direction:column;text-align:center;gap:4px;padding:10px 12px!important}.header-right{display:none!important}.desktop-only{display:none!important}.mobile-only{display:block!important}.panel{padding:12px}.panel .character-badge{display:none!important}.stats-grid{gap:6px}.stat-item{padding:8px 10px}.stat-value{font-size:1.1em}.dice{width:60px;height:60px;font-size:2em}.roll-btn{padding:10px 20px;font-size:.9em}.event-card{padding:14px;margin:10px 0}.choice-area{gap:6px}.choice-btn{padding:8px 14px;font-size:.85em;min-width:80px}.header-left h1{font-size:1.1em!important;margin-bottom:0!important}.header-left p{display:none!important}.mobile-header-bar{display:flex!important;align-items:center;gap:10px;padding:8px 0 0;width:100%}.mobile-header-bar .character-badge{font-size:.8em;padding:4px 12px;margin-bottom:0;flex-shrink:0}.mobile-month-info{flex:1;text-align:right}.table-body{padding:4px 0}.table-row{padding:6px 12px;font-size:.82em}.month-badge{padding:4px 10px!important;font-size:.78em!important}.month-badge span{font-size:1em!important}.progress-bar-mount{height:4px!important}.modal{padding:24px;width:95%}.log-area{max-height:100px;font-size:.78em}.finance-btn{width:100%;padding:12px;border:none;border-radius:10px;background:linear-gradient(135deg,#8e44ad,#9b59b6);color:#fff;font-size:.95em;font-weight:600;cursor:pointer;margin-top:6px;transition:all .3s ease}.finance-btn:hover{opacity:.9;transform:translateY(-1px)}.dice-section{padding:10px 0!important;margin:10px 0!important}}.mobile-only{display:none}
 </style>
 </head>
 <body>
@@ -163,6 +163,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Micr
       <div class="month-badge">📅 第 <span id="currentMonth">1</span> 个月</div>
       <div class="progress-bar-mount"><div class="progress-bar-fill" id="monthProgress" style="width:0%"></div></div>
       <div style="font-size:.75em;opacity:.7;margin-top:4px">本月进度: <span id="roundInMonth">0</span>/5 轮</div>
+    </div>
+    <!-- Mobile: 角色+进度合并栏 -->
+    <div class="mobile-header-bar mobile-only">
+      <div class="character-badge" id="charBadgeMobile">🧑‍💼 上班族</div>
+      <div class="mobile-month-info">
+        <div style="font-size:.8em;font-weight:600">📅 第 <span id="currentMonthMobile">1</span> 个月</div>
+        <div class="progress-bar-mount" style="height:4px;margin:3px 0"><div class="progress-bar-fill" id="monthProgressMobile" style="width:0%"></div></div>
+        <div style="font-size:.68em;opacity:.7"><span id="roundInMonthMobile">0</span>/5 轮</div>
+      </div>
     </div>
   </div>
   <div class="game-area">
@@ -209,7 +218,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Micr
             <div style="text-align:center;padding:6px 0;border-radius:8px;background:#f8f9fa;font-size:.85em" id="victoryStatus">🏃‍♂️ 继续积累资产...</div>
           </div>
         </div>
-        <div class="table-card">
+        <!-- Desktop: 财务报表完整表格 -->
+        <div class="table-card desktop-only">
           <h3>📋 资产负债表 <span class="subtotal" id="netWorthLabel">净资产: ¥0</span></h3>
           <div class="table-body">
             <div class="table-row" style="background:#eafaf1;font-weight:700"><span class="label">🏠 资产</span><span class="amount positive" id="totalAssets">¥0</span></div>
@@ -222,7 +232,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Micr
             <div class="table-row"><span class="label">&nbsp;&nbsp;💳 信用卡欠款</span><span class="amount negative" id="liabCredit">¥0</span></div>
           </div>
         </div>
-        <div class="table-card">
+        <div class="table-card desktop-only">
           <h3>💰 损益表 (月度) <span class="subtotal" id="cashFlowLabel">月现金流: ¥0</span></h3>
           <div class="table-body">
             <div class="table-row" style="background:#eafaf1;font-weight:700"><span class="label">📈 收入</span><span class="amount positive" id="totalIncomeReport">¥0</span></div>
@@ -237,13 +247,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Micr
             <div class="table-row"><span class="label">&nbsp;&nbsp;👶 子女费用</span><span class="amount negative" id="expChild">¥0</span></div>
           </div>
         </div>
+        <!-- Mobile: 财务报表按钮 -->
+        <button class="finance-btn mobile-only" onclick="showFinanceModal()">📊 查看财务报表</button>
       </div>
     </div>
   </div>
 </div>
 <!-- Confetti -->
 <div class="confetti-container" id="confettiContainer"></div>
-<div class="modal-overlay" id="modalOverlay"></div>
+<div class="modal-overlay" id="modalOverlay" onclick="if(document.getElementById('financeModal').style.display==='block'){document.getElementById('financeModal').style.display='none';this.style.display='none'}"></div>
 <!-- Achievement Toast -->
 <div class="achievement-toast" id="achToast">
   <span class="ach-icon" id="achIcon">🏆</span>
@@ -257,6 +269,41 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Micr
   <h2>宣告破产</h2>
   <p>你的债务已经失控，资不抵债，现金流断裂。<br>游戏结束！<br><br><b>坚持了 <span id="bankruptcyMonth">1</span> 个月 · <span id="bankruptcyRound">1</span> 轮</b></p>
   <button class="restart-btn" onclick="showCharSelect()">🔄 重新开始</button>
+</div>
+<!-- Financial Report Modal -->
+<div class="modal" id="financeModal">
+  <h3 style="margin-bottom:12px">📊 财务报表</h3>
+  <div style="max-height:60vh;overflow-y:auto;text-align:left">
+    <div class="table-card" style="margin-bottom:12px;box-shadow:0 1px 6px rgba(0,0,0,0.1)">
+      <h3 style="font-size:.9em;padding:10px 12px">📋 资产负债表 <span class="subtotal" id="fmNetWorth">净资产: ¥0</span></h3>
+      <div class="table-body">
+        <div class="table-row" style="background:#eafaf1;font-weight:700"><span class="label">🏠 资产</span><span class="amount positive" id="fmAssets">¥0</span></div>
+        <div class="table-row"><span class="label">&nbsp;&nbsp;💵 现金</span><span class="amount" id="fmCash">¥0</span></div>
+        <div class="table-row"><span class="label">&nbsp;&nbsp;📊 投资组合</span><span class="amount" id="fmInvestments">¥0</span></div>
+        <div class="table-row"><span class="label">&nbsp;&nbsp;🏘️ 房产</span><span class="amount" id="fmRealEstate">¥0</span></div>
+        <div class="table-row"><span class="label">&nbsp;&nbsp;🚗 车辆</span><span class="amount" id="fmVehicle">¥0</span></div>
+        <div class="table-row" style="background:#fdedec;font-weight:700"><span class="label">💳 负债</span><span class="amount negative" id="fmLiability">¥0</span></div>
+        <div class="table-row"><span class="label">&nbsp;&nbsp;🏦 贷款</span><span class="amount negative" id="fmLoans">¥0</span></div>
+        <div class="table-row"><span class="label">&nbsp;&nbsp;💳 信用卡欠款</span><span class="amount negative" id="fmCredit">¥0</span></div>
+      </div>
+    </div>
+    <div class="table-card" style="box-shadow:0 1px 6px rgba(0,0,0,0.1)">
+      <h3 style="font-size:.9em;padding:10px 12px">💰 损益表（月度）<span class="subtotal" id="fmCashFlow">月现金流: ¥0</span></h3>
+      <div class="table-body">
+        <div class="table-row" style="background:#eafaf1;font-weight:700"><span class="label">📈 收入</span><span class="amount positive" id="fmIncome">¥0</span></div>
+        <div class="table-row"><span class="label">&nbsp;&nbsp;💼 工资</span><span class="amount" id="fmSalary">¥0</span></div>
+        <div class="table-row"><span class="label">&nbsp;&nbsp;📊 分红</span><span class="amount passive-income" id="fmDividend">¥0</span></div>
+        <div class="table-row"><span class="label">&nbsp;&nbsp;🏘️ 租金</span><span class="amount passive-income" id="fmRent">¥0</span></div>
+        <div class="table-row"><span class="label">&nbsp;&nbsp;🛠️ 副业</span><span class="amount passive-income" id="fmSide">¥0</span></div>
+        <div class="table-row" style="background:#fdedec;font-weight:700"><span class="label">📉 支出</span><span class="amount negative" id="fmExpense">¥0</span></div>
+        <div class="table-row"><span class="label">&nbsp;&nbsp;🏠 生活</span><span class="amount negative" id="fmLiving">¥0</span></div>
+        <div class="table-row"><span class="label">&nbsp;&nbsp;🏦 月供</span><span class="amount negative" id="fmLoanPay">¥0</span></div>
+        <div class="table-row"><span class="label">&nbsp;&nbsp;💳 信用卡利息</span><span class="amount negative" id="fmCreditInt">¥0</span></div>
+        <div class="table-row"><span class="label">&nbsp;&nbsp;👶 子女</span><span class="amount negative" id="fmChild">¥0</span></div>
+      </div>
+    </div>
+  </div>
+  <button class="restart-btn" onclick="document.getElementById('financeModal').style.display='none';document.getElementById('modalOverlay').style.display='none'">关闭</button>
 </div>
 <div class="modal" id="victoryModal">
   <div class="emoji-big">🎉</div>
@@ -372,6 +419,7 @@ function initGame(charId, mode){
   prevExpense = calcTotalExpense();
   document.getElementById('charSelectOverlay').style.display='none';
   document.getElementById('charBadge').innerHTML = `${C.emoji} ${C.name}${isEasy?' 🌱':' 🎯'}`;
+  document.getElementById('charBadgeMobile').innerHTML = `${C.emoji} ${C.name}${isEasy?' 🌱':' 🎯'}`;
   const target = formatMoney(calcTotalExpense());
   document.getElementById('eventCard').innerHTML = `
     <div class="event-type-badge ${isEasy?'badge-income':'badge-opportunity'}">${isEasy?'🌱 新手入门':'🎯 正常模式'}</div>
@@ -786,8 +834,11 @@ function updateAll(){
   flashValue('totalExpense',te);document.getElementById('totalExpense').textContent=formatMoney(te);
   document.getElementById('totalRound').textContent=G.round;
   document.getElementById('currentMonth').textContent=G.month;
+  document.getElementById('currentMonthMobile').textContent=G.month;
+  document.getElementById('roundInMonthMobile').textContent=G.roundInMonth;
   document.getElementById('roundInMonth').textContent=G.roundInMonth;
   document.getElementById('monthProgress').style.width=(G.roundInMonth/5*100)+'%';
+  document.getElementById('monthProgressMobile').style.width=(G.roundInMonth/5*100)+'%';
   const ta=G.cash+G.investments+G.realEstate+G.vehicle,tl=G.loans+G.creditCard,nw=ta-tl;
   // 飘字：现金变动
   if(G.cash!==prevCash){const diff=G.cash-prevCash;showFloatingNum(diff,120,280);prevCash=G.cash;}
@@ -825,7 +876,7 @@ function updateAll(){
   else if(ratio>=0.5){bl.textContent=`🟡 ${Math.round(ratio*100)}%`;se.innerHTML='💪 进度过半！';se.style.background='#fef9e7';gl.textContent=`差距: ${formatMoney(gap)}`;gl.style.color='#f39c12';}
   else if(ratio>=0.25){bl.textContent=`🟠 ${Math.round(ratio*100)}%`;se.innerHTML='🏃‍♂️ 继续加油！';se.style.background='#f8f9fa';gl.textContent=`差距: ${formatMoney(gap)}`;gl.style.color='#e67e22';}
   else{bl.textContent=`🔴 ${Math.round(ratio*100)}%`;se.innerHTML='🐭 还在老鼠赛跑';se.style.background='#fdedec';gl.textContent=`差距: ${formatMoney(gap)}`;gl.style.color='#e74c3c';}
-  checkAchievements();
+  updateFinanceModal();checkAchievements();
 }
 
 function rollDice(){
@@ -1000,6 +1051,38 @@ function showBankruptcy(){
   document.getElementById('bankruptcyRound').textContent=G.round;
   document.getElementById('modalOverlay').style.display='block';
   document.getElementById('bankruptcyModal').style.display='block';
+}
+
+// 财务报表弹窗
+function showFinanceModal(){
+  updateFinanceModal();
+  document.getElementById('modalOverlay').style.display='block';
+  document.getElementById('financeModal').style.display='block';
+}
+function updateFinanceModal(){
+  if(!G)return;
+  const ta=G.cash+G.investments+G.realEstate+G.vehicle,tl=G.loans+G.creditCard,nw=ta-tl;
+  const ti=G.salary+G.dividendIncome+G.rentIncome+G.sideIncome,te=G.livingExpense+G.loanPayment+G.creditInterest+G.childExpense+G.vehicleExpense;
+  document.getElementById('fmAssets').textContent='¥'+ta.toLocaleString();
+  document.getElementById('fmCash').textContent='¥'+G.cash.toLocaleString();
+  document.getElementById('fmInvestments').textContent='¥'+G.investments.toLocaleString();
+  document.getElementById('fmRealEstate').textContent='¥'+G.realEstate.toLocaleString();
+  document.getElementById('fmVehicle').textContent='¥'+G.vehicle.toLocaleString();
+  document.getElementById('fmLiability').textContent='¥'+tl.toLocaleString();
+  document.getElementById('fmLoans').textContent='¥'+G.loans.toLocaleString();
+  document.getElementById('fmCredit').textContent='¥'+G.creditCard.toLocaleString();
+  document.getElementById('fmNetWorth').textContent='净资产: ¥'+nw.toLocaleString();
+  document.getElementById('fmIncome').textContent='¥'+ti.toLocaleString();
+  document.getElementById('fmSalary').textContent='¥'+G.salary.toLocaleString();
+  document.getElementById('fmDividend').textContent='¥'+G.dividendIncome.toLocaleString();
+  document.getElementById('fmRent').textContent='¥'+G.rentIncome.toLocaleString();
+  document.getElementById('fmSide').textContent='¥'+G.sideIncome.toLocaleString();
+  document.getElementById('fmExpense').textContent='¥'+te.toLocaleString();
+  document.getElementById('fmLiving').textContent='¥'+G.livingExpense.toLocaleString();
+  document.getElementById('fmLoanPay').textContent='¥'+G.loanPayment.toLocaleString();
+  document.getElementById('fmCreditInt').textContent='¥'+G.creditInterest.toLocaleString();
+  document.getElementById('fmChild').textContent='¥'+G.childExpense.toLocaleString();
+  document.getElementById('fmCashFlow').textContent='月现金流: ¥'+(ti-te).toLocaleString();
 }
 
 function showCharSelect(){
