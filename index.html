@@ -117,6 +117,27 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Micr
 .restart-btn:hover{background:#1a5276;transform:scale(1.05)}
 .fade-in{animation:fadeIn .5s ease}
 @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+/* Floating number */
+.floating-num{position:fixed;pointer-events:none;z-index:9999;font-size:1.8em;font-weight:900;animation:floatUp 1.2s ease forwards}
+@keyframes floatUp{0%{opacity:1;transform:translateY(0) scale(1)}60%{opacity:1;transform:translateY(-60px) scale(1.2)}100%{opacity:0;transform:translateY(-120px) scale(0.8)}}
+/* Achievement toast */
+.achievement-toast{position:fixed;top:30px;right:-400px;z-index:9998;background:linear-gradient(135deg,#f39c12,#e74c3c);color:#fff;padding:16px 24px;border-radius:16px;box-shadow:0 8px 30px rgba(0,0,0,0.3);display:flex;align-items:center;gap:12px;font-size:.9em;transition:right .5s cubic-bezier(.68,-.55,.27,1.55);max-width:360px}
+.achievement-toast.show{right:20px}
+.achievement-toast .ach-icon{font-size:2em}
+.achievement-toast .ach-title{font-weight:700;font-size:1.1em}
+.achievement-toast .ach-desc{font-size:.82em;opacity:.9}
+/* Leaderboard */
+.leaderboard{margin:15px 0;text-align:left;max-height:220px;overflow-y:auto;background:#f8f9fa;border-radius:10px;padding:10px}
+.leaderboard .lb-title{text-align:center;font-weight:700;font-size:.9em;color:#555;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #eee}
+.leaderboard .lb-row{display:flex;justify-content:space-between;padding:5px 8px;font-size:.82em;border-bottom:1px solid #f0f0f0}
+.leaderboard .lb-row:last-child{border-bottom:none}
+.leaderboard .lb-row .lb-rank{color:#999;width:24px;font-weight:700}
+.leaderboard .lb-row .lb-rank.gold{color:#f39c12}
+.leaderboard .lb-row .lb-rank.silver{color:#95a5a6}
+.leaderboard .lb-row .lb-rank.bronze{color:#cd7f32}
+.leaderboard .lb-row .lb-char{flex:1;color:#333}
+.leaderboard .lb-row .lb-score{color:#2e86c1;font-weight:700}
+.leaderboard .lb-empty{text-align:center;color:#bbb;padding:20px;font-size:.85em}
 .flash-green{animation:flashGreen 1.5s ease}
 @keyframes flashGreen{0%{background-color:transparent}30%{background-color:rgba(39,174,96,0.15)}100%{background-color:transparent}}
 .flash-red{animation:flashRed 1.5s ease}
@@ -217,6 +238,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Micr
   </div>
 </div>
 <div class="modal-overlay" id="modalOverlay"></div>
+<!-- Achievement Toast -->
+<div class="achievement-toast" id="achToast">
+  <span class="ach-icon" id="achIcon">🏆</span>
+  <div>
+    <div class="ach-title" id="achTitle">成就解锁</div>
+    <div class="ach-desc" id="achDesc">描述</div>
+  </div>
+</div>
 <div class="modal" id="bankruptcyModal">
   <div class="emoji-big">💸</div>
   <h2>宣告破产</h2>
@@ -227,6 +256,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Micr
   <div class="emoji-big">🎉</div>
   <h2>恭喜获得财务自由！</h2>
   <p>你的被动收入已经超过了月支出！<br>从"老鼠赛跑"中成功脱离！<br><br><b>第 <span id="victoryMonth">1</span> 个月 · <span id="victoryRound">1</span> 轮</b></p>
+  <div class="leaderboard" id="leaderboard"><div class="lb-empty">加载中...</div></div>
   <button class="restart-btn" onclick="showCharSelect()">🔄 重新开始</button>
 </div>
 
@@ -236,6 +266,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Micr
     <h2>🎭 选择你的人生角色</h2>
     <p class="sub">不同职业有不同的收入、支出和初始资金，难度各不相同</p>
     <div class="char-grid" id="charGrid"></div>
+    <div style="display:flex;gap:10px;margin-top:15px">
+      <button class="start-btn" id="easyModeBtn" style="flex:1;background:linear-gradient(135deg,#2ecc71,#27ae60);font-size:.95em">🌱 新手入门<br><span style="font-size:.7em;font-weight:400">初始资金多，轻松体验</span></button>
+      <button class="start-btn" id="hardModeBtn" style="flex:1;background:linear-gradient(135deg,#e67e22,#d35400);font-size:.95em">🎯 正常模式<br><span style="font-size:.7em;font-weight:400">真实难度，财务自由之路</span></button>
+    </div>
     <button class="start-btn" id="startBtn" disabled>👤 请先选择一个角色</button>
   </div>
 </div>
@@ -289,47 +323,58 @@ const CHARACTERS = [
 
 // ===== 游戏状态 =====
 let G = null;
+let unlockedAchievements = new Set();
+let prevCash = 0;
+let prevPassive = 0;
+let prevExpense = 0;
 
-function initGame(charId) {
+function initGame(charId, mode){
   const C = CHARACTERS.find(c=>c.id===charId);
+  const isEasy = mode === 'easy';
   G = {
     charId: charId,
-    cash: C.cash,
-    investments: 0,
+    mode: mode,
+    cash: isEasy ? 50000 : C.cash,
+    investments: isEasy ? 10000 : 0,
     realEstate: 0,
-    vehicle: C.vehicle,
-    loans: C.loan,
-    creditCard: C.credit,
-    salary: C.salary,
-    dividendIncome: 0,
+    vehicle: 0,
+    loans: isEasy ? 0 : C.loan,
+    creditCard: isEasy ? 0 : C.credit,
+    salary: isEasy ? 12000 : C.salary,
+    dividendIncome: isEasy ? 600 : 0,
     rentIncome: 0,
     sideIncome: 0,
-    childExpense: C.child,
-    livingExpense: C.living,
-    loanPayment: C.loanPay,
-    creditInterest: C.creditInt,
-    vehicleExpense: 0, // 车贷月供（如果贷款买车）
+    childExpense: isEasy ? 0 : C.child,
+    livingExpense: isEasy ? 1000 : C.living,
+    loanPayment: isEasy ? 0 : C.loanPay,
+    creditInterest: isEasy ? 0 : C.creditInt,
+    vehicleExpense: 0,
     round: 0,
     month: 1,
     roundInMonth: 0,
     phase: 'waiting',
     currentEvent: null,
     log: [],
-    hasChildren: C.child > 0,
+    hasChildren: isEasy ? false : C.child > 0,
     hasInsurance: false
   };
+  unlockedAchievements = new Set();
+  prevCash = G.cash;
+  prevPassive = 0;
+  prevExpense = calcTotalExpense();
   document.getElementById('charSelectOverlay').style.display='none';
-  document.getElementById('charBadge').innerHTML = `${C.emoji} ${C.name}`;
+  document.getElementById('charBadge').innerHTML = `${C.emoji} ${C.name}${isEasy?' 🌱':' 🎯'}`;
+  const target = formatMoney(calcTotalExpense());
   document.getElementById('eventCard').innerHTML = `
-    <div class="event-type-badge badge-opportunity">🎯 游戏开始</div>
+    <div class="event-type-badge ${isEasy?'badge-income':'badge-opportunity'}">${isEasy?'🌱 新手入门':'🎯 正常模式'}</div>
     <div class="event-title">欢迎，${C.emoji}${C.name}！</div>
     <div class="event-desc">
-      你的月收入 <b>¥${C.salary.toLocaleString()}</b>，月支出 <b>¥${calcTotalExpense().toLocaleString()}</b>。<br>
-      🎯 目标：让被动收入 ≥ ${calcTotalExpense().toLocaleString()} 元，实现财务自由！<br>
-      每5轮为一个月，月底发放工资结算现金流。<br>
-      掷骰子开始你的财务之旅！
+      ${isEasy?'💰 你继承了一笔遗产，资金充裕。<br>先熟悉一下游戏流程，轻松实现财务自由！':'直面真正的财务挑战！<br>'}
+      月收入 <b>${formatMoney(calcTotalIncome())}</b> · 月支出 <b>${target}</b><br>
+      🎯 目标：被动收入 ≥ ${target}<br>
+      每5轮为一个月，月底结算。掷骰子开始吧！
     </div>`;
-  addLog(`🎮 ${C.emoji}${C.name} 开始了财务自由之旅！目标：被动收入 ≥ ¥${calcTotalExpense().toLocaleString()}/月`);
+  addLog(`${isEasy?'🌱':'🔥'} ${C.emoji}${C.name} ${isEasy?'新手入门':'正常模式'}！目标：被动收入 ≥ ${target}/月`);
   updateAll();
 }
 
@@ -609,6 +654,82 @@ function addLog(t){if(!G)return;G.log.push(t);if(G.log.length>50)G.log.shift();r
 function renderLog(){const a=document.getElementById('logArea');a.innerHTML=G.log.slice(-15).map(t=>`<div class="log-entry">${t}</div>`).join('');a.scrollTop=a.scrollHeight;}
 function formatMoney(n){return'¥'+Math.round(n).toLocaleString();}
 
+// ===== 音效系统（Web Audio API，无需音频文件） =====
+const Sound = {
+  ctx: null,
+  _init(){try{if(!this.ctx)this.ctx = new (window.AudioContext||window.webkitAudioContext)();}catch(e){}},
+  _beep(freq,dur,vol=0.5,type='sine'){
+    try{this._init();const o=this.ctx.createOscillator(),g=this.ctx.createGain();
+    o.type=type;o.frequency.setValueAtTime(freq,this.ctx.currentTime);
+    g.gain.setValueAtTime(vol,this.ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001,this.ctx.currentTime+dur);
+    o.connect(g);g.connect(this.ctx.destination);
+    o.start();o.stop(this.ctx.currentTime+dur);}catch(e){}
+  },
+  dice(){this._beep(300,0.05);setTimeout(()=>this._beep(500,0.05),80);},
+  cash(){[660,880,1100,1320].forEach((f,i)=>setTimeout(()=>this._beep(f,0.08),i*60));setTimeout(()=>this._beep(1320,0.15),250);},
+  spend(){this._beep(400,0.08,'triangle');setTimeout(()=>this._beep(300,0.12,'triangle'),100);},
+  passive(){this._beep(1047,0.15,0.5,'triangle');setTimeout(()=>this._beep(1319,0.25,0.5,'triangle'),120);},
+  achieve(){this._beep(523,0.12);setTimeout(()=>this._beep(659,0.12),120);setTimeout(()=>this._beep(784,0.2),240);},
+  victory(){[523,587,659,784,880,1047].forEach((f,i)=>setTimeout(()=>this._beep(f,0.15),i*100));},
+  fail(){this._beep(400,0.2,'sawtooth');setTimeout(()=>this._beep(300,0.3,'sawtooth'),200);},
+  click(){this._beep(800,0.04,0.5);}
+};
+
+// ===== 趣味事件反馈 =====
+const FUNNY_MSGS = {
+  cash_up:['💰 钱包鼓了！','🤑 数钱数到手软！','💵 钞能力觉醒！','🧧 财运亨通！','✨ 财神爷保佑！'],
+  cash_down:['💸 钱飞走了…','😅 钱包瘦了','📉 心痛的感觉','💔 花钱如流水','😭 我的钱包'],
+  invest:['📈 让钱生钱！','🧠 巴菲特附体！','🎯 投资眼光不错！','🏦 银行家点赞！','💼 商业头脑在线！'],
+  lucky:['🍀 运气爆棚！','✨ 欧皇附体！','🌟 天选之人！','🎯 这波不亏！','🔥 锦鲤本鲤！'],
+};
+function randomMsg(category){try{const msgs=FUNNY_MSGS[category];return msgs?msgs[Math.floor(Math.random()*msgs.length)]:'';}catch(e){}return '';}
+
+// 飘字动画：收入/支出时显示浮动数字
+function showFloatingNum(amount, x, y){
+  if(!amount) return;
+  const el=document.createElement('div');
+  el.className='floating-num';
+  el.textContent=(amount>0?'+':'')+formatMoney(amount);
+  el.style.color=amount>=0?'#27ae60':'#e74c3c';
+  el.style.left=x+'px'; el.style.top=y+'px';
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(), 1300);
+}
+
+// 成就系统
+const ACHIEVEMENTS = [
+  {id:'first_invest',icon:'📈',title:'投资新手',check:()=>G&&G.investments>=5000},
+  {id:'first_house',icon:'🏠',title:'有房一族',check:()=>G&&G.realEstate>=100000},
+  {id:'passive_5k',icon:'💫',title:'睡后收入',check:()=>calcTotalPassive()>=5000},
+  {id:'networth_100k',icon:'💰',title:'第一桶金',check:()=>{if(!G)return false;const nw=G.cash+G.investments+G.realEstate+G.vehicle-G.loans-G.creditCard;return nw>=100000;}},
+  {id:'networth_500k',icon:'💎',title:'小有成就',check:()=>{if(!G)return false;const nw=G.cash+G.investments+G.realEstate+G.vehicle-G.loans-G.creditCard;return nw>=500000;}},
+  {id:'million',icon:'🏅',title:'百万富翁',check:()=>{if(!G)return false;const nw=G.cash+G.investments+G.realEstate+G.vehicle-G.loans-G.creditCard;return nw>=1000000;}},
+  {id:'side_hustle',icon:'🛠️',title:'副业达人',check:()=>G&&G.sideIncome>=3000},
+  {id:'debt_free',icon:'🔓',title:'无债一身轻',check:()=>G&&G.loans<=0&&G.creditCard<=0&&(G.cash>0||G.investments>0||G.realEstate>0)},
+  {id:'rent_income',icon:'🏘️',title:'包租公/婆',check:()=>G&&G.rentIncome>=5000},
+  {id:'half_way',icon:'🔥',title:'进度过半',check:()=>{if(!G)return false;const te=calcTotalExpense();return te>0&&calcTotalPassive()/te>=0.5;}},
+];
+
+function unlockAchievement(id){
+  if(unlockedAchievements.has(id)) return;
+  unlockedAchievements.add(id);
+  try{Sound.achieve();}catch(e){}
+  const ach = ACHIEVEMENTS.find(a=>a.id===id);
+  if(!ach) return;
+  document.getElementById('achIcon').textContent=ach.icon;
+  document.getElementById('achTitle').textContent='🏆 '+ach.title;
+  document.getElementById('achDesc').textContent=ach.check.toString().match(/desc\s*:\s*['"]([^'"]+)/)?.[1]||'成就已解锁';
+  const toast=document.getElementById('achToast');
+  toast.classList.add('show');
+  setTimeout(()=>toast.classList.remove('show'), 3000);
+  addLog(`🏆 解锁成就：${ach.icon} ${ach.title}`);
+}
+
+function checkAchievements(){
+  ACHIEVEMENTS.forEach(a=>{if(!unlockedAchievements.has(a.id)&&a.check())unlockAchievement(a.id);});
+}
+
 const POSITIVE_RISE=new Set(['cashBalance','passiveIncome','totalIncome','totalIncomeReport','totalAssets','assetCash','assetInvestments','assetRealEstate','incomeSalary','incomeDividend','incomeRent','incomeSide','netWorthLabel','victoryPassive','assetVehicle']);
 const NEGATIVE_RISE=new Set(['totalExpense','totalExpenseReport','totalLiabilities','liabLoans','liabCredit','expLiving','expLoan','expCredit','victoryTarget','expChild']);
 
@@ -635,6 +756,12 @@ function updateAll(){
   document.getElementById('roundInMonth').textContent=G.roundInMonth;
   document.getElementById('monthProgress').style.width=(G.roundInMonth/5*100)+'%';
   const ta=G.cash+G.investments+G.realEstate+G.vehicle,tl=G.loans+G.creditCard,nw=ta-tl;
+  // 飘字：现金变动
+  if(G.cash!==prevCash){const diff=G.cash-prevCash;showFloatingNum(diff,120,280);prevCash=G.cash;}
+  // 飘字+音效：被动收入增加
+  if(tp!==prevPassive&&tp>prevPassive){showFloatingNum(tp-prevPassive,120,240);try{Sound.passive();}catch(e){}prevPassive=tp;}
+  // 音效：支出增加
+  if(te!==prevExpense&&te>prevExpense){try{Sound.spend();}catch(e){}prevExpense=te;}
   flashValue('totalAssets',ta);document.getElementById('totalAssets').textContent=formatMoney(ta);
   flashValue('assetCash',G.cash);document.getElementById('assetCash').textContent=formatMoney(G.cash);
   flashValue('assetInvestments',G.investments);document.getElementById('assetInvestments').textContent=formatMoney(G.investments);
@@ -665,12 +792,13 @@ function updateAll(){
   else if(ratio>=0.5){bl.textContent=`🟡 ${Math.round(ratio*100)}%`;se.innerHTML='💪 进度过半！';se.style.background='#fef9e7';gl.textContent=`差距: ${formatMoney(gap)}`;gl.style.color='#f39c12';}
   else if(ratio>=0.25){bl.textContent=`🟠 ${Math.round(ratio*100)}%`;se.innerHTML='🏃‍♂️ 继续加油！';se.style.background='#f8f9fa';gl.textContent=`差距: ${formatMoney(gap)}`;gl.style.color='#e67e22';}
   else{bl.textContent=`🔴 ${Math.round(ratio*100)}%`;se.innerHTML='🐭 还在老鼠赛跑';se.style.background='#fdedec';gl.textContent=`差距: ${formatMoney(gap)}`;gl.style.color='#e74c3c';}
+  checkAchievements();
 }
 
 function rollDice(){
   if(!G||G.phase!=='waiting')return;
   const dice=document.getElementById('dice'),btn=document.getElementById('rollBtn');
-  dice.classList.add('rolling');btn.disabled=true;document.getElementById('settlementBanner').style.display='none';
+  dice.classList.add('rolling');btn.disabled=true;document.getElementById('settlementBanner').style.display='none';try{Sound.dice();}catch(e){}
   setTimeout(()=>{
     const r=Math.floor(Math.random()*6)+1;
     dice.textContent='🎲 '+r;dice.classList.remove('rolling');
@@ -693,7 +821,7 @@ function showEvent(event){
     const btn=document.createElement('button');
     btn.className='choice-btn'+(c.type?' '+c.type:'');
     btn.innerHTML=c.text+(c.require?`<br><span style="font-size:.72em;font-weight:400;opacity:.6">${c.require}</span>`:'');
-    btn.onclick=()=>handleChoice(event,c);
+    btn.onclick=()=>{try{Sound.click();}catch(e){}handleChoice(event,c);};
     ca.appendChild(btn);
   });
 }
@@ -705,6 +833,9 @@ function handleChoice(event,choice){
   // 自动处理余额负数：转为贷款
   if(G.cash<0){const s=Math.round(Math.abs(G.cash));G.loans+=s;const mp=Math.round(s*0.06/12);G.loanPayment+=mp;addLog(`💳 余额不足，自动贷款 ¥${s}，月供 +¥${mp}`);G.cash=0;}
   if(result===null){showEvent(event);G.phase='choosing';return;}
+  // Sound + fun message
+  const cd=result.cashDelta||0;
+  if(cd>0){try{Sound.cash();}catch(e){}result.msg+=' '+randomMsg('cash_up');}else if(cd<0){try{Sound.spend();}catch(e){}result.msg+=' '+randomMsg('cash_down');}
   document.getElementById('eventCard').innerHTML+=`<div class="event-impact">📍 ${choice.text}<br>💫 ${result.msg}</div>`;
   updateAll();
   // 🚨 每轮破产检测：现金为0、现金流为负、净资产为负 → 立即破产
@@ -732,11 +863,52 @@ function doMonthlySettlement(){
   setTimeout(()=>{document.getElementById('dice').textContent='🎲';document.getElementById('monthProgress').style.width='0%';updateAll();document.getElementById('eventCard').innerHTML=`<div class="event-type-badge badge-opportunity">📅 新的一月</div><div class="event-title">第 ${G.month} 个月开始</div><div class="event-desc">🎯 目标：被动收入 ≥ ${formatMoney(te)}<br>掷骰子开始新月份！</div>`;},2000);
 }
 
+// 排行榜渲染
+function renderLeaderboard(){
+  const el=document.getElementById('leaderboard');
+  try{
+    const records=JSON.parse(localStorage.getItem('lbRecords')||'[]');
+    if(records.length===0){el.innerHTML='<div class="lb-empty">🏆 还没有通关记录<br>快来第一个登榜吧！</div>';return;}
+    const medals=['🥇','🥈','🥉'];
+    el.innerHTML='<div class="lb-title">🏆 通关排行榜</div>'+records.slice(0,10).map((r,i)=>{
+      const rank=i<3?medals[i]:`<span class="lb-rank">#${i+1}</span>`;
+      return `<div class="lb-row">${rank}<span class="lb-char">${r.char}</span><span class="lb-score">${r.rounds}轮</span><span style="color:#bbb;font-size:.78em">${r.date||''}</span></div>`;
+    }).join('');
+  }catch(e){el.innerHTML='<div class="lb-empty">排行榜加载失败</div>';}
+}
+
 function showVictory(){
+  try{Sound.victory();}catch(e){}
+  // 保存记录到排行榜
+  try{
+    const records=JSON.parse(localStorage.getItem('lbRecords')||'[]');
+    const char=CHARACTERS.find(c=>c.id===G.charId);
+    records.push({char:char?char.emoji+char.name:'?',rounds:G.round,date:new Date().toLocaleDateString('zh-CN')});
+    records.sort((a,b)=>a.rounds-b.rounds);
+    if(records.length>20)records.length=20;
+    localStorage.setItem('lbRecords',JSON.stringify(records));
+  }catch(e){}
+  // 渲染排行榜
+  renderLeaderboard();
   document.getElementById('victoryMonth').textContent=G.month;
   document.getElementById('victoryRound').textContent=G.round;
   document.getElementById('modalOverlay').style.display='block';
   document.getElementById('victoryModal').style.display='block';
+  // 新手模式通关 → 引导进入正常模式
+  if(G.mode==='easy'){
+    document.getElementById('victoryModal').querySelector('p').innerHTML=`
+      🎉 你已经掌握了基本玩法！<br><br>
+      <b>第 ${G.month} 个月 · ${G.round} 轮</b><br><br>
+      🔥 准备好迎接<b>真正的财务挑战</b>了吗？<br>
+      正常模式下收入更低、支出更高！
+    `;
+    document.getElementById('victoryModal').querySelector('.restart-btn').textContent='🎯 开始正常模式';
+    document.getElementById('victoryModal').querySelector('.restart-btn').onclick=()=>{
+      document.getElementById('victoryModal').style.display='none';
+      document.getElementById('modalOverlay').style.display='none';
+      initGame(G.charId, 'hard');
+    };
+  }
 }
 
 // 破产检测：现金≤0、现金流为负、净资产≤0 → 立即破产
@@ -752,6 +924,7 @@ function checkBankruptcy(){
 }
 
 function showBankruptcy(){
+  try{Sound.fail();}catch(e){}
   document.getElementById('bankruptcyMonth').textContent=G.month;
   document.getElementById('bankruptcyRound').textContent=G.round;
   document.getElementById('modalOverlay').style.display='block';
@@ -763,6 +936,7 @@ function showCharSelect(){
   document.getElementById('victoryModal').style.display='none';
   document.getElementById('bankruptcyModal').style.display='none';
   G=null;
+  let selectedCharId=null,selectedMode=null;
   const grid=document.getElementById('charGrid');grid.innerHTML='';
   CHARACTERS.forEach(c=>{
     const card=document.createElement('div');card.className='char-card';card.dataset.id=c.id;
@@ -771,7 +945,7 @@ function showCharSelect(){
       <div class="char-name">${c.name}</div>
       <div class="char-desc">${c.desc}</div>
       <div class="char-stats">
-        月薪 <span class="pos">${c.salary.toLocaleString()}</span> ·
+        月薪 <span class="pos">${(c.salary).toLocaleString()}</span> ·
         支出 <span class="neg">${(c.living+c.loanPay+c.child).toLocaleString()}</span><br>
         现金 <span class="pos">${c.cash.toLocaleString()}</span> ·
         贷款 <span class="neg">${c.loan.toLocaleString()}</span>
@@ -780,12 +954,22 @@ function showCharSelect(){
     card.onclick=()=>{
       document.querySelectorAll('.char-card').forEach(el=>el.classList.remove('selected'));
       card.classList.add('selected');
-      document.getElementById('startBtn').disabled=false;
-      document.getElementById('startBtn').textContent=`🚀 开始游戏 - ${c.emoji} ${c.name}`;
-      document.getElementById('startBtn').onclick=()=>initGame(c.id);
+      selectedCharId=c.id;
+      updateStartBtn();
     };
     grid.appendChild(card);
   });
+  // 模式选择
+  document.getElementById('easyModeBtn').onclick=()=>{selectedMode='easy';updateStartBtn();};
+  document.getElementById('hardModeBtn').onclick=()=>{selectedMode='hard';updateStartBtn();};
+  function updateStartBtn(){
+    const btn=document.getElementById('startBtn');
+    if(!selectedCharId||!selectedMode){btn.disabled=true;btn.textContent='👤 请选择角色和难度';return;}
+    btn.disabled=false;
+    const c=CHARACTERS.find(x=>x.id===selectedCharId);
+    btn.textContent=`${selectedMode==='easy'?'🌱':'🔥'} ${c.emoji}${c.name} - ${selectedMode==='easy'?'新手入门':'正常模式'}`;
+    btn.onclick=()=>initGame(selectedCharId,selectedMode);
+  }
   document.getElementById('charSelectOverlay').style.display='flex';
   document.getElementById('startBtn').disabled=true;
   document.getElementById('startBtn').textContent='👤 请先选择一个角色';
