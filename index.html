@@ -117,6 +117,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Micr
 .restart-btn:hover{background:#1a5276;transform:scale(1.05)}
 .fade-in{animation:fadeIn .5s ease}
 @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+/* Confetti */
+.confetti-container{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;overflow:hidden}
+.confetti{position:absolute;width:10px;height:10px;opacity:0;animation:confettiFall 3s ease forwards}
+@keyframes confettiFall{0%{opacity:1;transform:translateY(-20px) rotate(0deg)}100%{opacity:0;transform:translateY(100vh) rotate(720deg)}}
 /* Floating number */
 .floating-num{position:fixed;pointer-events:none;z-index:9999;font-size:1.8em;font-weight:900;animation:floatUp 1.2s ease forwards}
 @keyframes floatUp{0%{opacity:1;transform:translateY(0) scale(1)}60%{opacity:1;transform:translateY(-60px) scale(1.2)}100%{opacity:0;transform:translateY(-120px) scale(0.8)}}
@@ -237,6 +241,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Micr
     </div>
   </div>
 </div>
+<!-- Confetti -->
+<div class="confetti-container" id="confettiContainer"></div>
 <div class="modal-overlay" id="modalOverlay"></div>
 <!-- Achievement Toast -->
 <div class="achievement-toast" id="achToast">
@@ -255,7 +261,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Micr
 <div class="modal" id="victoryModal">
   <div class="emoji-big">🎉</div>
   <h2>恭喜获得财务自由！</h2>
-  <p>你的被动收入已经超过了月支出！<br>从"老鼠赛跑"中成功脱离！<br><br><b>第 <span id="victoryMonth">1</span> 个月 · <span id="victoryRound">1</span> 轮</b></p>
+  <p id="victoryMsg">你的被动收入已经超过了月支出！<br>从"老鼠赛跑"中成功脱离！</p>
+  <div style="font-size:.95em;color:#555;margin-bottom:8px"><b>第 <span id="victoryMonth">1</span> 个月 · <span id="victoryRound">1</span> 轮</b></div>
   <div class="leaderboard" id="leaderboard"><div class="lb-empty">加载中...</div></div>
   <button class="restart-btn" onclick="showCharSelect()">🔄 重新开始</button>
 </div>
@@ -341,7 +348,7 @@ function initGame(charId, mode){
     loans: isEasy ? 0 : C.loan,
     creditCard: isEasy ? 0 : C.credit,
     salary: isEasy ? 12000 : C.salary,
-    dividendIncome: isEasy ? 600 : 0,
+    dividendIncome: isEasy ? 600 : 500,
     rentIncome: 0,
     sideIncome: 0,
     childExpense: isEasy ? 0 : C.child,
@@ -355,6 +362,7 @@ function initGame(charId, mode){
     phase: 'waiting',
     currentEvent: null,
     log: [],
+    eventQueue: [],
     hasChildren: isEasy ? false : C.child > 0,
     hasInsurance: false
   };
@@ -419,6 +427,10 @@ const EVENTS = [
       effect:()=>{const a=5000;G.cash-=a;G.investments+=a;G.dividendIncome+=Math.round(a*0.06/12);addLog(`投资 ¥${a}，月分红 +¥${Math.round(a*0.06/12)}`);return{cashDelta:-a,msg:`投资 ¥${a}，月收益 ¥${Math.round(a*0.06/12)}`};}},
     {text:'🔥 大额投入 ¥20,000',type:'primary',condition:()=>G&&G.cash>=12000,require:"需≥¥12,000",
       effect:()=>{const a=20000;G.cash-=a;G.investments+=a;G.dividendIncome+=Math.round(a*0.07/12);addLog(`大额投资 ¥${a}，月分红 +¥${Math.round(a*0.07/12)}`);return{cashDelta:-a,msg:`投资 ¥${a}，月收益 ¥${Math.round(a*0.07/12)}（收益率更高）`};}},
+    {text:'🚀 超高额投入 ¥50,000',type:'primary',condition:()=>G&&G.cash>=30000,require:"需≥¥30,000",
+      effect:()=>{const a=50000;G.cash-=a;G.investments+=a;G.dividendIncome+=Math.round(a*0.08/12);addLog(`超高额投资 ¥${a}，月分红 +¥${Math.round(a*0.08/12)}`);return{cashDelta:-a,msg:`投资 ¥${a}，月收益 ¥${Math.round(a*0.08/12)}`};}},
+    {text:'💎 顶级投入 ¥100,000',type:'primary',condition:()=>G&&G.cash>=80000,require:"需≥¥80,000",
+      effect:()=>{const a=100000;G.cash-=a;G.investments+=a;G.dividendIncome+=Math.round(a*0.1/12);addLog(`顶级投资 ¥${a}，月分红 +¥${Math.round(a*0.1/12)}`);return{cashDelta:-a,msg:`投资 ¥${a}，月收益 ¥${Math.round(a*0.1/12)}`};}},
     {text:'💰 投入 ¥2,000',type:'',condition:()=>G&&G.cash>=1000,require:"需≥¥1,000",
       effect:()=>{const a=2000;G.cash-=a;G.investments+=a;G.dividendIncome+=Math.round(a*0.06/12);addLog(`投资 ¥${a}，月分红 +¥${Math.round(a*0.06/12)}`);return{cashDelta:-a,msg:`投资 ¥${a}，月收益 ¥${Math.round(a*0.06/12)}`};}},
     {text:'❌ 不操作',type:'danger',effect:()=>{addLog('放弃操作');return{cashDelta:0,msg:'放弃操作'}}}
@@ -515,8 +527,29 @@ const EVENTS = [
       effect:()=>{const p=5000;G.cash-=p;G.loans-=p;G.loanPayment=Math.round(G.loans*0.045/12);addLog(`还贷 ¥${p}，月供降低`);return{cashDelta:-p,msg:`还贷 ¥${p}`};}},
     {text:'💪 还贷 ¥20,000',type:'primary',condition:()=>G&&G.loans>=20000&&G.cash>=20000,require:"贷款≥¥20,000",
       effect:()=>{const p=20000;G.cash-=p;G.loans-=p;G.loanPayment=Math.round(G.loans*0.045/12);addLog(`大额还贷 ¥${p}，月供大幅降低`);return{cashDelta:-p,msg:`还贷 ¥${p}`};}},
+    {text:'💪 还贷 ¥50,000',type:'warning',condition:()=>G&&G.loans>=50000&&G.cash>=50000,require:"贷款≥¥50,000",
+      effect:()=>{const p=50000;G.cash-=p;G.loans-=p;G.loanPayment=Math.round(G.loans*0.045/12);addLog(`巨额还贷 ¥${p}，月供大幅降低！`);return{cashDelta:-p,msg:`还贷 ¥${p}`};}},
+    {text:'💪 还贷 ¥100,000',type:'warning',condition:()=>G&&G.loans>=100000&&G.cash>=100000,require:"贷款≥¥100,000",
+      effect:()=>{const p=100000;G.cash-=p;G.loans-=p;G.loanPayment=Math.round(G.loans*0.045/12);addLog(`超巨额还贷 ¥${p}，月供大幅降低！`);return{cashDelta:-p,msg:`还贷 ¥${p}`};}},
     {text:'💳 还信用卡',type:'primary',condition:()=>G&&G.creditCard>0&&G.cash>=1000,
       effect:()=>{const p=Math.min(G.cash,G.creditCard);G.cash-=p;G.creditCard-=p;G.creditInterest=Math.round(G.creditCard*0.18/12);addLog(`还信用卡 ¥${p}`);return{cashDelta:-p,msg:`还信用卡 ¥${p}`};}},
+    {text:'💪 自由还贷',type:'primary',condition:()=>G&&G.loans>0&&G.cash>0,
+      effect:()=>{
+        const maxCanPay = Math.min(G.cash, G.loans);
+        const amount = prompt('你想还多少钱？\n最多可还：¥' + maxCanPay.toLocaleString() + '\n建议还款：¥' + Math.round(maxCanPay*0.3).toLocaleString(), Math.round(maxCanPay*0.3));
+        if(amount && amount>0 && amount<=maxCanPay){
+          const p = parseInt(amount);
+          G.cash-=p;G.loans-=p;G.loanPayment=Math.round(G.loans*0.045/12);
+          addLog('自由还贷 ¥' + p.toLocaleString() + '，月供降低 ¥' + Math.round(p*0.045/12));
+          return{cashDelta:-p,msg:'还贷 ¥' + p.toLocaleString()};
+        }else if(amount && amount>maxCanPay){
+          addLog('还款金额超过可用余额或贷款总额');
+          return{cashDelta:0,msg:'还款失败'};
+        }else{
+          addLog('取消自由还贷');
+          return{cashDelta:0,msg:'取消还款'};
+        }
+      }},
     {text:'📤 卖出投资还债',type:'loan',condition:()=>G&&G.investments>=3000,require:"持有投资≥¥3,000",
       effect:()=>{const s=Math.min(G.investments,20000);G.cash+=s;G.investments-=s;G.dividendIncome=Math.max(0,G.dividendIncome-Math.round(s*0.06/12));if(G.loans>0){const d=Math.min(s,G.loans);G.loans-=d;G.loanPayment=Math.round(G.loans*0.045/12);addLog(`卖出 ¥${s} 投资还贷 ¥${d}`);return{cashDelta:s,msg:`还贷 ¥${d}`};}addLog(`卖出 ¥${s} 投资`);return{cashDelta:s,msg:'现金增加'};}},
     {text:'⏰ 暂不处理',type:'',effect:()=>{addLog('暂不处理债务');return{cashDelta:0,msg:'保持现状'}}}
@@ -803,7 +836,12 @@ function rollDice(){
     const r=Math.floor(Math.random()*6)+1;
     dice.textContent='🎲 '+r;dice.classList.remove('rolling');
     G.round++;G.roundInMonth++;
-    G.currentEvent=EVENTS[(G.round-1)%EVENTS.length];
+    // 随机事件队列：确保每次玩顺序不同，且不会连续重复
+    if(G.eventQueue.length===0){
+      G.eventQueue=EVENTS.map((_,i)=>i);
+      for(let i=G.eventQueue.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[G.eventQueue[i],G.eventQueue[j]]=[G.eventQueue[j],G.eventQueue[i]];}
+    }
+    G.currentEvent=EVENTS[G.eventQueue.pop()];
     showEvent(G.currentEvent);updateAll();btn.disabled=false;G.phase='choosing';
   },600);
 }
@@ -896,9 +934,8 @@ function showVictory(){
   document.getElementById('victoryModal').style.display='block';
   // 新手模式通关 → 引导进入正常模式
   if(G.mode==='easy'){
-    document.getElementById('victoryModal').querySelector('p').innerHTML=`
+    document.getElementById('victoryMsg').innerHTML=`
       🎉 你已经掌握了基本玩法！<br><br>
-      <b>第 ${G.month} 个月 · ${G.round} 轮</b><br><br>
       🔥 准备好迎接<b>真正的财务挑战</b>了吗？<br>
       正常模式下收入更低、支出更高！
     `;
@@ -906,9 +943,43 @@ function showVictory(){
     document.getElementById('victoryModal').querySelector('.restart-btn').onclick=()=>{
       document.getElementById('victoryModal').style.display='none';
       document.getElementById('modalOverlay').style.display='none';
-      initGame(G.charId, 'hard');
+      initGame(G.charId, 'normal');
     };
+  }else{
+    // 正常模式通关 → 最终胜利，撒花！
+    try{
+      spawnConfetti();
+      document.getElementById('victoryModal').querySelector('.emoji-big').textContent='🎉🎉🎉';
+      document.getElementById('victoryModal').querySelector('h2').textContent='🏆 恭喜获得财务自由！';
+      document.getElementById('victoryMsg').innerHTML=`
+        你从老鼠赛跑中成功脱离！<br><br>
+        <b>第 ${G.month} 个月 · ${G.round} 轮</b><br><br>
+        <span style="font-size:.85em;color:#888">👏 你是真正的理财高手！</span>
+      `;
+      document.getElementById('victoryModal').querySelector('.restart-btn').textContent='🔄 再来一局';
+      document.getElementById('victoryModal').querySelector('.restart-btn').onclick=showCharSelect;
+    }catch(e){console.error('胜利画面错误:',e);}
   }
+}
+
+// 撒花特效
+function spawnConfetti(){
+  const container=document.getElementById('confettiContainer');
+  container.innerHTML='';
+  const colors=['#e74c3c','#f39c12','#2ecc71','#3498db','#9b59b6','#1abc9c','#e67e22','#ff6b6b'];
+  for(let i=0;i<60;i++){
+    const el=document.createElement('div');
+    el.className='confetti';
+    el.style.left=Math.random()*100+'%';
+    el.style.background=colors[Math.floor(Math.random()*colors.length)];
+    el.style.width=(6+Math.random()*8)+'px';
+    el.style.height=(6+Math.random()*8)+'px';
+    el.style.borderRadius=Math.random()>0.5?'50%':'2px';
+    el.style.animationDelay=Math.random()*2+'s';
+    el.style.animationDuration=(2+Math.random()*2)+'s';
+    container.appendChild(el);
+  }
+  setTimeout(()=>container.innerHTML='', 5000);
 }
 
 // 破产检测：现金≤0、现金流为负、净资产≤0 → 立即破产
@@ -936,6 +1007,12 @@ function showCharSelect(){
   document.getElementById('victoryModal').style.display='none';
   document.getElementById('bankruptcyModal').style.display='none';
   G=null;
+  // 重置胜利弹窗
+  document.getElementById('victoryModal').querySelector('.emoji-big').textContent='🎉';
+  document.getElementById('victoryModal').querySelector('h2').textContent='恭喜获得财务自由！';
+  document.getElementById('victoryModal').querySelector('.restart-btn').textContent='🔄 重新开始';
+  document.getElementById('victoryModal').querySelector('.restart-btn').onclick=showCharSelect;
+  document.getElementById('confettiContainer').innerHTML='';
   let selectedCharId=null,selectedMode=null;
   const grid=document.getElementById('charGrid');grid.innerHTML='';
   CHARACTERS.forEach(c=>{
