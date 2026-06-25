@@ -42,7 +42,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Micr
 .roll-btn{background:#3498db;color:#fff;border:none;padding:12px 28px;border-radius:25px;font-size:1em;font-weight:600;cursor:pointer;transition:all .3s ease;box-shadow:0 4px 12px rgba(52,152,219,0.3)}
 .roll-btn:hover{background:#2980b9;transform:translateY(-2px)}
 .roll-btn:disabled{background:#bdc3c7;cursor:not-allowed;transform:none;box-shadow:none}
-.bank-btn{background:linear-gradient(135deg,#e67e22,#d35400);color:#fff;border:none;border-radius:25px;font-size:.95em;font-weight:600;cursor:pointer;transition:all .3s ease;box-shadow:0 4px 12px rgba(230,126,34,0.3)}
+.bank-btn{background:linear-gradient(180deg,#c0392b 0,#c0392b 6px,#e67e22 6px,#d35400);color:#fff;border:none;border-radius:6px;font-size:.95em;font-weight:600;cursor:pointer;transition:all .3s ease;box-shadow:0 4px 12px rgba(230,126,34,0.3)}
 .event-card{background:#fff;border-radius:12px;padding:18px;margin:15px 0;border-left:4px solid #f39c12;box-shadow:0 2px 8px rgba(0,0,0,0.06);transition:all .3s ease}
 .event-card .event-type-badge{display:inline-block;padding:4px 12px;border-radius:12px;font-size:.75em;font-weight:600;margin-bottom:8px}
 .badge-opportunity{background:#d5f5e3;color:#1e8449}
@@ -212,16 +212,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Micr
 .mobile-victory-bar{background:#f8f9fa;border-radius:8px;padding:6px 10px;margin:8px 0}
 .mobile-victory-label{font-size:.75em;font-weight:600;flex-shrink:0;white-space:nowrap}
 .mobile-victory-pct{font-size:.7em;font-weight:700;flex-shrink:0;min-width:30px;text-align:right}
-.mobile-progress-row{display:flex;align-items:center;gap:8px;margin:4px 0}
+.mobile-progress-row{display:flex;align-items:center;gap:6px;margin:2px 0}
 .char-badge-mini{display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,#8e44ad,#9b59b6);color:#fff;padding:3px 10px;border-radius:12px;font-size:.62em;font-weight:600;flex-shrink:0;line-height:1.4}
-.mobile-progress-info{font-size:.65em;color:#888;white-space:nowrap;flex-shrink:0}
-.mobile-progress-bar{flex:1;height:6px;background:#f0f0f0;border-radius:3px;overflow:hidden}
+.mobile-progress-info{font-size:.62em;color:#888;white-space:nowrap;flex-shrink:0;line-height:1.4}
+.mobile-progress-bar-wrap{margin:2px 0 6px}
+.mobile-progress-bar{height:4px;background:#e8e8e8;border-radius:2px;overflow:hidden}
 .mobile-progress-bar div{height:100%;background:linear-gradient(90deg,#3498db,#2ecc71);border-radius:3px;transition:width .5s ease}
 .mobile-only{display:none}
 .settlement-banner{background:linear-gradient(135deg,#2ecc71,#27ae60);color:#fff;padding:15px 20px;border-radius:12px;margin:15px 0;display:none}
 .settlement-banner .settlement-title{font-size:1.1em;font-weight:700;margin-bottom:8px}
 .settlement-banner .settlement-detail{font-size:.9em;opacity:.95;line-height:1.6}
-@media(max-width:768px){.game-area,.char-grid{grid-template-columns:1fr}.header{flex-direction:row!important;padding:6px 10px!important;gap:4px}.header-left h1{font-size:.9em!important;margin:0!important;line-height:1.3}.header-left p{display:none!important}.header-right{display:none!important}.desktop-only{display:none!important}.mobile-only{display:block!important}.panel{padding:8px!important}.panel h2{font-size:.85em!important;margin-bottom:4px!important;padding-bottom:3px!important}.panel .character-badge{display:none!important}.stats-grid{gap:4px!important}.stat-item{padding:4px 6px!important}.stat-label{font-size:.6em!important}.stat-value{font-size:.85em!important;line-height:1.2}.dice-section{padding:4px 0!important;margin:4px 0!important}.dice{width:36px!important;height:36px!important;font-size:1.2em!important;border-width:2px!important}.round-info{font-size:.75em!important}.round-info .round-num{font-size:1.2em!important}.roll-btn{padding:6px 12px!important;font-size:.75em!important}.bank-btn{font-size:.75em!important;padding:6px 10px!important}.board-row{gap:2px!important;margin-bottom:2px!important}.board-cell{width:26px!important;height:26px!important;font-size:.6em!important;border-radius:4px!important;border-width:1.5px!important}.board-cell .step-num{font-size:.4em!important;width:9px!important;height:9px!important;top:-5px!important;left:-4px!important}.board-cell .token{font-size:.6em!important;bottom:-4px!important;right:-4px!important}.event-card{padding:8px!important;margin:6px 0!important}.event-card .event-title{font-size:.85em!important;margin-bottom:4px!important}.event-card .event-desc{font-size:.75em!important}.choice-area{gap:4px!important}.choice-btn{padding:5px 8px!important;font-size:.72em!important;min-width:60px!important;border-width:1.5px!important}.log-area{max-height:50px!important;font-size:.7em!important}.modal{padding:16px!important;width:92%!important;max-height:80vh!important;overflow-y:auto}.mobile-victory-bar{padding:4px 8px!important;margin:4px 0!important}.mobile-victory-label{font-size:.65em!important}.mobile-victory-pct{font-size:.6em!important}.finance-float-btn{display:flex!important;width:34px!important;min-height:72px!important;font-size:.85em!important;border-radius:8px 0 0 8px!important}.finance-toast{bottom:50px!important;right:6px!important;padding:8px 12px!important;min-width:140px!important;font-size:.78em!important}.char-select-modal{padding:16px!important;max-width:95%!important;width:95%!important}.char-select-modal h2{font-size:1em!important;margin-bottom:4px!important}.char-select-modal .sub{font-size:.7em!important;margin-bottom:10px!important;line-height:1.3!important}.char-grid{grid-template-columns:1fr 1fr!important;gap:6px!important}.char-card{padding:12px 8px!important;border-radius:10px!important}.char-card .char-emoji{font-size:1.5em!important;margin-bottom:3px!important}.char-card .char-name{font-size:.8em!important;margin-bottom:2px!important}.char-card .char-desc{font-size:.62em!important;margin-bottom:4px!important;line-height:1.2!important}.char-card .char-stats{font-size:.6em!important;line-height:1.4!important}.start-btn{font-size:.85em!important;padding:8px!important;margin-top:8px!important}
+@media(max-width:768px){.game-area,.char-grid{grid-template-columns:1fr}.header{flex-direction:row!important;padding:6px 10px!important;gap:4px}.header-left h1{font-size:.9em!important;margin:0!important;line-height:1.3}.header-left p{display:none!important}.header-right{display:none!important}.desktop-only{display:none!important}.mobile-only{display:block!important}.mobile-progress-row.mobile-only{display:flex!important}.mobile-progress-bar-wrap.mobile-only{display:block!important}.panel{padding:8px!important}.panel h2{font-size:.85em!important;margin-bottom:4px!important;padding-bottom:3px!important}.panel .character-badge{display:none!important}.stats-grid{gap:4px!important}.stat-item{padding:4px 6px!important}.stat-label{font-size:.6em!important}.stat-value{font-size:.85em!important;line-height:1.2}.dice-section{padding:4px 0!important;margin:4px 0!important}.dice{width:36px!important;height:36px!important;font-size:1.2em!important;border-width:2px!important}.round-info{font-size:.75em!important}.round-info .round-num{font-size:1.2em!important}.roll-btn{padding:6px 12px!important;font-size:.75em!important}.bank-btn{font-size:.75em!important;padding:6px 10px!important}.board-row{gap:2px!important;margin-bottom:2px!important}.board-cell{width:26px!important;height:26px!important;font-size:.6em!important;border-radius:4px!important;border-width:1.5px!important}.board-cell .step-num{font-size:.4em!important;width:9px!important;height:9px!important;top:-5px!important;left:-4px!important}.board-cell .token{font-size:.6em!important;bottom:-4px!important;right:-4px!important}.event-card{padding:8px!important;margin:6px 0!important}.event-card .event-title{font-size:.85em!important;margin-bottom:4px!important}.event-card .event-desc{font-size:.75em!important}.choice-area{gap:4px!important}.choice-btn{padding:5px 8px!important;font-size:.72em!important;min-width:60px!important;border-width:1.5px!important}.log-area{max-height:50px!important;font-size:.7em!important}.modal{padding:16px!important;width:92%!important;max-height:80vh!important;overflow-y:auto}.mobile-victory-bar{padding:4px 8px!important;margin:4px 0!important}.mobile-victory-label{font-size:.65em!important}.mobile-victory-pct{font-size:.6em!important}.finance-float-btn{display:flex!important;width:34px!important;min-height:72px!important;font-size:.85em!important;border-radius:8px 0 0 8px!important}.finance-toast{bottom:50px!important;right:6px!important;padding:8px 12px!important;min-width:140px!important;font-size:.78em!important}.char-select-modal{padding:16px!important;max-width:95%!important;width:95%!important}.char-select-modal h2{font-size:1em!important;margin-bottom:4px!important}.char-select-modal .sub{font-size:.7em!important;margin-bottom:10px!important;line-height:1.3!important}.char-grid{grid-template-columns:1fr 1fr!important;gap:6px!important}.char-card{padding:12px 8px!important;border-radius:10px!important}.char-card .char-emoji{font-size:1.5em!important;margin-bottom:3px!important}.char-card .char-name{font-size:.8em!important;margin-bottom:2px!important}.char-card .char-desc{font-size:.62em!important;margin-bottom:4px!important;line-height:1.2!important}.char-card .char-stats{font-size:.6em!important;line-height:1.4!important}.start-btn{font-size:.85em!important;padding:8px!important;margin-top:8px!important}
 </style>
 </head>
 <body>
@@ -241,18 +242,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Micr
   <div class="game-area">
     <div>
       <div class="panel">
-        <h2>📊 关键指标</h2>
-        <div class="character-badge" id="charBadge">🧑‍💼 上班族</div>
-        <!-- 手机端：角色+进度同行 -->
+        <!-- 手机端：角色标签+进度整体（独立在最上面） -->
         <div class="mobile-progress-row mobile-only">
           <div class="char-badge-mini" id="charBadgeMobile">🧑‍💼上班族🎯</div>
-          <div style="flex:1">
-            <div class="mobile-progress-info" style="text-align:right;font-size:.68em;color:#888;margin-bottom:2px">
-              📅 第 <span id="currentMonthMobile">1</span> 个月 · <span id="roundInMonthMobile">0</span>/5 轮
-            </div>
-            <div class="mobile-progress-bar"><div id="monthProgressMobile" style="width:0%"></div></div>
+          <div class="mobile-progress-info">
+            📅 第 <span id="currentMonthMobile">1</span> 个月 · <span id="roundInMonthMobile">0</span>/5 轮
           </div>
         </div>
+        <div class="mobile-progress-bar-wrap mobile-only">
+          <div class="mobile-progress-bar"><div id="monthProgressMobile" style="width:0%"></div></div>
+        </div>
+        <h2>📊 关键指标</h2>
+        <div class="character-badge" id="charBadge">🧑‍💼 上班族</div>
         <div class="stats-grid">
           <div class="stat-item"><div class="stat-label">💵 现金余额</div><div class="stat-value balance" id="cashBalance">¥0</div></div>
           <div class="stat-item"><div class="stat-label">📈 被动收入</div><div class="stat-value passive" id="passiveIncome">¥0</div></div>
@@ -261,7 +262,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Micr
         </div>
         <!-- 手机端紧凑胜利进度 -->
         <div class="mobile-victory-bar mobile-only">
-          <div style="font-size:.68em;font-weight:700;color:#8e44ad;margin-bottom:4px">🏆 胜利进度</div>
+          <div style="font-size:.85em;font-weight:700;color:#8e44ad;margin-bottom:4px">🏆 胜利进度</div>
           <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
             <span class="mobile-victory-label" id="mobileVictoryStatus">🐭</span>
             <div style="flex:1;height:12px;background:#f0f0f0;border-radius:6px;overflow:hidden;position:relative">
@@ -275,6 +276,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Micr
             <span id="mvGap" style="font-weight:600">⚡差 ¥0</span>
           </div>
           <div id="mvMessage" style="font-size:.6em;color:#888;margin-top:2px">🐭 还在老鼠赛跑...</div>
+          <div style="display:flex;justify-content:space-between;font-size:.52em;color:#555;margin-top:3px;border-top:1px solid #eee;padding-top:3px">
+            <span id="mvInsurance">🔒 保险:无</span>
+            <span id="mvBuffer">💰 缓冲:∞</span>
+            <span id="mvLoan">🏦 贷款:¥0</span>
+            <span id="mvCredit">💳 信用卡:¥0</span>
+          </div>
         </div>
         <div class="dice-section">
           <div class="round-info"><span class="round-label">第 </span><span class="round-num" id="totalRound">0</span><span class="round-label"> 轮</span></div>
@@ -1973,6 +1980,30 @@ function updateAll(){
     mg.textContent=gap<=0?'✅ 已达成':formatMoney(gap);
     mg.style.color=gap<=0?'#27ae60':ratio>=0.5?'#f39c12':'#e74c3c';
     mm.textContent=gap<=0?'🎉 恭喜实现财务自由！':ratio>=0.8?'🔥 接近目标，继续加油！':ratio>=0.5?'💪 进度过半，坚持投资！':ratio>=0.25?'🏃‍♂️ 有点起色，继续积累！':'🐭 还在老鼠赛跑，加油！';
+  }
+  // 手机端保险+缓冲
+  const mi=document.getElementById('mvInsurance'),mb=document.getElementById('mvBuffer');
+  if(mi){
+    const levels=['无','基础','全面','高端'];
+    mi.textContent='🔒 保险:'+(G&&G.insuranceLevel>0?levels[G.insuranceLevel]:'无');
+    mi.style.color=G&&G.insuranceLevel>0?'#27ae60':'#888';
+  }
+  if(mb){
+    const buf=getCashBufferMonths();
+    const colors=['#e74c3c','#e67e22','#f39c12','#27ae60','#2ecc71','#1abc9c'];
+    const idx=Math.min(Math.floor(buf),colors.length-1);
+    mb.textContent='💰 缓冲:'+(buf>=99?'∞':buf.toFixed(1)+'月');
+    mb.style.color=colors[idx];
+  }
+  const ml=document.getElementById('mvLoan');
+  if(ml){
+    ml.textContent='🏦 贷款:'+(G&&G.loans>0?formatMoney(G.loans):'¥0');
+    ml.style.color=G&&G.loans>0?'#e74c3c':'#888';
+  }
+  const mc=document.getElementById('mvCredit');
+  if(mc){
+    mc.textContent='💳 信用卡:'+(G&&G.creditCard>0?formatMoney(G.creditCard):'¥0');
+    mc.style.color=G&&G.creditCard>0?'#e74c3c':'#888';
   }
   updateFinanceModal();updateBoard();checkAchievements();
 }
