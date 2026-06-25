@@ -447,17 +447,17 @@ const CHARACTERS = [
   },
   {
     id:'engineer',tag:'easy',tagText:'轻松',emoji:'👨‍💻',name:'工程师',
-    desc:'IT工程师，高收入但工作压力大，消费也不低。',
-    salary:15000,living:8000,cash:20000,
-    loan:100000,loanPay:4000,credit:0,creditInt:0,
-    child:1000,vehicle:2000
+    desc:'IT工程师，高收入，业余接私活，有一套公寓。',
+    salary:15000,living:5000,cash:20000,
+    loan:1400000,loanPay:5250,credit:0,creditInt:0,
+    child:1000,vehicle:100000,investments:30000,realEstate:2000000,sideIncome:1500,vehicleExpense:1500
   },
   {
     id:'doctor',tag:'easy',tagText:'轻松',emoji:'👨‍⚕️',name:'医生',
-    desc:'主任医师，收入丰厚，但房贷车贷也很高。',
-    salary:22000,living:10000,cash:30000,
-    loan:200000,loanPay:8000,credit:0,creditInt:0,
-    child:2000,vehicle:3000
+    desc:'主任医师，收入丰厚，业余会诊，住别墅。',
+    salary:22000,living:6000,cash:30000,
+    loan:3500000,loanPay:13125,credit:0,creditInt:0,
+    child:2000,vehicle:200000,investments:50000,realEstate:5000000,sideIncome:3000,vehicleExpense:3000
   }
 ];
 
@@ -476,20 +476,20 @@ function initGame(charId, mode){
     charId: charId,
     mode: mode,
     cash: isEasy ? 50000 : C.cash,
-    investments: isEasy ? 10000 : 0,
-    realEstate: 0,
-    vehicle: 0,
+    investments: isEasy ? 10000 : (C.investments||0),
+    realEstate: isEasy ? 0 : (C.realEstate||0),
+    vehicle: isEasy ? 0 : (C.vehicle||0),
     loans: isEasy ? 0 : C.loan,
     creditCard: isEasy ? 0 : C.credit,
     salary: isEasy ? 12000 : C.salary,
-    dividendIncome: isEasy ? 600 : 500,
+    dividendIncome: isEasy ? 600 : (C.investments||0)>0 ? Math.round((C.investments||0)*0.06/12) : 500,
     rentIncome: 0,
-    sideIncome: 0,
+    sideIncome: isEasy ? 0 : (C.sideIncome||0),
     childExpense: isEasy ? 0 : C.child,
     livingExpense: isEasy ? 1000 : C.living,
     loanPayment: isEasy ? 0 : C.loanPay,
     creditInterest: isEasy ? 0 : C.creditInt,
-    vehicleExpense: 0,
+    vehicleExpense: isEasy ? 0 : (C.vehicleExpense||0),
     round: 0,
     month: 1,
     roundInMonth: 0,
@@ -498,6 +498,9 @@ function initGame(charId, mode){
     log: [],
     eventQueue: [],
     boardPos: 0,
+    stockShares: 0,
+    _stockPrice: 50,
+    _marketMultiplier: 1,
     hasChildren: isEasy ? false : C.child > 0,
     hasInsurance: false
   };
@@ -551,39 +554,83 @@ const EVENTS = [
       effect:()=>{addLog('放弃加薪机会');return{cashDelta:0,msg:'放弃加薪机会，保持现状'};}}
   ]
 },
-// 2: 股票投资
+// 2: 股票投资（带价格波动，自助买卖）
 {
-  id:'stock',cellType:'inv',title:'📈 股票投资',badge:'badge-investment',badgeText:'💰 投资机会',
-  desc:G&&G.investments>0?'股市波动中，你可以买入或卖出股票。':'朋友推荐了一只蓝筹股，预计年化收益6%。',
-  choices:[
-    {text:'📤 全部卖出获利',type:'primary',condition:()=>G&&G.investments>=2000,require:"持有投资≥¥2,000",
-      effect:()=>{const profit=Math.floor(G.investments*0.03);G.cash+=G.investments+profit;G.dividendIncome=Math.max(0,G.dividendIncome-Math.round(G.investments*0.06/12));addLog(`卖出投资！获利 ¥${profit}`);G.investments=0;return{cashDelta:G.cash,msg:`卖出投资获利 ¥${profit}`};}},
-    {text:'📤 卖出50%',type:'',condition:()=>G&&G.investments>=3000,require:"持有投资≥¥3,000",
-      effect:()=>{const sell=Math.floor(G.investments*0.5);const p=Math.floor(sell*0.02);G.cash+=sell+p;G.dividendIncome=Math.max(0,G.dividendIncome-Math.round(sell*0.06/12));G.investments-=sell;addLog(`卖出50%投资，获利 ¥${p}`);return{cashDelta:sell+p,msg:`卖出50%投资，获利 ¥${p}`};}},
-    {text:'💪 投入 ¥5,000',type:'primary',condition:()=>G&&G.cash>=3000,require:"需≥¥3,000",
-      effect:()=>{const a=5000;G.cash-=a;G.investments+=a;G.dividendIncome+=Math.round(a*0.06/12);addLog(`投资 ¥${a}，月分红 +¥${Math.round(a*0.06/12)}`);return{cashDelta:-a,msg:`投资 ¥${a}，月收益 ¥${Math.round(a*0.06/12)}`};}},
-    {text:'🔥 大额投入 ¥20,000',type:'primary',condition:()=>G&&G.cash>=12000,require:"需≥¥12,000",
-      effect:()=>{const a=20000;G.cash-=a;G.investments+=a;G.dividendIncome+=Math.round(a*0.07/12);addLog(`大额投资 ¥${a}，月分红 +¥${Math.round(a*0.07/12)}`);return{cashDelta:-a,msg:`投资 ¥${a}，月收益 ¥${Math.round(a*0.07/12)}（收益率更高）`};}},
-    {text:'🚀 超高额投入 ¥50,000',type:'primary',condition:()=>G&&G.cash>=30000,require:"需≥¥30,000",
-      effect:()=>{const a=50000;G.cash-=a;G.investments+=a;G.dividendIncome+=Math.round(a*0.08/12);addLog(`超高额投资 ¥${a}，月分红 +¥${Math.round(a*0.08/12)}`);return{cashDelta:-a,msg:`投资 ¥${a}，月收益 ¥${Math.round(a*0.08/12)}`};}},
-    {text:'💎 顶级投入 ¥100,000',type:'primary',condition:()=>G&&G.cash>=80000,require:"需≥¥80,000",
-      effect:()=>{const a=100000;G.cash-=a;G.investments+=a;G.dividendIncome+=Math.round(a*0.1/12);addLog(`顶级投资 ¥${a}，月分红 +¥${Math.round(a*0.1/12)}`);return{cashDelta:-a,msg:`投资 ¥${a}，月收益 ¥${Math.round(a*0.1/12)}`};}},
-    {text:'💰 投入 ¥2,000',type:'',condition:()=>G&&G.cash>=1000,require:"需≥¥1,000",
-      effect:()=>{const a=2000;G.cash-=a;G.investments+=a;G.dividendIncome+=Math.round(a*0.06/12);addLog(`投资 ¥${a}，月分红 +¥${Math.round(a*0.06/12)}`);return{cashDelta:-a,msg:`投资 ¥${a}，月收益 ¥${Math.round(a*0.06/12)}`};}},
-    {text:'❌ 不操作',type:'danger',effect:()=>{addLog('放弃操作');return{cashDelta:0,msg:'放弃操作'}}}
-  ]
+  id:'stock',cellType:'inv',title:'📈 股票行情',badge:'badge-investment',badgeText:'💰 实时股价',
+  desc:()=>{
+    if(!G._stockPrice)G._stockPrice=50;
+    const change=-5+Math.floor(Math.random()*11);
+    G._stockPrice=Math.max(5,G._stockPrice+change);
+    const dir=change>=0?'📈 上涨':'📉 下跌';
+    return `当前股价：¥${G._stockPrice}/股 ${dir} ${Math.abs(change)}元\n你的持股：${G.stockShares||0}股，市值 ¥${((G.stockShares||0)*G._stockPrice).toLocaleString()}`;
+  },
+  choices:()=>{
+    const price=G._stockPrice||50;
+    const shares=G.stockShares||0;
+    const maxBuy=Math.floor(G.cash/price);
+    const choices=[];
+    // 自由买入
+    choices.push({text:'💪 自由买入',type:'primary',condition:()=>G&&G.cash>=price*10,require:'最多'+(maxBuy)+'股 × ¥'+price,
+      effect:()=>{
+        const maxShares=Math.floor(G.cash/price);
+        const n=prompt('你想买入多少股？\n股价 ¥'+price+'/股\n最多可买 '+maxShares+' 股\n预估花费 ¥'+(maxShares*price).toLocaleString(), Math.min(100,maxShares));
+        if(n&&parseInt(n)>0&&parseInt(n)<=maxShares){
+          const q=parseInt(n);const cost=q*price;
+          G.cash-=cost;G.stockShares=(G.stockShares||0)+q;G.investments+=cost;G.dividendIncome+=Math.round(cost*0.06/12);
+          addLog('买入'+q+'股@¥'+price+'，花费 ¥'+cost.toLocaleString());
+          return{cashDelta:-cost,msg:'买入'+q+'股 @¥'+price};
+        }else if(n&&parseInt(n)>maxShares){
+          return{cashDelta:0,msg:'❌ 金额不足'};
+        }else{
+          return{cashDelta:0,msg:'取消买入'};
+        }
+      }});
+    // 自由卖出
+    if(shares>0){
+      choices.push({text:'📤 自由卖出',type:'',condition:()=>G&&(G.stockShares||0)>0,require:'持有'+(shares)+'股',
+        effect:()=>{
+          const maxSell=G.stockShares||0;
+          const n=prompt('你想卖出多少股？\n股价 ¥'+price+'/股\n最多可卖 '+maxSell+' 股\n预估收入 ¥'+(maxSell*price).toLocaleString(), Math.min(100,maxSell));
+          if(n&&parseInt(n)>0&&parseInt(n)<=maxSell){
+            const q=parseInt(n);const proceeds=q*price;
+            G.cash+=proceeds;G.stockShares-=q;G.investments=Math.max(0,G.investments-proceeds);
+            G.dividendIncome=Math.max(0,G.dividendIncome-Math.round(proceeds*0.06/12));
+            addLog('卖出'+q+'股@¥'+price+'，收入 ¥'+proceeds.toLocaleString());
+            return{cashDelta:proceeds,msg:'卖出'+q+'股 @¥'+price};
+          }else if(n&&parseInt(n)>maxSell){
+            return{cashDelta:0,msg:'❌ 持股不足'};
+          }else{
+            return{cashDelta:0,msg:'取消卖出'};
+          }
+        }});
+      // 全部清仓
+      choices.push({text:'🔥 全部清仓 ¥'+(price*shares).toLocaleString(),type:'danger',
+        effect:()=>{const proceeds=price*shares;G.cash+=proceeds;G.dividendIncome=Math.max(0,G.dividendIncome-Math.round(G.investments*0.06/12));G.stockShares=0;G.investments=0;addLog('全部清仓！收入 ¥'+proceeds.toLocaleString());return{cashDelta:proceeds,msg:'全部清仓 ¥'+proceeds.toLocaleString()};}});
+    }
+    choices.push({text:'❌ 观望',type:'danger',effect:()=>{addLog('观望股市');return{cashDelta:0,msg:'保持观望'}}});
+    return choices;
+  }
 },
 // 3: 房产投资
 {
   id:'realestate',cellType:'inv',title:'🏘️ 房产投资',badge:'badge-investment',badgeText:'🏠 资产投资',
-  desc:G&&G.realEstate>0?'有新的楼盘开盘，你也可以考虑出售现有房产。':'一套小户型公寓：总价 ¥300,000，月租 ¥1,800。首付30%=¥90,000，月供约 ¥1,200。',
+  desc:G&&G.realEstate>0?'有新的楼盘开盘，现有房产可出售。':'可选不同户型，租金收益各不相同。',
   choices:[
     {text:'🏠 出售房产套现',type:'primary',condition:()=>G&&G.realEstate>=100000,require:"持有房产",
-      effect:()=>{const app=Math.floor(G.realEstate*0.15);G.cash+=G.realEstate+app;G.rentIncome=Math.max(0,G.rentIncome-1800);addLog(`出售房产！获现 ¥${G.realEstate+app}（含增值 ¥${app}）`);G.realEstate=0;return{cashDelta:G.cash,msg:`出售房产获现 ¥${G.realEstate+app}（含增值 ¥${app}）`};}},
-    {text:'🏠 全款现金买入',type:'primary',condition:()=>G&&G.cash>=300000,require:"需≥¥300,000",
-      effect:()=>{G.cash-=300000;G.realEstate+=300000;G.rentIncome+=1800;addLog(`全款购房！无贷款，月租 +¥1,800`);return{cashDelta:-300000,msg:`全款付清，月租 ¥1,800`};}},
-    {text:'🏠 首付贷款买入',type:'loan',condition:()=>G&&G.cash>=5000,require:"需≥¥5,000",
-      effect:()=>{const dp=90000;const loan=210000;const actual=Math.min(dp,G.cash+10000);const extra=dp-actual;const total=loan+Math.max(0,extra);G.cash-=actual;G.loans+=total;G.realEstate+=300000;G.rentIncome+=1800;const mp=Math.round(total*0.045/12);G.loanPayment+=mp;addLog(`购房！首付 ¥${actual}，贷款 ¥${total}，月供 +¥${mp}，月租 +¥1,800`);return{cashDelta:-actual,msg:`首付 ¥${actual}，月供 ¥${mp}，月租 ¥1,800`};}},
+      effect:()=>{
+        const mkt=G._marketMultiplier||1;
+        const price=Math.floor(G.realEstate*mkt);
+        G.cash+=price;G.rentIncome=Math.max(0,G.rentIncome-Math.round(G.realEstate*0.04/12));
+        addLog(`出售房产！获现 ¥${price.toLocaleString()}`+(mkt>1?`（溢价 +${Math.round((mkt-1)*100)}%）`:''));
+        G.realEstate=0;return{cashDelta:price,msg:`出售获现 ¥${price.toLocaleString()}`};}},
+    {text:'🏡 小户型 ¥500,000',type:'primary',condition:()=>G&&G.cash>=150000,require:"首付≥¥150,000",
+      effect:()=>{const p=500000;const dp=150000;G.cash-=dp;G.loans+=(p-dp);G.realEstate+=p;G.rentIncome+=1700;const mp=Math.round((p-dp)*0.045/12);G.loanPayment+=mp;addLog(`购入小户型！首付 ¥150,000，贷款 ¥${(p-dp).toLocaleString()}，月供 ¥${mp}，月租 +¥1,700`);return{cashDelta:-dp,msg:`首付 ¥150,000，月租 ¥1,700`};}},
+    {text:'🏠 标准住宅 ¥2,000,000',type:'primary',condition:()=>G&&G.cash>=600000,require:"首付≥¥600,000",
+      effect:()=>{const p=2000000;const dp=600000;G.cash-=dp;G.loans+=(p-dp);G.realEstate+=p;G.rentIncome+=6700;const mp=Math.round((p-dp)*0.045/12);G.loanPayment+=mp;addLog(`购入住宅！首付 ¥600,000，贷款 ¥${(p-dp).toLocaleString()}，月供 ¥${mp}，月租 +¥6,700`);return{cashDelta:-dp,msg:`首付 ¥600,000，月租 ¥6,700`};}},
+    {text:'🏡 别墅 ¥5,000,000',type:'primary',condition:()=>G&&G.cash>=1500000,require:"首付≥¥1,500,000",
+      effect:()=>{const p=5000000;const dp=1500000;G.cash-=dp;G.loans+=(p-dp);G.realEstate+=p;G.rentIncome+=16700;const mp=Math.round((p-dp)*0.045/12);G.loanPayment+=mp;addLog(`购入别墅！首付 ¥1,500,000，贷款 ¥${(p-dp).toLocaleString()}，月供 ¥${mp}，月租 +¥16,700`);return{cashDelta:-dp,msg:`首付 ¥1.5M，月租 ¥16,700`};}},
+    {text:'🏰 豪华别墅 ¥10,000,000',type:'primary',condition:()=>G&&G.cash>=3000000,require:"首付≥¥3,000,000",
+      effect:()=>{const p=10000000;const dp=3000000;G.cash-=dp;G.loans+=(p-dp);G.realEstate+=p;G.rentIncome+=33300;const mp=Math.round((p-dp)*0.045/12);G.loanPayment+=mp;addLog(`购入豪华别墅！首付 ¥3,000,000，贷款 ¥${(p-dp).toLocaleString()}，月供 ¥${mp}，月租 +¥33,300`);return{cashDelta:-dp,msg:`首付 ¥3M，月租 ¥33,300`};}},
     {text:'❌ 不操作',type:'danger',effect:()=>{addLog('放弃操作');return{cashDelta:0,msg:'放弃'}}}
   ]
 },
@@ -796,14 +843,31 @@ const EVENTS = [
 },
 // 18: 房市热潮
 {
-  id:'boom',cellType:'inv',title:'🏠 房市热潮',badge:'badge-investment',badgeText:'📈 市场利好',
-  desc:'房地产市场突然火爆，房价大涨！如果你有房产，现在是绝佳的出售时机。',
-  choices:[
-    {text:'🏠 趁高出售房产',type:'primary',condition:()=>G&&G.realEstate>=100000,require:"持有房产",effect:()=>{const premium=Math.floor(G.realEstate*0.35);G.cash+=G.realEstate+premium;G.rentIncome=Math.max(0,G.rentIncome-1800);addLog(`房市热潮中出售房产！获现 ¥${G.realEstate+premium}，溢价 ¥${premium}`);G.realEstate=0;return{cashDelta:G.cash,msg:`溢价 ¥${premium}，共获现 ¥${G.cash}`};}},
-    {text:'🏠 继续持有收租',type:'',
-      effect:()=>{const boost=Math.floor(G.rentIncome*0.3);G.rentIncome+=boost;addLog(`租金上涨 +¥${boost}/月`);return{cashDelta:0,msg:`租金上涨 ¥${boost}/月`};}},
-    {text:'❌ 与我无关',type:'danger',effect:()=>{addLog('观望房市');return{cashDelta:0,msg:'保持现状'}}}
-  ]
+  id:'boom',cellType:'inv',title:'🏠 房市波动',badge:'badge-investment',badgeText:'📊 市场波动',
+  desc:()=>{
+    const isUp=Math.random()>0.4;
+    if(isUp){G._marketMultiplier=1+Math.random()*0.3;return '🔥 房市火爆！房价上涨 '+Math.round((G._marketMultiplier-1)*100)+'%！持有房产可高价出售或租金上涨。';}
+    else{G._marketMultiplier=0.7+Math.random()*0.2;return '❄️ 房市降温！房价下跌 '+Math.round((1-G._marketMultiplier)*100)+'%。持有房产价值缩水，可趁低买入。';}
+  },
+  choices:()=>{
+    const isUp=(G._marketMultiplier||1)>=1;
+    const mkt=G._marketMultiplier||1;
+    const choices=[];
+    if(G&&G.realEstate>=100000){
+      const price=Math.floor(G.realEstate*mkt);
+      const diff=price-G.realEstate;
+      choices.push({text:isUp?`🏠 趁高出售（+${Math.round((mkt-1)*100)}%）`:'🏠 出售止损',type:'primary',condition:()=>G&&G.realEstate>=100000,require:"持有房产",
+        effect:()=>{G.cash+=price;G.rentIncome=Math.max(0,G.rentIncome-Math.round(G.realEstate*0.04/12));addLog(`出售房产！获现 ¥${price.toLocaleString()}`+(diff>0?`（溢价 +${diff.toLocaleString()}）`:diff<0?`（亏损 ${Math.abs(diff).toLocaleString()}）`:''));G.realEstate=0;return{cashDelta:price,msg:`出售获现 ¥${price.toLocaleString()}`};}});
+    }
+    if(isUp){
+      choices.push({text:'🏠 继续持有收租',type:'',effect:()=>{const boost=Math.floor(G.rentIncome*0.2);G.rentIncome+=boost;addLog(`租金上涨 +¥${boost}/月`);return{cashDelta:0,msg:`租金上涨 ¥${boost}/月`};}});
+    }else{
+      choices.push({text:'🏠 趁低买入',type:'primary',condition:()=>G&&G.cash>=30000,require:"需≥¥30,000",
+        effect:()=>{const p=2000000;const dp=600000;G.cash-=dp;G.loans+=(p-dp);G.realEstate+=p;G.rentIncome+=6700;const mp=Math.round((p-dp)*0.045/12);G.loanPayment+=mp;addLog(`趁低买入房产！首付 ¥600,000`);return{cashDelta:-dp,msg:`首付 ¥600,000，月租 ¥6,700`};}});
+    }
+    choices.push({text:'❌ 观望',type:'danger',effect:()=>{addLog('观望房市');return{cashDelta:0,msg:'保持现状'}}});
+    return choices;
+  }
 },
 // 19: 商业投资
 {
@@ -827,7 +891,7 @@ function formatMoney(n){return'¥'+Math.round(n).toLocaleString();}
 // ===== 音效系统（Web Audio API，无需音频文件） =====
 const Sound = {
   ctx: null,
-  _init(){try{if(!this.ctx)this.ctx = new (window.AudioContext||window.webkitAudioContext)();}catch(e){}},
+  _init(){try{if(!this.ctx)this.ctx = new (window.AudioContext||window.webkitAudioContext)();if(this.ctx.state==='suspended')this.ctx.resume();}catch(e){}},
   _beep(freq,dur,vol=0.5,type='sine'){
     try{this._init();const o=this.ctx.createOscillator(),g=this.ctx.createGain();
     o.type=type;o.frequency.setValueAtTime(freq,this.ctx.currentTime);
@@ -1094,11 +1158,12 @@ function rollDice(){
 
 function showEvent(event){
   const card=document.getElementById('eventCard');
+  const descText = typeof event.desc === 'function' ? event.desc() : event.desc;
   card.innerHTML=`
     <div style="font-size:.7em;color:#888;margin-bottom:6px">📍 落在 <b>${event._boardInfo||'未知'}</b></div>
     <div class="event-type-badge ${event.badge}">${event.badgeText}</div>
     <div class="event-title">${event.title}</div>
-    <div class="event-desc">${event.desc.replace(/\\n/g,'<br>')}</div>`;
+    <div class="event-desc">${descText.replace(/\\n/g,'<br>')}</div>`;
   card.className='event-card fade-in';
   const ca=document.getElementById('choiceArea');ca.innerHTML='';
   (typeof event.choices==='function'?event.choices():event.choices).forEach(c=>{
@@ -1408,7 +1473,9 @@ document.getElementById('dice').addEventListener('click',rollDice);
 showCharSelect();
 </script>
 <div style="text-align:center;padding:12px;color:#999;font-size:.8em;border-top:1px solid #eee;background:#fff">
-  游戏设计 &middot; 开发：<strong>hebugouyangleduo</strong> &copy; 2026
+  游戏设计 · 开发：<strong>hebugouyangleduo</strong> &copy; 2026<br>
+  <span style="font-size:.7em;color:#888">👁️ 访问量 <span id="busuanzi_value_site_pv">--</span> · 访客 <span id="busuanzi_value_site_uv">--</span></span>
 </div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 </body>
 </html>
