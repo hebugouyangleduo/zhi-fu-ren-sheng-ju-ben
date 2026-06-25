@@ -166,10 +166,30 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Micr
 @keyframes flashRed{0%{background-color:transparent;transform:scale(1)}15%{background-color:rgba(231,76,60,0.25);transform:scale(1.15)}35%{background-color:rgba(231,76,60,0.08);transform:scale(1.05)}100%{background-color:transparent;transform:scale(1)}}
 .fmoney-pop{display:inline-block;font-size:.65em;font-weight:700;margin-left:6px;animation:popAway 2s ease forwards}
 @keyframes popAway{0%{opacity:1;transform:translateY(0) scale(0.5)}20%{opacity:1;transform:translateY(-4px) scale(1.1)}60%{opacity:.8;transform:translateY(-8px) scale(.9)}100%{opacity:0;transform:translateY(-16px) scale(.7)}}
+/* 浮动财务报表按钮（手机端右侧） */
+.finance-float-btn{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:900;width:44px;min-height:90px;border:none;border-radius:12px 0 0 12px;background:linear-gradient(135deg,#8e44ad,#9b59b6);color:#fff;cursor:pointer;box-shadow:-2px 2px 10px rgba(0,0,0,0.2);transition:all .3s ease;display:none;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:8px 4px}
+.finance-float-btn:hover{right:2px;box-shadow:-4px 2px 15px rgba(0,0,0,0.3);}
+.fbtn-label{font-size:.6em;font-weight:600;writing-mode:vertical-rl;letter-spacing:2px}
+/* 财务报表自动弹窗 */
+.finance-toast{position:fixed;bottom:60px;right:10px;z-index:898;background:#fff;border-radius:14px;padding:14px 18px;box-shadow:0 4px 20px rgba(0,0,0,0.2);min-width:180px;display:none;border:1px solid #e8e8e8}
+@keyframes slideInRight{0%{transform:translateX(80px);opacity:0}100%{transform:translateX(0);opacity:1}}
+.finance-toast .ft-title{font-weight:700;font-size:.85em;color:#8e44ad;margin-bottom:8px;border-bottom:1px solid #eee;padding-bottom:6px}
+.finance-toast .ft-row{display:flex;justify-content:space-between;font-size:.78em;padding:3px 0;color:#555}
+#financeModal.modal{animation:slideModal .4s cubic-bezier(.25,.46,.45,.94)}
+@keyframes slideModal{0%{transform:translate(80px,-50%);opacity:0}100%{transform:translate(-50%,-50%);opacity:1}}
+.mobile-victory-bar{background:#f8f9fa;border-radius:8px;padding:6px 10px;margin:8px 0}
+.mobile-victory-label{font-size:.75em;font-weight:600;flex-shrink:0;white-space:nowrap}
+.mobile-victory-pct{font-size:.7em;font-weight:700;flex-shrink:0;min-width:30px;text-align:right}
+.mobile-progress-row{display:flex;align-items:center;gap:8px;margin:4px 0}
+.char-badge-mini{display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,#8e44ad,#9b59b6);color:#fff;padding:3px 10px;border-radius:12px;font-size:.62em;font-weight:600;flex-shrink:0;line-height:1.4}
+.mobile-progress-info{font-size:.65em;color:#888;white-space:nowrap;flex-shrink:0}
+.mobile-progress-bar{flex:1;height:6px;background:#f0f0f0;border-radius:3px;overflow:hidden}
+.mobile-progress-bar div{height:100%;background:linear-gradient(90deg,#3498db,#2ecc71);border-radius:3px;transition:width .5s ease}
+.mobile-only{display:none}
 .settlement-banner{background:linear-gradient(135deg,#2ecc71,#27ae60);color:#fff;padding:15px 20px;border-radius:12px;margin:15px 0;display:none}
 .settlement-banner .settlement-title{font-size:1.1em;font-weight:700;margin-bottom:8px}
 .settlement-banner .settlement-detail{font-size:.9em;opacity:.95;line-height:1.6}
-@media(max-width:768px){.game-area,.char-grid{grid-template-columns:1fr}.header{flex-direction:column;text-align:center;gap:4px;padding:10px 12px!important}.header-right{display:none!important}.desktop-only{display:none!important}.mobile-only{display:block!important}.panel{padding:12px}.panel .character-badge{display:none!important}.stats-grid{gap:6px}.stat-item{padding:8px 10px}.stat-value{font-size:1.1em}.dice{width:60px;height:60px;font-size:2em}.roll-btn{padding:10px 20px;font-size:.9em}.event-card{padding:14px;margin:10px 0}.choice-area{gap:6px}.choice-btn{padding:8px 14px;font-size:.85em;min-width:80px}.header-left h1{font-size:1.1em!important;margin-bottom:0!important}.header-left p{display:none!important}.mobile-header-bar{display:flex!important;align-items:center;gap:10px;padding:8px 0 0;width:100%}.mobile-header-bar .character-badge{font-size:.8em;padding:4px 12px;margin-bottom:0;flex-shrink:0}.mobile-month-info{flex:1;text-align:right}.table-body{padding:4px 0}.table-row{padding:6px 12px;font-size:.82em}.month-badge{padding:4px 10px!important;font-size:.78em!important}.month-badge span{font-size:1em!important}.progress-bar-mount{height:4px!important}.modal{padding:24px;width:95%}.log-area{max-height:100px;font-size:.78em}.finance-btn{width:100%;padding:12px;border:none;border-radius:10px;background:linear-gradient(135deg,#8e44ad,#9b59b6);color:#fff;font-size:.95em;font-weight:600;cursor:pointer;margin-top:6px;transition:all .3s ease}.finance-btn:hover{opacity:.9;transform:translateY(-1px)}.dice-section{padding:10px 0!important;margin:10px 0!important}.board-track{margin:8px 0 10px!important}.board-step .step-icon{width:34px!important;height:34px!important;font-size:.85em!important}.board-step .step-label{font-size:.5em!important}.connector{margin-bottom:18px!important}.board-cell{width:30px!important;height:30px!important;font-size:.75em!important;border-radius:6px!important}.board-cell .step-num{font-size:.45em!important;width:11px!important;height:11px!important}}.mobile-only{display:none}
+@media(max-width:768px){.game-area,.char-grid{grid-template-columns:1fr}.header{flex-direction:row!important;padding:6px 10px!important;gap:4px}.header-left h1{font-size:.9em!important;margin:0!important;line-height:1.3}.header-left p{display:none!important}.header-right{display:none!important}.desktop-only{display:none!important}.mobile-only{display:block!important}.panel{padding:8px!important}.panel h2{font-size:.85em!important;margin-bottom:4px!important;padding-bottom:3px!important}.panel .character-badge{display:none!important}.stats-grid{gap:4px!important}.stat-item{padding:4px 6px!important}.stat-label{font-size:.6em!important}.stat-value{font-size:.85em!important;line-height:1.2}.dice-section{padding:4px 0!important;margin:4px 0!important}.dice{width:36px!important;height:36px!important;font-size:1.2em!important;border-width:2px!important}.round-info{font-size:.75em!important}.round-info .round-num{font-size:1.2em!important}.roll-btn{padding:6px 12px!important;font-size:.75em!important}.bank-btn{font-size:.75em!important;padding:6px 10px!important}.board-row{gap:2px!important;margin-bottom:2px!important}.board-cell{width:26px!important;height:26px!important;font-size:.6em!important;border-radius:4px!important;border-width:1.5px!important}.board-cell .step-num{font-size:.4em!important;width:9px!important;height:9px!important;top:-5px!important;left:-4px!important}.board-cell .token{font-size:.6em!important;bottom:-4px!important;right:-4px!important}.event-card{padding:8px!important;margin:6px 0!important}.event-card .event-title{font-size:.85em!important;margin-bottom:4px!important}.event-card .event-desc{font-size:.75em!important}.choice-area{gap:4px!important}.choice-btn{padding:5px 8px!important;font-size:.72em!important;min-width:60px!important;border-width:1.5px!important}.log-area{max-height:50px!important;font-size:.7em!important}.modal{padding:16px!important;width:92%!important;max-height:80vh!important;overflow-y:auto}.mobile-victory-bar{padding:4px 8px!important;margin:4px 0!important}.mobile-victory-label{font-size:.65em!important}.mobile-victory-pct{font-size:.6em!important}.finance-float-btn{display:flex!important;width:34px!important;min-height:72px!important;font-size:.85em!important;border-radius:8px 0 0 8px!important}.finance-toast{bottom:50px!important;right:6px!important;padding:8px 12px!important;min-width:140px!important;font-size:.78em!important}.char-select-modal{padding:16px!important;max-width:95%!important;width:95%!important}.char-select-modal h2{font-size:1em!important;margin-bottom:4px!important}.char-select-modal .sub{font-size:.7em!important;margin-bottom:10px!important;line-height:1.3!important}.char-grid{grid-template-columns:1fr 1fr!important;gap:6px!important}.char-card{padding:12px 8px!important;border-radius:10px!important}.char-card .char-emoji{font-size:1.5em!important;margin-bottom:3px!important}.char-card .char-name{font-size:.8em!important;margin-bottom:2px!important}.char-card .char-desc{font-size:.62em!important;margin-bottom:4px!important;line-height:1.2!important}.char-card .char-stats{font-size:.6em!important;line-height:1.4!important}.start-btn{font-size:.85em!important;padding:8px!important;margin-top:8px!important}
 </style>
 </head>
 <body>
@@ -184,26 +204,44 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Micr
       <div class="progress-bar-mount"><div class="progress-bar-fill" id="monthProgress" style="width:0%"></div></div>
       <div style="font-size:.75em;opacity:.7;margin-top:4px">本月进度: <span id="roundInMonth">0</span>/5 轮</div>
     </div>
-    <!-- Mobile: 角色+进度合并栏 -->
-    <div class="mobile-header-bar mobile-only">
-      <div class="character-badge" id="charBadgeMobile">🧑‍💼 上班族</div>
-      <div class="mobile-month-info">
-        <div style="font-size:.8em;font-weight:600">📅 第 <span id="currentMonthMobile">1</span> 个月</div>
-        <div class="progress-bar-mount" style="height:4px;margin:3px 0"><div class="progress-bar-fill" id="monthProgressMobile" style="width:0%"></div></div>
-        <div style="font-size:.68em;opacity:.7"><span id="roundInMonthMobile">0</span>/5 轮</div>
-      </div>
-    </div>
-  </div>
+</div>
   <div class="game-area">
     <div>
       <div class="panel">
         <h2>📊 关键指标</h2>
         <div class="character-badge" id="charBadge">🧑‍💼 上班族</div>
+        <!-- 手机端：角色+进度同行 -->
+        <div class="mobile-progress-row mobile-only">
+          <div class="char-badge-mini" id="charBadgeMobile">🧑‍💼上班族🎯</div>
+          <div style="flex:1">
+            <div class="mobile-progress-info" style="text-align:right;font-size:.68em;color:#888;margin-bottom:2px">
+              📅 第 <span id="currentMonthMobile">1</span> 个月 · <span id="roundInMonthMobile">0</span>/5 轮
+            </div>
+            <div class="mobile-progress-bar"><div id="monthProgressMobile" style="width:0%"></div></div>
+          </div>
+        </div>
         <div class="stats-grid">
           <div class="stat-item"><div class="stat-label">💵 现金余额</div><div class="stat-value balance" id="cashBalance">¥0</div></div>
           <div class="stat-item"><div class="stat-label">📈 被动收入</div><div class="stat-value passive" id="passiveIncome">¥0</div></div>
           <div class="stat-item"><div class="stat-label">💰 月总收入</div><div class="stat-value income" id="totalIncome">¥0</div></div>
           <div class="stat-item"><div class="stat-label">📉 月总支出</div><div class="stat-value expense" id="totalExpense">¥0</div></div>
+        </div>
+        <!-- 手机端紧凑胜利进度 -->
+        <div class="mobile-victory-bar mobile-only">
+          <div style="font-size:.68em;font-weight:700;color:#8e44ad;margin-bottom:4px">🏆 胜利进度</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+            <span class="mobile-victory-label" id="mobileVictoryStatus">🐭</span>
+            <div style="flex:1;height:12px;background:#f0f0f0;border-radius:6px;overflow:hidden;position:relative">
+              <div id="mobileVictoryFill" style="position:absolute;left:0;top:0;height:100%;width:0%;background:linear-gradient(90deg,#f39c12,#2ecc71);border-radius:6px;transition:width .5s ease"></div>
+            </div>
+            <span class="mobile-victory-pct" id="mobileVictoryPct">0%</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:.62em;color:#555;margin-top:4px">
+            <span>📈 被动 <b id="mvPassive">¥0</b></span>
+            <span>📉 支出 <b id="mvExpense">¥0</b></span>
+            <span id="mvGap" style="font-weight:600">⚡差 ¥0</span>
+          </div>
+          <div id="mvMessage" style="font-size:.6em;color:#888;margin-top:2px">🐭 还在老鼠赛跑...</div>
         </div>
         <div class="dice-section">
           <div class="round-info"><span class="round-label">第 </span><span class="round-num" id="totalRound">0</span><span class="round-label"> 轮</span></div>
@@ -232,8 +270,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Micr
     </div>
     <div>
       <div class="tables-grid">
-        <!-- 胜利进度移到最上方 -->
-        <div class="table-card">
+        <!-- 胜利进度 -->
+        <div class="table-card desktop-only">
           <h3>🏆 胜利进度</h3>
           <div class="table-body" style="padding:12px 15px">
             <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:.88em"><span class="label">🎯 被动收入</span><span class="amount passive-income" id="victoryPassive">¥0</span></div>
@@ -243,7 +281,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Micr
             <div style="text-align:center;padding:6px 0;border-radius:8px;background:#f8f9fa;font-size:.85em" id="victoryStatus">🏃‍♂️ 继续积累资产...</div>
           </div>
         </div>
-        <!-- Desktop: 财务报表完整表格 -->
+        <!-- 财务报表完整表格 -->
         <div class="table-card desktop-only">
           <h3>📋 资产负债表 <span class="subtotal" id="netWorthLabel">净资产: ¥0</span></h3>
           <div class="table-body">
@@ -272,11 +310,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Micr
             <div class="table-row"><span class="label">&nbsp;&nbsp;👶 子女费用</span><span class="amount negative" id="expChild">¥0</span></div>
           </div>
         </div>
-        <!-- Mobile: 财务报表按钮 -->
-        <button class="finance-btn mobile-only" onclick="showFinanceModal()">📊 查看财务报表</button>
       </div>
     </div>
   </div>
+</div>
+<!-- 浮动财务报表按钮 -->
+<button class="finance-float-btn" onclick="showFinanceModal()">📊<span class="fbtn-label">报表</span></button>
+<!-- 财务报表自动弹窗 -->
+<div class="finance-toast" id="financeToast">
+  <div class="ft-title">📊 财务变动</div>
+  <div class="ft-row"><span>净资产</span><span id="ftNetWorth">¥0</span></div>
+  <div class="ft-row"><span>月现金流</span><span id="ftCashFlow">¥0</span></div>
+  <div class="ft-row"><span>被动收入</span><span id="ftPassive">¥0</span></div>
+  <div class="ft-row"><span>月支出</span><span id="ftExpense">¥0</span></div>
 </div>
 <!-- Confetti -->
 <div class="confetti-container" id="confettiContainer"></div>
@@ -297,38 +343,38 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Micr
 </div>
 <!-- Financial Report Modal -->
 <div class="modal" id="financeModal">
-  <h3 style="margin-bottom:12px">📊 财务报表</h3>
-  <div style="max-height:60vh;overflow-y:auto;text-align:left">
-    <div class="table-card" style="margin-bottom:12px;box-shadow:0 1px 6px rgba(0,0,0,0.1)">
-      <h3 style="font-size:.9em;padding:10px 12px">📋 资产负债表 <span class="subtotal" id="fmNetWorth">净资产: ¥0</span></h3>
+  <h3 style="margin-bottom:8px">📊 财务报表</h3>
+  <div style="text-align:left">
+    <div class="table-card" style="margin-bottom:8px;box-shadow:0 1px 6px rgba(0,0,0,0.1)">
+      <h3 style="font-size:.85em;padding:8px 10px">📋 资产负债表 <span class="subtotal" id="fmNetWorth">净资产: ¥0</span></h3>
       <div class="table-body">
-        <div class="table-row" style="background:#eafaf1;font-weight:700"><span class="label">🏠 资产</span><span class="amount positive" id="fmAssets">¥0</span></div>
-        <div class="table-row"><span class="label">&nbsp;&nbsp;💵 现金</span><span class="amount" id="fmCash">¥0</span></div>
-        <div class="table-row"><span class="label">&nbsp;&nbsp;📊 投资组合</span><span class="amount" id="fmInvestments">¥0</span></div>
-        <div class="table-row"><span class="label">&nbsp;&nbsp;🏘️ 房产</span><span class="amount" id="fmRealEstate">¥0</span></div>
-        <div class="table-row"><span class="label">&nbsp;&nbsp;🚗 车辆</span><span class="amount" id="fmVehicle">¥0</span></div>
-        <div class="table-row" style="background:#fdedec;font-weight:700"><span class="label">💳 负债</span><span class="amount negative" id="fmLiability">¥0</span></div>
-        <div class="table-row"><span class="label">&nbsp;&nbsp;🏦 贷款</span><span class="amount negative" id="fmLoans">¥0</span></div>
-        <div class="table-row"><span class="label">&nbsp;&nbsp;💳 信用卡欠款</span><span class="amount negative" id="fmCredit">¥0</span></div>
+        <div class="table-row" style="background:#eafaf1;font-weight:700;padding:5px 10px;font-size:.82em"><span class="label">🏠 资产</span><span class="amount positive" id="fmAssets">¥0</span></div>
+        <div class="table-row" style="padding:4px 10px;font-size:.78em"><span class="label">&nbsp;&nbsp;💵 现金</span><span class="amount" id="fmCash">¥0</span></div>
+        <div class="table-row" style="padding:4px 10px;font-size:.78em"><span class="label">&nbsp;&nbsp;📊 投资组合</span><span class="amount" id="fmInvestments">¥0</span></div>
+        <div class="table-row" style="padding:4px 10px;font-size:.78em"><span class="label">&nbsp;&nbsp;🏘️ 房产</span><span class="amount" id="fmRealEstate">¥0</span></div>
+        <div class="table-row" style="padding:4px 10px;font-size:.78em"><span class="label">&nbsp;&nbsp;🚗 车辆</span><span class="amount" id="fmVehicle">¥0</span></div>
+        <div class="table-row" style="background:#fdedec;font-weight:700;padding:5px 10px;font-size:.82em"><span class="label">💳 负债</span><span class="amount negative" id="fmLiability">¥0</span></div>
+        <div class="table-row" style="padding:4px 10px;font-size:.78em"><span class="label">&nbsp;&nbsp;🏦 贷款</span><span class="amount negative" id="fmLoans">¥0</span></div>
+        <div class="table-row" style="padding:4px 10px;font-size:.78em"><span class="label">&nbsp;&nbsp;💳 信用卡欠款</span><span class="amount negative" id="fmCredit">¥0</span></div>
       </div>
     </div>
     <div class="table-card" style="box-shadow:0 1px 6px rgba(0,0,0,0.1)">
-      <h3 style="font-size:.9em;padding:10px 12px">💰 损益表（月度）<span class="subtotal" id="fmCashFlow">月现金流: ¥0</span></h3>
+      <h3 style="font-size:.85em;padding:8px 10px">💰 损益表（月度）<span class="subtotal" id="fmCashFlow">月现金流: ¥0</span></h3>
       <div class="table-body">
-        <div class="table-row" style="background:#eafaf1;font-weight:700"><span class="label">📈 收入</span><span class="amount positive" id="fmIncome">¥0</span></div>
-        <div class="table-row"><span class="label">&nbsp;&nbsp;💼 工资</span><span class="amount" id="fmSalary">¥0</span></div>
-        <div class="table-row"><span class="label">&nbsp;&nbsp;📊 分红</span><span class="amount passive-income" id="fmDividend">¥0</span></div>
-        <div class="table-row"><span class="label">&nbsp;&nbsp;🏘️ 租金</span><span class="amount passive-income" id="fmRent">¥0</span></div>
-        <div class="table-row"><span class="label">&nbsp;&nbsp;🛠️ 副业</span><span class="amount passive-income" id="fmSide">¥0</span></div>
-        <div class="table-row" style="background:#fdedec;font-weight:700"><span class="label">📉 支出</span><span class="amount negative" id="fmExpense">¥0</span></div>
-        <div class="table-row"><span class="label">&nbsp;&nbsp;🏠 生活</span><span class="amount negative" id="fmLiving">¥0</span></div>
-        <div class="table-row"><span class="label">&nbsp;&nbsp;🏦 月供</span><span class="amount negative" id="fmLoanPay">¥0</span></div>
-        <div class="table-row"><span class="label">&nbsp;&nbsp;💳 信用卡利息</span><span class="amount negative" id="fmCreditInt">¥0</span></div>
-        <div class="table-row"><span class="label">&nbsp;&nbsp;👶 子女</span><span class="amount negative" id="fmChild">¥0</span></div>
+        <div class="table-row" style="background:#eafaf1;font-weight:700;padding:5px 10px;font-size:.82em"><span class="label">📈 收入</span><span class="amount positive" id="fmIncome">¥0</span></div>
+        <div class="table-row" style="padding:4px 10px;font-size:.78em"><span class="label">&nbsp;&nbsp;💼 工资</span><span class="amount" id="fmSalary">¥0</span></div>
+        <div class="table-row" style="padding:4px 10px;font-size:.78em"><span class="label">&nbsp;&nbsp;📊 分红</span><span class="amount passive-income" id="fmDividend">¥0</span></div>
+        <div class="table-row" style="padding:4px 10px;font-size:.78em"><span class="label">&nbsp;&nbsp;🏘️ 租金</span><span class="amount passive-income" id="fmRent">¥0</span></div>
+        <div class="table-row" style="padding:4px 10px;font-size:.78em"><span class="label">&nbsp;&nbsp;🛠️ 副业</span><span class="amount passive-income" id="fmSide">¥0</span></div>
+        <div class="table-row" style="background:#fdedec;font-weight:700;padding:5px 10px;font-size:.82em"><span class="label">📉 支出</span><span class="amount negative" id="fmExpense">¥0</span></div>
+        <div class="table-row" style="padding:4px 10px;font-size:.78em"><span class="label">&nbsp;&nbsp;🏠 生活</span><span class="amount negative" id="fmLiving">¥0</span></div>
+        <div class="table-row" style="padding:4px 10px;font-size:.78em"><span class="label">&nbsp;&nbsp;🏦 月供</span><span class="amount negative" id="fmLoanPay">¥0</span></div>
+        <div class="table-row" style="padding:4px 10px;font-size:.78em"><span class="label">&nbsp;&nbsp;💳 信用卡利息</span><span class="amount negative" id="fmCreditInt">¥0</span></div>
+        <div class="table-row" style="padding:4px 10px;font-size:.78em"><span class="label">&nbsp;&nbsp;👶 子女</span><span class="amount negative" id="fmChild">¥0</span></div>
       </div>
     </div>
   </div>
-  <button class="restart-btn" onclick="document.getElementById('financeModal').style.display='none';document.getElementById('modalOverlay').style.display='none'">关闭</button>
+  <button class="restart-btn" style="margin-top:8px;padding:8px 24px;font-size:.9em" onclick="document.getElementById('financeModal').style.display='none';document.getElementById('modalOverlay').style.display='none'">关闭</button>
 </div>
 <div class="modal" id="victoryModal">
   <div class="emoji-big">🎉</div>
@@ -372,42 +418,42 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Micr
 // ===== 角色定义 =====
 const CHARACTERS = [
   {
-    id:'janitor',emoji:'🧹',name:'保洁员',tag:'hard',tagText:'困难',
+    id:'janitor',tag:'hard',tagText:'困难',emoji:'🧹',name:'保洁员',
     desc:'生活在城市底层的保洁工人，收入仅够维持基本生活。',
     salary:3200,living:2500,cash:2000,
     loan:0,loanPay:0,credit:0,creditInt:0,
     child:0,vehicle:0
   },
   {
-    id:'worker',emoji:'🧑‍🔧',name:'工厂工人',tag:'medium',tagText:'普通',
+    id:'worker',tag:'medium',tagText:'普通',emoji:'🧑‍🔧',name:'工厂工人',
     desc:'工厂流水线工人，收入稳定但增长空间有限。',
     salary:5500,living:3800,cash:5000,
     loan:5000,loanPay:200,credit:0,creditInt:0,
     child:600,vehicle:0
   },
   {
-    id:'office',emoji:'🧑‍💼',name:'上班族',tag:'medium',tagText:'普通',
+    id:'office',tag:'medium',tagText:'普通',emoji:'🧑‍💼',name:'上班族',
     desc:'普通白领，有稳定工作和少量储蓄。',
     salary:8000,living:4500,cash:10000,
     loan:0,loanPay:0,credit:0,creditInt:0,
     child:0,vehicle:0
   },
   {
-    id:'teacher',emoji:'👩‍🏫',name:'教师',tag:'medium',tagText:'普通',
+    id:'teacher',tag:'medium',tagText:'普通',emoji:'👩‍🏫',name:'教师',
     desc:'中学教师，收入一般但稳定，有寒暑假补贴。',
     salary:7000,living:3500,cash:8000,
     loan:0,loanPay:0,credit:0,creditInt:0,
     child:0,vehicle:0
   },
   {
-    id:'engineer',emoji:'👨‍💻',name:'工程师',tag:'easy',tagText:'轻松',
+    id:'engineer',tag:'easy',tagText:'轻松',emoji:'👨‍💻',name:'工程师',
     desc:'IT工程师，高收入但工作压力大，消费也不低。',
     salary:15000,living:8000,cash:20000,
     loan:100000,loanPay:4000,credit:0,creditInt:0,
     child:1000,vehicle:2000
   },
   {
-    id:'doctor',emoji:'👨‍⚕️',name:'医生',tag:'easy',tagText:'轻松',
+    id:'doctor',tag:'easy',tagText:'轻松',emoji:'👨‍⚕️',name:'医生',
     desc:'主任医师，收入丰厚，但房贷车贷也很高。',
     salary:22000,living:10000,cash:30000,
     loan:200000,loanPay:8000,credit:0,creditInt:0,
@@ -854,8 +900,8 @@ function checkAchievements(){
   ACHIEVEMENTS.forEach(a=>{if(!unlockedAchievements.has(a.id)&&a.check())unlockAchievement(a.id);});
 }
 
-const POSITIVE_RISE=new Set(['cashBalance','passiveIncome','totalIncome','totalIncomeReport','totalAssets','assetCash','assetInvestments','assetRealEstate','incomeSalary','incomeDividend','incomeRent','incomeSide','netWorthLabel','victoryPassive','assetVehicle','cashFlowLabel']);
-const NEGATIVE_RISE=new Set(['totalExpense','totalExpenseReport','totalLiabilities','liabLoans','liabCredit','expLiving','expLoan','expCredit','victoryTarget','expChild']);
+const POSITIVE_RISE=new Set(['cashBalance','passiveIncome','totalIncome','totalIncomeReport','totalAssets','assetCash','assetInvestments','assetRealEstate','incomeSalary','incomeDividend','incomeRent','incomeSide','netWorthLabel','victoryPassive','assetVehicle','cashFlowLabel','fmAssets','fmCash','fmInvestments','fmRealEstate','fmIncome','fmSalary','fmDividend','fmRent','fmSide','fmNetWorth','fmCashFlow']);
+const NEGATIVE_RISE=new Set(['totalExpense','totalExpenseReport','totalLiabilities','liabLoans','liabCredit','expLiving','expLoan','expCredit','victoryTarget','expChild','fmLiability','fmLoans','fmCredit','fmExpense','fmLiving','fmLoanPay','fmCreditInt','fmChild']);
 
 function flashValue(id,val){
   const el=document.getElementById(id);if(!el)return;
@@ -922,16 +968,35 @@ function updateAll(){
   flashValue('expChild',G.childExpense);document.getElementById('expChild').textContent=formatMoney(G.childExpense);
   document.getElementById('cashFlowLabel').textContent='月现金流: '+formatMoney(ti-te);
   flashValue('cashFlowLabel',ti-te);
-  flashValue('victoryPassive',tp);document.getElementById('victoryPassive').textContent=formatMoney(tp);
-  flashValue('victoryTarget',te);document.getElementById('victoryTarget').textContent=formatMoney(te);
   const gap=te-tp,ratio=te>0?Math.min(1,tp/te):0;
-  document.getElementById('victoryBarFill').style.width=(ratio*100)+'%';
-  const bl=document.getElementById('victoryBarLabel'),se=document.getElementById('victoryStatus'),gl=document.getElementById('victoryGapLabel');
-  if(gap<=0){bl.textContent='🎉 100% 已达成！';se.innerHTML='🎉 财务自由！';se.style.background='#d5f5e3';gl.textContent='✅ 已达成！';gl.style.color='#27ae60';}
-  else if(ratio>=0.8){bl.textContent=`🟢 ${Math.round(ratio*100)}%`;se.innerHTML='🔥 接近目标！';se.style.background='#fef9e7';gl.textContent=`差距: ${formatMoney(gap)}`;gl.style.color='#f39c12';}
-  else if(ratio>=0.5){bl.textContent=`🟡 ${Math.round(ratio*100)}%`;se.innerHTML='💪 进度过半！';se.style.background='#fef9e7';gl.textContent=`差距: ${formatMoney(gap)}`;gl.style.color='#f39c12';}
-  else if(ratio>=0.25){bl.textContent=`🟠 ${Math.round(ratio*100)}%`;se.innerHTML='🏃‍♂️ 继续加油！';se.style.background='#f8f9fa';gl.textContent=`差距: ${formatMoney(gap)}`;gl.style.color='#e67e22';}
-  else{bl.textContent=`🔴 ${Math.round(ratio*100)}%`;se.innerHTML='🐭 还在老鼠赛跑';se.style.background='#fdedec';gl.textContent=`差距: ${formatMoney(gap)}`;gl.style.color='#e74c3c';}
+  // 桌面端胜利进度
+  const vp=document.getElementById('victoryPassive'),vt=document.getElementById('victoryTarget'),bf=document.getElementById('victoryBarFill'),bl=document.getElementById('victoryBarLabel'),se=document.getElementById('victoryStatus'),gl=document.getElementById('victoryGapLabel');
+  if(vp)vp.textContent=formatMoney(tp);
+  if(vt)vt.textContent=formatMoney(te);
+  if(bf)bf.style.width=(ratio*100)+'%';
+  if(bl&&se&&gl){
+    if(gap<=0){bl.textContent='🎉 100% 已达成！';se.innerHTML='🎉 财务自由！';se.style.background='#d5f5e3';gl.textContent='✅ 已达成！';gl.style.color='#27ae60';}
+    else if(ratio>=0.8){bl.textContent=`🟢 ${Math.round(ratio*100)}%`;se.innerHTML='🔥 接近目标！';se.style.background='#fef9e7';gl.textContent='差距: '+formatMoney(gap);gl.style.color='#f39c12';}
+    else if(ratio>=0.5){bl.textContent=`🟡 ${Math.round(ratio*100)}%`;se.innerHTML='💪 进度过半！';se.style.background='#fef9e7';gl.textContent='差距: '+formatMoney(gap);gl.style.color='#f39c12';}
+    else if(ratio>=0.25){bl.textContent=`🟠 ${Math.round(ratio*100)}%`;se.innerHTML='🏃‍♂️ 继续加油！';se.style.background='#f8f9fa';gl.textContent='差距: '+formatMoney(gap);gl.style.color='#e67e22';}
+    else{bl.textContent=`🔴 ${Math.round(ratio*100)}%`;se.innerHTML='🐭 还在老鼠赛跑';se.style.background='#fdedec';gl.textContent='差距: '+formatMoney(gap);gl.style.color='#e74c3c';}
+  }
+  // 手机端胜利进度
+  const ms=document.getElementById('mobileVictoryStatus'),mp=document.getElementById('mobileVictoryPct'),mf=document.getElementById('mobileVictoryFill');
+  const mv=document.getElementById('mvPassive'),me=document.getElementById('mvExpense'),mg=document.getElementById('mvGap'),mm=document.getElementById('mvMessage');
+  if(ms&&mp&&mf){
+    ms.textContent=gap<=0?'🎉':ratio>=0.8?'🔥':ratio>=0.5?'💪':ratio>=0.25?'🏃':'🐭';
+    mp.textContent=Math.round(ratio*100)+'%';
+    mp.style.color=gap<=0?'#27ae60':ratio>=0.8?'#f39c12':'#888';
+    mf.style.width=(ratio*100)+'%';
+  }
+  if(mv&&me&&mg&&mm){
+    mv.textContent=formatMoney(tp);
+    me.textContent=formatMoney(te);
+    mg.textContent=gap<=0?'✅ 已达成':formatMoney(gap);
+    mg.style.color=gap<=0?'#27ae60':ratio>=0.5?'#f39c12':'#e74c3c';
+    mm.textContent=gap<=0?'🎉 恭喜实现财务自由！':ratio>=0.8?'🔥 接近目标，继续加油！':ratio>=0.5?'💪 进度过半，坚持投资！':ratio>=0.25?'🏃‍♂️ 有点起色，继续积累！':'🐭 还在老鼠赛跑，加油！';
+  }
   updateFinanceModal();updateBoard();checkAchievements();
 }
 
@@ -1057,7 +1122,7 @@ function handleChoice(event,choice){
   const cd=result.cashDelta||0;
   if(cd>0){try{Sound.cash();}catch(e){}result.msg+=' '+randomMsg('cash_up');}else if(cd<0){try{Sound.spend();}catch(e){}result.msg+=' '+randomMsg('cash_down');}
   document.getElementById('eventCard').innerHTML+=`<div class="event-impact">📍 ${choice.text}<br>💫 ${result.msg}</div>`;
-  updateAll();
+  updateAll();showFinanceToast();
   // 🚨 每轮破产检测：现金为0、现金流为负、净资产为负 → 立即破产
   if(checkBankruptcy()){setTimeout(()=>showBankruptcy(),500);G.phase='settling';return;}
   const tp=calcTotalPassive(),te=calcTotalExpense();
@@ -1075,6 +1140,7 @@ function doMonthlySettlement(){
   const cfDisp=cf>=0?`+¥${cf.toLocaleString()}`:`-¥${Math.abs(cf).toLocaleString()}`;
   d.innerHTML=`📊 收入 <b>${formatMoney(ti)}</b> &nbsp;|&nbsp; 支出 <b>${formatMoney(te)}</b> &nbsp;|&nbsp; 现金流 <b class="${cf>=0?'positive':'negative'}">${cfDisp}</b><br>💵 现金余额 <b>${formatMoney(G.cash)}</b>`;
   updateAll();addLog(`📅 第${G.month}月结算：现金流${cfDisp}，余额 ${formatMoney(G.cash)}`);
+  showFinanceToast();
   const tp=calcTotalPassive();
   if(tp>=te){setTimeout(()=>showVictory(),1500);return;}
   // 破产检测
@@ -1158,7 +1224,7 @@ function openBank(){
       const p=parseInt(amt);G.cash+=p;G.loans+=p;
       G.loanPayment=Math.round(G.loans*0.045/12);
       addLog('🏦 银行贷款 ¥'+p.toLocaleString()+'，月供 +¥'+Math.round(p*0.045/12));
-      updateAll();openBank();
+      updateAll();showFinanceToast();openBank();
     }else if(amt&&parseInt(amt)>maxLoan){
       document.getElementById('bankResult').textContent='⚠️ 超出可贷额度';
     }else{
@@ -1174,7 +1240,7 @@ function openBank(){
       const p=parseInt(amt);G.cash-=p;G.loans-=p;
       G.loanPayment=Math.round(G.loans*0.045/12);
       addLog('🏦 主动还款 ¥'+p.toLocaleString()+'，月供降低 ¥'+Math.round(p*0.045/12));
-      updateAll();openBank();
+      updateAll();showFinanceToast();openBank();
     }else if(amt&&parseInt(amt)>maxPay){
       document.getElementById('bankResult').textContent='⚠️ 还款金额超过贷款余额或现金';
     }else{
@@ -1246,30 +1312,45 @@ function showFinanceModal(){
   document.getElementById('modalOverlay').style.display='block';
   document.getElementById('financeModal').style.display='block';
 }
+// 财务自动弹窗
+let financeToastTimer=null;
+function showFinanceToast(){
+  if(!G||window.innerWidth>768)return;
+  clearTimeout(financeToastTimer);
+  // 延迟1秒弹出，让首页金额变动先展示
+  financeToastTimer=setTimeout(()=>{
+    document.getElementById('modalOverlay').style.display='block';
+    document.getElementById('financeModal').style.display='block';
+    // 等slide动画结束（400ms）后再更新数据+闪烁
+    setTimeout(()=>{updateFinanceModal();},450);
+    // 再4秒后自动收回
+    setTimeout(()=>{document.getElementById('financeModal').style.display='none';document.getElementById('modalOverlay').style.display='none';},4500);
+  },1000);
+}
 function updateFinanceModal(){
   if(!G)return;
   const ta=G.cash+G.investments+G.realEstate+G.vehicle,tl=G.loans+G.creditCard,nw=ta-tl;
   const ti=G.salary+G.dividendIncome+G.rentIncome+G.sideIncome,te=G.livingExpense+G.loanPayment+G.creditInterest+G.childExpense+G.vehicleExpense;
-  document.getElementById('fmAssets').textContent='¥'+ta.toLocaleString();
-  document.getElementById('fmCash').textContent='¥'+G.cash.toLocaleString();
-  document.getElementById('fmInvestments').textContent='¥'+G.investments.toLocaleString();
-  document.getElementById('fmRealEstate').textContent='¥'+G.realEstate.toLocaleString();
-  document.getElementById('fmVehicle').textContent='¥'+G.vehicle.toLocaleString();
-  document.getElementById('fmLiability').textContent='¥'+tl.toLocaleString();
-  document.getElementById('fmLoans').textContent='¥'+G.loans.toLocaleString();
-  document.getElementById('fmCredit').textContent='¥'+G.creditCard.toLocaleString();
-  document.getElementById('fmNetWorth').textContent='净资产: ¥'+nw.toLocaleString();
-  document.getElementById('fmIncome').textContent='¥'+ti.toLocaleString();
-  document.getElementById('fmSalary').textContent='¥'+G.salary.toLocaleString();
-  document.getElementById('fmDividend').textContent='¥'+G.dividendIncome.toLocaleString();
-  document.getElementById('fmRent').textContent='¥'+G.rentIncome.toLocaleString();
-  document.getElementById('fmSide').textContent='¥'+G.sideIncome.toLocaleString();
-  document.getElementById('fmExpense').textContent='¥'+te.toLocaleString();
-  document.getElementById('fmLiving').textContent='¥'+G.livingExpense.toLocaleString();
-  document.getElementById('fmLoanPay').textContent='¥'+G.loanPayment.toLocaleString();
-  document.getElementById('fmCreditInt').textContent='¥'+G.creditInterest.toLocaleString();
-  document.getElementById('fmChild').textContent='¥'+G.childExpense.toLocaleString();
-  document.getElementById('fmCashFlow').textContent='月现金流: ¥'+(ti-te).toLocaleString();
+  flashValue('fmAssets',ta);document.getElementById('fmAssets').textContent='¥'+ta.toLocaleString();
+  flashValue('fmCash',G.cash);document.getElementById('fmCash').textContent='¥'+G.cash.toLocaleString();
+  flashValue('fmInvestments',G.investments);document.getElementById('fmInvestments').textContent='¥'+G.investments.toLocaleString();
+  flashValue('fmRealEstate',G.realEstate);document.getElementById('fmRealEstate').textContent='¥'+G.realEstate.toLocaleString();
+  flashValue('fmVehicle',G.vehicle);document.getElementById('fmVehicle').textContent='¥'+G.vehicle.toLocaleString();
+  flashValue('fmLiability',tl);document.getElementById('fmLiability').textContent='¥'+tl.toLocaleString();
+  flashValue('fmLoans',G.loans);document.getElementById('fmLoans').textContent='¥'+G.loans.toLocaleString();
+  flashValue('fmCredit',G.creditCard);document.getElementById('fmCredit').textContent='¥'+G.creditCard.toLocaleString();
+  flashValue('fmNetWorth',nw);document.getElementById('fmNetWorth').textContent='净资产: ¥'+nw.toLocaleString();
+  flashValue('fmIncome',ti);document.getElementById('fmIncome').textContent='¥'+ti.toLocaleString();
+  flashValue('fmSalary',G.salary);document.getElementById('fmSalary').textContent='¥'+G.salary.toLocaleString();
+  flashValue('fmDividend',G.dividendIncome);document.getElementById('fmDividend').textContent='¥'+G.dividendIncome.toLocaleString();
+  flashValue('fmRent',G.rentIncome);document.getElementById('fmRent').textContent='¥'+G.rentIncome.toLocaleString();
+  flashValue('fmSide',G.sideIncome);document.getElementById('fmSide').textContent='¥'+G.sideIncome.toLocaleString();
+  flashValue('fmExpense',te);document.getElementById('fmExpense').textContent='¥'+te.toLocaleString();
+  flashValue('fmLiving',G.livingExpense);document.getElementById('fmLiving').textContent='¥'+G.livingExpense.toLocaleString();
+  flashValue('fmLoanPay',G.loanPayment);document.getElementById('fmLoanPay').textContent='¥'+G.loanPayment.toLocaleString();
+  flashValue('fmCreditInt',G.creditInterest);document.getElementById('fmCreditInt').textContent='¥'+G.creditInterest.toLocaleString();
+  flashValue('fmChild',G.childExpense);document.getElementById('fmChild').textContent='¥'+G.childExpense.toLocaleString();
+  flashValue('fmCashFlow',ti-te);document.getElementById('fmCashFlow').textContent='月现金流: ¥'+(ti-te).toLocaleString();
 }
 
 function showCharSelect(){
@@ -1297,8 +1378,7 @@ function showCharSelect(){
         现金 <span class="pos">${c.cash.toLocaleString()}</span> ·
         贷款 <span class="neg">${c.loan.toLocaleString()}</span>
       </div>
-      <div class="char-tag ${c.tag}">${c.tagText}</div>`;
-    card.onclick=()=>{
+      <div class="char-tag ${c.tag}">${c.tagText}</div>`;    card.onclick=()=>{
       document.querySelectorAll('.char-card').forEach(el=>el.classList.remove('selected'));
       card.classList.add('selected');
       selectedCharId=c.id;
