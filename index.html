@@ -14,6 +14,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Micr
 .header-right{text-align:right}
 .month-badge{background:rgba(255,255,255,0.15);padding:8px 20px;border-radius:20px;display:inline-block;font-size:1em}
 .month-badge span{font-size:1.3em;font-weight:700;margin:0 4px}
+.sound-toggle-btn{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border:none;border-radius:50%;background:rgba(255,255,255,0.15);color:#fff;font-size:1em;cursor:pointer;transition:all .2s ease;margin-right:8px;vertical-align:middle}
+.sound-toggle-btn:hover{background:rgba(255,255,255,0.3);transform:scale(1.1)}
 .progress-bar-mount{height:6px;background:rgba(255,255,255,0.2);border-radius:3px;margin-top:8px;overflow:hidden}
 .progress-bar-fill{height:100%;background:#f1c40f;border-radius:3px;transition:width .5s ease}
 .game-area{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:20px}
@@ -72,7 +74,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Micr
 .log-entry{font-size:.82em;padding:4px 0;border-bottom:1px solid #eee;color:#555}
 .log-entry:last-child{border-bottom:none}
 .tables-grid{display:grid;gap:15px}
-.table-card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+.table-card{background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
 .table-card h3{background:#2c3e50;color:#fff;padding:12px 15px;font-size:.95em;display:flex;justify-content:space-between;align-items:center}
 .table-card h3 .subtotal{font-size:.85em;opacity:.85}
 .table-body{padding:8px 0}
@@ -105,12 +107,28 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Micr
 .char-card .char-tag.easy{background:#d5f5e3;color:#1e8449}
 .char-card .char-tag.medium{background:#fef9e7;color:#b9770e}
 .char-card .char-tag.hard{background:#fadbd8;color:#c0392b}
+/* V3: 多层胜利 */
+.victory-tier-stable h2{color:#2e86c1!important}
+.victory-tier-stable .emoji-big{font-size:3.5em!important}
+.victory-tier-stable .restart-btn{background:linear-gradient(135deg,#2e86c1,#3498db)!important}
+.victory-tier-balanced h2{background:linear-gradient(90deg,#e74c3c,#f39c12,#2ecc71,#3498db,#9b59b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.victory-tier-balanced .emoji-big{font-size:3.5em!important}
+.victory-tier-balanced .restart-btn{background:linear-gradient(135deg,#e74c3c,#9b59b6)!important}
+.victory-tier-balanced .modal{background:linear-gradient(135deg,#fff,#f0e6ff)!important}
+/* 复盘报告 */
+.review-panel{margin-top:15px;padding:15px;background:#f8f9fa;border-radius:10px;font-size:.85em;text-align:left}
+.review-panel h3{font-size:1.1em;color:#2c3e50;margin-bottom:10px;text-align:center}
+.review-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px}
+.review-grid div{padding:4px 6px;font-size:.88em;color:#555}
+.review-path{background:#e8f5e9;border-radius:8px;padding:10px;margin-top:10px;text-align:center;font-weight:600;color:#1e8449;font-size:.95em}
+.review-winpaths{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;justify-content:center}
+.review-winpaths span{padding:4px 12px;border-radius:15px;background:#eaf2f8;font-size:.82em;color:#2e86c1;font-weight:600}
 .start-btn{display:block;width:100%;margin-top:20px;padding:14px;border:none;border-radius:12px;font-size:1.15em;font-weight:700;color:#fff;background:linear-gradient(135deg,#27ae60,#2ecc71);cursor:pointer;transition:all .3s ease;box-shadow:0 4px 15px rgba(39,174,96,0.3)}
 .start-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(39,174,96,0.4)}
 .start-btn:disabled{background:#bdc3c7;cursor:not-allowed;transform:none;box-shadow:none}
 /* Victory Modal */
 .modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);z-index:999;display:none}
-.modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border-radius:20px;padding:40px;text-align:center;box-shadow:0 30px 60px rgba(0,0,0,0.3);z-index:1000;display:none;max-width:500px;width:90%}
+.modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border-radius:20px;padding:40px;text-align:center;box-shadow:0 30px 60px rgba(0,0,0,0.3);z-index:1000;display:none;max-width:500px;width:90%;max-height:90vh;overflow-y:auto}
 .modal h2{font-size:2em;margin-bottom:15px}
 .modal .emoji-big{font-size:4em;margin-bottom:15px}
 .modal p{color:#555;line-height:1.6;margin-bottom:20px}
@@ -166,7 +184,21 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Micr
 @keyframes flashRed{0%{background-color:transparent;transform:scale(1)}15%{background-color:rgba(231,76,60,0.25);transform:scale(1.15)}35%{background-color:rgba(231,76,60,0.08);transform:scale(1.05)}100%{background-color:transparent;transform:scale(1)}}
 .fmoney-pop{display:inline-block;font-size:.65em;font-weight:700;margin-left:6px;animation:popAway 2s ease forwards}
 @keyframes popAway{0%{opacity:1;transform:translateY(0) scale(0.5)}20%{opacity:1;transform:translateY(-4px) scale(1.1)}60%{opacity:.8;transform:translateY(-8px) scale(.9)}100%{opacity:0;transform:translateY(-16px) scale(.7)}}
-/* 浮动财务报表按钮（手机端右侧） */
+/* 财务报表可展开行 */
+.sub-items{overflow:hidden;max-height:0;transition:max-height .35s ease,opacity .25s ease;opacity:0}
+.sub-items.open{max-height:600px;opacity:1}
+.sub-item{display:flex;justify-content:space-between;padding:4px 10px 4px 26px;font-size:.74em;color:#555;transition:background .15s}
+.sub-item:hover{background:rgba(142,68,173,0.06);cursor:pointer}
+.sub-item .sale-tag{font-size:.65em;color:#8e44ad;font-weight:600;margin-left:6px;opacity:0;transition:opacity .2s}
+.sub-item:hover .sale-tag{opacity:1}
+.sub-item .item-meta{font-size:.78em;color:#888;margin-left:8px}
+.sub-item.negative{color:#c0392b}
+.sub-item.positive{color:#27ae60}
+.expand-head:hover{background:rgba(142,68,173,0.08)!important}
+.expand-head{cursor:pointer}
+.expand-arrow{display:inline-block;transition:transform .25s ease;font-size:.9em;margin-right:4px;color:#8e44ad;font-weight:700}
+.expand-arrow.open{transform:rotate(90deg)}
+.table-card{background:#fff;border-radius:10px}
 .finance-float-btn{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:900;width:44px;min-height:90px;border:none;border-radius:12px 0 0 12px;background:linear-gradient(135deg,#8e44ad,#9b59b6);color:#fff;cursor:pointer;box-shadow:-2px 2px 10px rgba(0,0,0,0.2);transition:all .3s ease;display:none;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:8px 4px}
 .finance-float-btn:hover{right:2px;box-shadow:-4px 2px 15px rgba(0,0,0,0.3);}
 .fbtn-label{font-size:.6em;font-weight:600;writing-mode:vertical-rl;letter-spacing:2px}
@@ -200,6 +232,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Micr
       <p>目标：被动收入 ≥ 月支出 → 跳出老鼠赛跑</p>
     </div>
     <div class="header-right">
+      <button class="sound-toggle-btn" id="soundToggle" onclick="Sound.toggleMute()" title="开关音效">🔊</button>
       <div class="month-badge">📅 第 <span id="currentMonth">1</span> 个月</div>
       <div class="progress-bar-mount"><div class="progress-bar-fill" id="monthProgress" style="width:0%"></div></div>
       <div style="font-size:.75em;opacity:.7;margin-top:4px">本月进度: <span id="roundInMonth">0</span>/5 轮</div>
@@ -278,6 +311,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Micr
             <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:.88em"><span class="label">⚖️ 目标：超过月支出</span><span class="amount negative" id="victoryTarget">¥0</span></div>
             <div style="position:relative;height:28px;background:#f0f0f0;border-radius:14px;overflow:hidden;margin-bottom:4px"><div id="victoryBarFill" style="position:absolute;top:0;left:0;height:100%;width:0%;background:linear-gradient(90deg,#f39c12,#2ecc71);border-radius:14px;transition:width .8s ease"></div><div style="position:absolute;top:0;left:0;right:0;height:100%;display:flex;align-items:center;justify-content:center;font-size:.8em;font-weight:700;color:#333;text-shadow:0 0 4px rgba(255,255,255,0.8)" id="victoryBarLabel">🔴 0%</div></div>
             <div style="display:flex;justify-content:space-between;font-size:.78em;color:#888;margin-bottom:6px"><span>🟢 达成: 被动收入 ≥ 支出</span><span id="victoryGapLabel" style="font-weight:600">差距: ¥0</span></div>
+            <!-- 风险保障信息 -->
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px;font-size:.78em" id="riskStatusArea">
+              <span id="cashBufferDisplay">💰 缓冲: --</span>
+              <span id="insuranceDisplay">🔒 保险: 无</span>
+              <span id="creditDisplay">💳 信用卡: ¥0</span>
+            </div>
             <div style="text-align:center;padding:6px 0;border-radius:8px;background:#f8f9fa;font-size:.85em" id="victoryStatus">🏃‍♂️ 继续积累资产...</div>
           </div>
         </div>
@@ -287,11 +326,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Micr
           <div class="table-body">
             <div class="table-row" style="background:#eafaf1;font-weight:700"><span class="label">🏠 资产</span><span class="amount positive" id="totalAssets">¥0</span></div>
             <div class="table-row"><span class="label">&nbsp;&nbsp;💵 现金</span><span class="amount" id="assetCash">¥0</span></div>
-            <div class="table-row"><span class="label">&nbsp;&nbsp;📊 投资组合</span><span class="amount" id="assetInvestments">¥0</span></div>
-            <div class="table-row"><span class="label">&nbsp;&nbsp;🏘️ 房产</span><span class="amount" id="assetRealEstate">¥0</span></div>
-            <div class="table-row"><span class="label">&nbsp;&nbsp;🚗 车辆</span><span class="amount" id="assetVehicle">¥0</span></div>
+            <div class="table-row" style="font-size:.78em;color:#666;padding:2px 10px;border-bottom:1px dashed #eee"><span class="label">📊 市场</span><span class="amount" id="marketIndicatorDesk" style="font-weight:500;font-size:.95em"></span></div>
+            <div class="table-row expand-head" data-target="investDesktopItems"><span class="label"><span class="expand-arrow">▶</span>&nbsp;📊 投资组合</span><span class="amount" id="assetInvestments">¥0</span></div>
+            <div id="investDesktopItems" class="sub-items"></div>
+            <div class="table-row expand-head" data-target="propDesktopItems"><span class="label"><span class="expand-arrow">▶</span>&nbsp;🏘️ 房产</span><span class="amount" id="assetRealEstate">¥0</span></div>
+            <div id="propDesktopItems" class="sub-items"></div>
+            <div class="table-row expand-head" data-target="vehDesktopItems"><span class="label"><span class="expand-arrow">▶</span>&nbsp;🚗 车辆</span><span class="amount" id="assetVehicle">¥0</span></div>
+            <div id="vehDesktopItems" class="sub-items"></div>
             <div class="table-row" style="background:#fdedec;font-weight:700;margin-top:8px"><span class="label">💳 负债</span><span class="amount negative" id="totalLiabilities">¥0</span></div>
-            <div class="table-row"><span class="label">&nbsp;&nbsp;🏦 贷款</span><span class="amount negative" id="liabLoans">¥0</span></div>
+            <div class="table-row expand-head" data-target="loanDesktopItems"><span class="label"><span class="expand-arrow">▶</span>&nbsp;🏦 贷款</span><span class="amount negative" id="liabLoans">¥0</span></div>
+            <div id="loanDesktopItems" class="sub-items"></div>
             <div class="table-row"><span class="label">&nbsp;&nbsp;💳 信用卡欠款</span><span class="amount negative" id="liabCredit">¥0</span></div>
           </div>
         </div>
@@ -308,6 +352,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Micr
             <div class="table-row"><span class="label">&nbsp;&nbsp;🏦 贷款月供</span><span class="amount negative" id="expLoan">¥0</span></div>
             <div class="table-row"><span class="label">&nbsp;&nbsp;💳 信用卡利息</span><span class="amount negative" id="expCredit">¥0</span></div>
             <div class="table-row"><span class="label">&nbsp;&nbsp;👶 子女费用</span><span class="amount negative" id="expChild">¥0</span></div>
+            <div class="table-row"><span class="label">&nbsp;&nbsp;🚗 养车费</span><span class="amount negative" id="expVehicleRun">¥0</span></div>
           </div>
         </div>
       </div>
@@ -350,11 +395,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Micr
       <div class="table-body">
         <div class="table-row" style="background:#eafaf1;font-weight:700;padding:5px 10px;font-size:.82em"><span class="label">🏠 资产</span><span class="amount positive" id="fmAssets">¥0</span></div>
         <div class="table-row" style="padding:4px 10px;font-size:.78em"><span class="label">&nbsp;&nbsp;💵 现金</span><span class="amount" id="fmCash">¥0</span></div>
-        <div class="table-row" style="padding:4px 10px;font-size:.78em"><span class="label">&nbsp;&nbsp;📊 投资组合</span><span class="amount" id="fmInvestments">¥0</span></div>
-        <div class="table-row" style="padding:4px 10px;font-size:.78em"><span class="label">&nbsp;&nbsp;🏘️ 房产</span><span class="amount" id="fmRealEstate">¥0</span></div>
-        <div class="table-row" style="padding:4px 10px;font-size:.78em"><span class="label">&nbsp;&nbsp;🚗 车辆</span><span class="amount" id="fmVehicle">¥0</span></div>
+        <div class="table-row" style="padding:4px 10px;font-size:.72em;color:#666;border-bottom:1px dashed #eee"><span class="label">📊 市场</span><span class="amount" id="marketIndicatorMobile" style="font-weight:500;font-size:.9em"></span></div>
+        <div class="table-row expand-head" data-target="investSubItems" style="padding:4px 10px;font-size:.78em;cursor:pointer"><span class="label"><span class="expand-arrow">▶</span>&nbsp;📊 投资组合</span><span class="amount" id="fmInvestments">¥0</span></div>
+        <div id="investSubItems" class="sub-items"></div>
+      <div class="table-row expand-head" data-target="propSubItems" style="padding:4px 10px;font-size:.78em;cursor:pointer"><span class="label"><span class="expand-arrow">▶</span>&nbsp;🏘️ 房产</span><span class="amount" id="fmRealEstate">¥0</span></div>
+        <div id="propSubItems" class="sub-items"></div>
+      <div class="table-row expand-head" data-target="vehSubItems" style="padding:4px 10px;font-size:.78em;cursor:pointer"><span class="label"><span class="expand-arrow">▶</span>&nbsp;🚗 车辆</span><span class="amount" id="fmVehicle">¥0</span></div>
+        <div id="vehSubItems" class="sub-items"></div>
         <div class="table-row" style="background:#fdedec;font-weight:700;padding:5px 10px;font-size:.82em"><span class="label">💳 负债</span><span class="amount negative" id="fmLiability">¥0</span></div>
-        <div class="table-row" style="padding:4px 10px;font-size:.78em"><span class="label">&nbsp;&nbsp;🏦 贷款</span><span class="amount negative" id="fmLoans">¥0</span></div>
+      <div class="table-row expand-head" data-target="loanSubItems" style="padding:4px 10px;font-size:.78em;cursor:pointer"><span class="label"><span class="expand-arrow">▶</span>&nbsp;🏦 贷款</span><span class="amount negative" id="fmLoans">¥0</span></div>
+        <div id="loanSubItems" class="sub-items"></div>
         <div class="table-row" style="padding:4px 10px;font-size:.78em"><span class="label">&nbsp;&nbsp;💳 信用卡欠款</span><span class="amount negative" id="fmCredit">¥0</span></div>
       </div>
     </div>
@@ -371,6 +421,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Micr
         <div class="table-row" style="padding:4px 10px;font-size:.78em"><span class="label">&nbsp;&nbsp;🏦 月供</span><span class="amount negative" id="fmLoanPay">¥0</span></div>
         <div class="table-row" style="padding:4px 10px;font-size:.78em"><span class="label">&nbsp;&nbsp;💳 信用卡利息</span><span class="amount negative" id="fmCreditInt">¥0</span></div>
         <div class="table-row" style="padding:4px 10px;font-size:.78em"><span class="label">&nbsp;&nbsp;👶 子女</span><span class="amount negative" id="fmChild">¥0</span></div>
+        <div class="table-row" style="padding:4px 10px;font-size:.78em"><span class="label">&nbsp;&nbsp;🚗 养车费</span><span class="amount negative" id="fmVehicleRunningCost">¥0</span></div>
       </div>
     </div>
   </div>
@@ -381,6 +432,25 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Micr
   <h2>恭喜获得财务自由！</h2>
   <p id="victoryMsg">你的被动收入已经超过了月支出！<br>从"老鼠赛跑"中成功脱离！</p>
   <div style="font-size:.95em;color:#555;margin-bottom:8px"><b>第 <span id="victoryMonth">1</span> 个月 · <span id="victoryRound">1</span> 轮</b></div>
+  <!-- V3: 胜利路径 -->
+  <div id="victoryWinPaths" class="review-winpaths" style="display:none"></div>
+  <!-- V3: 复盘报告 -->
+  <div id="reviewPanel" class="review-panel" style="display:none">
+    <h3>📋 人生复盘</h3>
+    <div class="review-grid">
+      <div>角色：<span id="rChar">--</span></div>
+      <div>经历：<span id="rDuration">--</span></div>
+      <div>净资产：<span id="rNetWorth">--</span></div>
+      <div>主动收入：<span id="rActiveIncome">--</span>/月</div>
+      <div>副业收入：<span id="rSideIncome">--</span>/月</div>
+      <div>被动收入：<span id="rPassiveIncome">--</span>/月</div>
+      <div>月支出：<span id="rExpense">--</span>/月</div>
+      <div>现金缓冲：<span id="rCashBuffer">--</span>个月</div>
+      <div>债务比率：<span id="rDebtRatio">--</span>%</div>
+      <div>生活状态：<span id="rLifeState">--</span></div>
+    </div>
+    <div id="rPathLabel" class="review-path">路线标签：--</div>
+  </div>
   <div class="leaderboard" id="leaderboard"><div class="lb-empty">加载中...</div></div>
   <button class="restart-btn" onclick="showCharSelect()">🔄 重新开始</button>
 </div>
@@ -450,14 +520,14 @@ const CHARACTERS = [
     desc:'IT工程师，高收入，业余接私活，有一套公寓。',
     salary:15000,living:5000,cash:20000,
     loan:1400000,loanPay:5250,credit:0,creditInt:0,
-    child:1000,vehicle:100000,investments:30000,realEstate:2000000,sideIncome:1500,vehicleExpense:1500
+    child:1000,vehicle:100000,investments:30000,realEstate:2000000,sideIncome:1500,vehicleRunningCost:1500
   },
   {
     id:'doctor',tag:'easy',tagText:'轻松',emoji:'👨‍⚕️',name:'医生',
     desc:'主任医师，收入丰厚，业余会诊，住别墅。',
     salary:22000,living:6000,cash:30000,
     loan:3500000,loanPay:13125,credit:0,creditInt:0,
-    child:2000,vehicle:200000,investments:50000,realEstate:5000000,sideIncome:3000,vehicleExpense:3000
+    child:2000,vehicle:200000,investments:50000,realEstate:5000000,sideIncome:3000,vehicleRunningCost:3000
   }
 ];
 
@@ -482,14 +552,14 @@ function initGame(charId, mode){
     loans: isEasy ? 0 : C.loan,
     creditCard: isEasy ? 0 : C.credit,
     salary: isEasy ? 12000 : C.salary,
-    dividendIncome: isEasy ? 600 : (C.investments||0)>0 ? Math.round((C.investments||0)*0.06/12) : 500,
+    dividendIncome: isEasy ? 600 : (C.investments||0)>0 ? Math.round((C.investments||0)*0.06/12) : 0,
     rentIncome: 0,
     sideIncome: isEasy ? 0 : (C.sideIncome||0),
     childExpense: isEasy ? 0 : C.child,
     livingExpense: isEasy ? 1000 : C.living,
     loanPayment: isEasy ? 0 : C.loanPay,
     creditInterest: isEasy ? 0 : C.creditInt,
-    vehicleExpense: isEasy ? 0 : (C.vehicleExpense||0),
+    vehicleRunningCost: isEasy ? 0 : (C.vehicleRunningCost||0),
     round: 0,
     month: 1,
     roundInMonth: 0,
@@ -500,10 +570,67 @@ function initGame(charId, mode){
     boardPos: 0,
     stockShares: 0,
     _stockPrice: 50,
+    _prevStockPrice: 50,
     _marketMultiplier: 1,
+    _marketRegime: 'sideways',
+    _marketMonthsLeft: 3,
+    _marketIndex: 100,
+    _lowRiskNav: 100,
+    _growthNav: 100,
+    _goldPrice: 100,
     hasChildren: isEasy ? false : C.child > 0,
-    hasInsurance: false
+    hasInsurance: false,
+    lifeState: 55,
+    _autoIncome: 0,
+    _gigIncome: 0,
+    monthlyBulletins: [],
+    careerLevel: 1,
+    careerSkill: 0,
+    careerPerformance: 50,
+    careerStability: 50,
+    rentalCount: 0,
+    hasOwnHome: (C.realEstate||0) > 0,
+    insuranceLevel: 0,
+    _bankruptcyWarned: false,
+    // V3 新增字段
+    _investCost: 0,
+    stockProfit: 0,
+    winPaths: [],
+    _pathLabel: '',
+    _cooldowns: {},
+    _scheduled: [],
+    _pendingScheduled: [],
+    // 资产/负债/收入来源细分追踪
+    _properties: [],
+    _investments: [],
+    _loans: [],
+    _incomeSources: [],
+    _vehicles: [],
+    _luck: 0
   };
+  // 初始资产追踪数据（含新手模式）
+  if(G.investments > 0){
+    const initDiv = Math.round(G.investments * 0.06 / 12);
+    G._investments.push({id:'inv_start', name:'初始投资组合', amount:G.investments, dividend:initDiv, type:'stock'});
+  }
+  if(G.realEstate > 0){
+    G._properties.push({id:'prop_home', name:'标准住宅', value:G.realEstate, rent:0, type:'self_use'});
+  }
+  if(G.vehicle > 0){
+    G._vehicles.push({id:'veh_start', name:'家用轿车', value:G.vehicle, expense:G.vehicleRunningCost||0});
+  }
+  if(G.loans > 0){
+    const loanTypes = {1400000:'房贷', 3500000:'房贷', 70000:'车贷', 140000:'车贷', 5000:'消费贷'};
+    const name = loanTypes[G.loans] || '银行贷款';
+    G._loans.push({id:'loan_start', name:name, amount:G.loans, payment:G.loanPayment, type:'mortgage'});
+  }
+  if(G.sideIncome > 0){
+    G._incomeSources.push({id:'inc_side_init', name:'副业收入', amount:G.sideIncome, type:'side'});
+  }
+  if(G.rentIncome > 0){
+    G._incomeSources.push({id:'inc_rent_init', name:'租金收入', amount:G.rentIncome, type:'passive'});
+  }
+
   unlockedAchievements = new Set();
   prevCash = G.cash;
   prevPassive = 0;
@@ -528,15 +655,151 @@ function initGame(charId, mode){
 
 function calcTotalExpense() {
   if(!G) return 0;
-  return G.livingExpense + G.loanPayment + G.creditInterest + G.childExpense + G.vehicleExpense;
+  return G.livingExpense + G.loanPayment + G.creditInterest + G.childExpense + G.vehicleRunningCost;
 }
 function calcTotalPassive() {
   if(!G) return 0;
-  return G.dividendIncome + G.rentIncome + G.sideIncome;
+  return G.dividendIncome + G.rentIncome + G.sideIncome + (G._autoIncome||0);
 }
+function calcTotalSideIncome() {
+  if(!G) return 0;
+  return G.sideIncome + (G._gigIncome||0);
+}
+// 新增常量定义，供 flashValue 使用
+const POSITIVE_RISE = new Set(['fmIncome','fmCash','fmAssets','fmNetWorth','fmCashFlow','fmSalary','fmDividend','fmRent','fmSide','fmInvestments','fmRealEstate','fmVehicle']);
+const NEGATIVE_RISE = new Set(['fmExpense','fmLiving','fmLoanPay','fmCreditInt','fmChild','fmVehicleRunningCost','fmLiability','fmLoans','fmCredit']);
+// ===== V3: 事件引擎 =====
 function calcTotalIncome() {
   if(!G) return 0;
   return G.salary + calcTotalPassive();
+}
+
+function getCashBufferMonths(){
+  if(!G) return 0;
+  const exp = calcTotalExpense();
+  return exp > 0 ? G.cash / exp : 99;
+}
+
+// ===== V3: 事件引擎 =====
+function getEligibleEvents(){
+  if(!G) return [];
+  return EVENTS.filter(e => {
+    // 跳过冷却中的事件
+    if(G._cooldowns && G._cooldowns[e.id] && G._cooldowns[e.id] > G.month) return false;
+    // 如果有 isEligible 函数，调用它
+    if(typeof e.isEligible === 'function') return e.isEligible(G);
+    // 默认总是可用
+    return true;
+  });
+}
+
+function pickWeightedEvent(candidates){
+  if(!candidates || candidates.length === 0) return null;
+  const totalWeight = candidates.reduce((sum, e) => sum + (e.weight || 10), 0);
+  let r = Math.random() * totalWeight;
+  for(const e of candidates){
+    r -= (e.weight || 10);
+    if(r <= 0) return e;
+  }
+  return candidates[candidates.length - 1];
+}
+
+function setCooldown(eventId, months){
+  if(!G._cooldowns) G._cooldowns = {};
+  G._cooldowns[eventId] = G.month + (months || 6);
+}
+
+function scheduleEvent(eventId, delayMonths){
+  if(!G._scheduled) G._scheduled = [];
+  G._scheduled.push({eventId: eventId, dueMonth: G.month + (delayMonths || 2)});
+}
+
+// ===== V3: 生活状态影响概率修正 =====
+function getLifeStateModifier(){
+  if(!G) return 0;
+  if(G.lifeState >= 70) return 0.1;  // +10%
+  if(G.lifeState >= 40) return 0;    // 正常
+  if(G.lifeState >= 20) return -0.08; // -8%
+  return -0.15; // 0-19: -15%
+}
+
+// ===== 生活状态系统 =====
+function settleLifeState() {
+  if(!G) return;
+  // 生活状态自然衰减
+  G.lifeState = Math.max(0, G.lifeState - 2);
+  // 根据现金流调整生活状态
+  const cf = calcTotalIncome() - calcTotalExpense();
+  if(cf > 5000) G.lifeState = Math.min(100, G.lifeState + 3);
+  else if(cf > 2000) G.lifeState = Math.min(100, G.lifeState + 1);
+  else if(cf < 0) G.lifeState = Math.max(0, G.lifeState - 5);
+  // 自动收入和零工收入
+  G._autoIncome = Math.floor(G.lifeState * 20);
+  G._gigIncome = Math.floor(Math.random() * 500);
+  // 月报
+  G.monthlyBulletins = G.monthlyBulletins || [];
+  if(G.lifeState < 20) G.monthlyBulletins.push('⚠️ 生活质量严重下降');
+  else if(G.lifeState > 80) G.monthlyBulletins.push('😊 生活质量良好');
+  if(G.monthlyBulletins.length > 3) G.monthlyBulletins.shift();
+  // 职场稳定性波动
+  G.careerStability = Math.max(0, Math.min(100, Math.round(G.careerStability + (Math.random() * 10 - 5))));
+}
+
+// ===== V3: 多维胜利条件 + 3层胜利结局 =====
+function calcNetWorth(){
+  if(!G) return 0;
+  return G.cash + G.investments + G.realEstate + (G.vehicle||0) - G.loans - (G.creditCard||0);
+}
+function calcTotalInvestProfit(){
+  if(!G) return 0;
+  return (G.investments - G._investCost||0) + (G.stockProfit||0);
+}
+function calcPathLabel(){
+  if(!G) return '';
+  const hasRent = G.rentIncome > 0;
+  const hasSide = calcTotalSideIncome() > 0;
+  const highCareer = G.careerSkill >= 20;
+  const debtRatio = calcTotalExpense() > 0 ? (G.loanPayment||0) / calcTotalIncome() : 0;
+  const cashBuffer = calcTotalExpense() > 0 ? G.cash / calcTotalExpense() : 0;
+  const tp=calcTotalPassive(),te=calcTotalExpense();
+  // 高杠杆脆弱自由
+  if(tp >= te && cashBuffer < 3 && debtRatio > 0.25) return '高杠杆脆弱自由';
+  // 职业复利型自由
+  if(highCareer && tp >= te && G.dividendIncome > G.rentIncome) return '职业复利型自由';
+  // 现金流房东型自由
+  if(hasRent && G.rentIncome >= te * 0.5) return '现金流房东型自由';
+  // 系统化副业型自由
+  if(hasSide && tp >= te && G.sideIncome >= calcTotalIncome() * 0.3) return '系统化副业型自由';
+  // 节流稳态型自由
+  if(debtRatio <= 0.1 && cashBuffer >= 6) return '节流稳态型自由';
+  // 稳健保障型自由
+  if(G.insuranceLevel >= 2 && debtRatio <= 0.15) return '稳健保障型自由';
+  // 综合型自由
+  return '综合型自由';
+}
+function checkGameEnd(){
+  if(!G) return null;
+  const tp=calcTotalPassive(),te=calcTotalExpense();
+  const nw=calcNetWorth();
+  const totalInvestProfit=calcTotalInvestProfit();
+  const winPaths=[];
+  // 财务自由者（原有条件）
+  if(tp >= te) winPaths.push('🏆 财务自由者');
+  // 千万富翁
+  if(nw >= 10000000) winPaths.push('💰 千万富翁');
+  // 投资大师（累计投资收益≥100万）
+  if(totalInvestProfit >= 1000000) winPaths.push('📈 投资大师');
+  // 无债一身轻
+  if(G.loans <= 0 && nw >= 500000) winPaths.push('🎉 无债一身轻');
+  // 风险保障
+  if(G.insuranceLevel >= 3) winPaths.push('🛡️ 全面保障');
+  else if(G.insuranceLevel >= 2) winPaths.push('🛡️ 风险管理者');
+  if(winPaths.length > 0){
+    G.winPaths = winPaths;
+    G._pathLabel = calcPathLabel();
+    return winPaths;
+  }
+  return null;
 }
 
 // ===== 事件定义（16种，重平衡） =====
@@ -557,12 +820,13 @@ const EVENTS = [
 // 2: 股票投资（带价格波动，自助买卖）
 {
   id:'stock',cellType:'inv',title:'📈 股票行情',badge:'badge-investment',badgeText:'💰 实时股价',
+  weight: 10, cooldownMonths: 1,
   desc:()=>{
-    if(!G._stockPrice)G._stockPrice=50;
-    const change=-5+Math.floor(Math.random()*11);
-    G._stockPrice=Math.max(5,G._stockPrice+change);
-    const dir=change>=0?'📈 上涨':'📉 下跌';
-    return `当前股价：¥${G._stockPrice}/股 ${dir} ${Math.abs(change)}元\n你的持股：${G.stockShares||0}股，市值 ¥${((G.stockShares||0)*G._stockPrice).toLocaleString()}`;
+    const price = G._stockPrice || 50;
+    const prev = G._prevStockPrice || 50;
+    const dir = price >= prev ? '📈 上涨' : '📉 下跌';
+    G._prevStockPrice = price;
+    return `当前股价：¥${price}/股 ${dir}\n市场指数：${(G._marketIndex || 100).toFixed(1)}（${G._marketRegime === 'bull' ? '📈 牛市' : G._marketRegime === 'bear' ? '📉 熊市' : '➡️ 震荡'}）\n你的持股：${G.stockShares||0}股，市值 ¥${((G.stockShares||0)*price).toLocaleString()}`;
   },
   choices:()=>{
     const price=G._stockPrice||50;
@@ -576,7 +840,8 @@ const EVENTS = [
         const n=prompt('你想买入多少股？\n股价 ¥'+price+'/股\n最多可买 '+maxShares+' 股\n预估花费 ¥'+(maxShares*price).toLocaleString(), Math.min(100,maxShares));
         if(n&&parseInt(n)>0&&parseInt(n)<=maxShares){
           const q=parseInt(n);const cost=q*price;
-          G.cash-=cost;G.stockShares=(G.stockShares||0)+q;G.investments+=cost;G.dividendIncome+=Math.round(cost*0.06/12);
+          G.cash-=cost;G.stockShares=(G.stockShares||0)+q;G.investments+=cost;G._investCost=(G._investCost||0)+cost;G.dividendIncome+=Math.round(cost*0.06/12);
+          G._investments.push({id:'inv_'+Date.now(), name:'股票投资', amount:cost, dividend:Math.round(cost*0.06/12), type:'stock'});
           addLog('买入'+q+'股@¥'+price+'，花费 ¥'+cost.toLocaleString());
           return{cashDelta:-cost,msg:'买入'+q+'股 @¥'+price};
         }else if(n&&parseInt(n)>maxShares){
@@ -594,7 +859,10 @@ const EVENTS = [
           if(n&&parseInt(n)>0&&parseInt(n)<=maxSell){
             const q=parseInt(n);const proceeds=q*price;
             G.cash+=proceeds;G.stockShares-=q;G.investments=Math.max(0,G.investments-proceeds);
+            const avgCost=(G._investCost||0)/((G.stockShares||0)+q||1);const profitPart=proceeds-q*avgCost;G.stockProfit=(G.stockProfit||0)+profitPart;G._investCost=Math.max(0,(G._investCost||0)-q*avgCost);
             G.dividendIncome=Math.max(0,G.dividendIncome-Math.round(proceeds*0.06/12));
+            // 从追踪数组移除已卖出部分（LIFO）
+            (function(){let r=q*price;for(let i=G._investments.length-1;i>=0&&r>0;i--){const sub=Math.min(r,G._investments[i].amount);G._investments[i].amount-=sub;G._investments[i].dividend=Math.round(G._investments[i].amount*0.06/12);r-=sub;if(G._investments[i].amount<=0)G._investments.splice(i,1);}})();
             addLog('卖出'+q+'股@¥'+price+'，收入 ¥'+proceeds.toLocaleString());
             return{cashDelta:proceeds,msg:'卖出'+q+'股 @¥'+price};
           }else if(n&&parseInt(n)>maxSell){
@@ -605,7 +873,7 @@ const EVENTS = [
         }});
       // 全部清仓
       choices.push({text:'🔥 全部清仓 ¥'+(price*shares).toLocaleString(),type:'danger',
-        effect:()=>{const proceeds=price*shares;G.cash+=proceeds;G.dividendIncome=Math.max(0,G.dividendIncome-Math.round(G.investments*0.06/12));G.stockShares=0;G.investments=0;addLog('全部清仓！收入 ¥'+proceeds.toLocaleString());return{cashDelta:proceeds,msg:'全部清仓 ¥'+proceeds.toLocaleString()};}});
+        effect:()=>{const proceeds=price*shares;G.cash+=proceeds;const profit=proceeds-(G._investCost||0);G.stockProfit=(G.stockProfit||0)+profit;G._investCost=0;G.dividendIncome=Math.max(0,G.dividendIncome-Math.round(G.investments*0.06/12));G.stockShares=0;G.investments=0;G._investments=[];addLog('全部清仓！收入 ¥'+proceeds.toLocaleString()+(profit>0?' 盈利 ¥'+Math.round(profit).toLocaleString():' 亏损 ¥'+Math.round(Math.abs(profit)).toLocaleString()));return{cashDelta:proceeds,msg:'全部清仓 ¥'+proceeds.toLocaleString()};}});
     }
     choices.push({text:'❌ 观望',type:'danger',effect:()=>{addLog('观望股市');return{cashDelta:0,msg:'保持观望'}}});
     return choices;
@@ -614,23 +882,24 @@ const EVENTS = [
 // 3: 房产投资
 {
   id:'realestate',cellType:'inv',title:'🏘️ 房产投资',badge:'badge-investment',badgeText:'🏠 资产投资',
+  weight: 10, cooldownMonths: 6,
   desc:G&&G.realEstate>0?'有新的楼盘开盘，现有房产可出售。':'可选不同户型，租金收益各不相同。',
   choices:[
-    {text:'🏠 出售房产套现',type:'primary',condition:()=>G&&G.realEstate>=100000,require:"持有房产",
+    {text:'🏠 出售房产套现',type:'primary',condition:()=>G&&G.realEstate>=100000,require:'持有房产',
       effect:()=>{
         const mkt=G._marketMultiplier||1;
         const price=Math.floor(G.realEstate*mkt);
         G.cash+=price;G.rentIncome=Math.max(0,G.rentIncome-Math.round(G.realEstate*0.04/12));
         addLog(`出售房产！获现 ¥${price.toLocaleString()}`+(mkt>1?`（溢价 +${Math.round((mkt-1)*100)}%）`:''));
-        G.realEstate=0;return{cashDelta:price,msg:`出售获现 ¥${price.toLocaleString()}`};}},
-    {text:'🏡 小户型 ¥500,000',type:'primary',condition:()=>G&&G.cash>=150000,require:"首付≥¥150,000",
-      effect:()=>{const p=500000;const dp=150000;G.cash-=dp;G.loans+=(p-dp);G.realEstate+=p;G.rentIncome+=1700;const mp=Math.round((p-dp)*0.045/12);G.loanPayment+=mp;addLog(`购入小户型！首付 ¥150,000，贷款 ¥${(p-dp).toLocaleString()}，月供 ¥${mp}，月租 +¥1,700`);return{cashDelta:-dp,msg:`首付 ¥150,000，月租 ¥1,700`};}},
-    {text:'🏠 标准住宅 ¥2,000,000',type:'primary',condition:()=>G&&G.cash>=600000,require:"首付≥¥600,000",
-      effect:()=>{const p=2000000;const dp=600000;G.cash-=dp;G.loans+=(p-dp);G.realEstate+=p;G.rentIncome+=6700;const mp=Math.round((p-dp)*0.045/12);G.loanPayment+=mp;addLog(`购入住宅！首付 ¥600,000，贷款 ¥${(p-dp).toLocaleString()}，月供 ¥${mp}，月租 +¥6,700`);return{cashDelta:-dp,msg:`首付 ¥600,000，月租 ¥6,700`};}},
-    {text:'🏡 别墅 ¥5,000,000',type:'primary',condition:()=>G&&G.cash>=1500000,require:"首付≥¥1,500,000",
-      effect:()=>{const p=5000000;const dp=1500000;G.cash-=dp;G.loans+=(p-dp);G.realEstate+=p;G.rentIncome+=16700;const mp=Math.round((p-dp)*0.045/12);G.loanPayment+=mp;addLog(`购入别墅！首付 ¥1,500,000，贷款 ¥${(p-dp).toLocaleString()}，月供 ¥${mp}，月租 +¥16,700`);return{cashDelta:-dp,msg:`首付 ¥1.5M，月租 ¥16,700`};}},
-    {text:'🏰 豪华别墅 ¥10,000,000',type:'primary',condition:()=>G&&G.cash>=3000000,require:"首付≥¥3,000,000",
-      effect:()=>{const p=10000000;const dp=3000000;G.cash-=dp;G.loans+=(p-dp);G.realEstate+=p;G.rentIncome+=33300;const mp=Math.round((p-dp)*0.045/12);G.loanPayment+=mp;addLog(`购入豪华别墅！首付 ¥3,000,000，贷款 ¥${(p-dp).toLocaleString()}，月供 ¥${mp}，月租 +¥33,300`);return{cashDelta:-dp,msg:`首付 ¥3M，月租 ¥33,300`};}},
+        G.realEstate=0;G._properties=[];return{cashDelta:price,msg:`出售获现 ¥${price.toLocaleString()}`};}},
+    {text:'🏡 小户型 ¥500,000',type:'primary',condition:()=>G&&G.cash>=150000,require:'首付≥¥150,000',
+      effect:()=>{const p=500000;const dp=150000;G.cash-=dp;G.loans+=(p-dp);G.realEstate+=p;G.rentIncome+=1700;const mp=Math.round((p-dp)*0.045/12);G.loanPayment+=mp;G._properties.push({id:'prop_'+Date.now(), name:'小户型', value:p, rent:1700, type:'rental'});G._loans.push({id:'loan_'+Date.now(), name:'小户型房贷', amount:p-dp, payment:mp, type:'mortgage'});addLog(`购入小户型！首付 ¥150,000，贷款 ¥${(p-dp).toLocaleString()}，月供 ¥${mp}，月租 +¥1,700`);return{cashDelta:-dp,msg:`首付 ¥150,000，月租 ¥1,700`};}},
+    {text:'🏠 标准住宅 ¥2,000,000',type:'primary',condition:()=>G&&G.cash>=600000,require:'首付≥¥600,000',
+      effect:()=>{const p=2000000;const dp=600000;G.cash-=dp;G.loans+=(p-dp);G.realEstate+=p;G.rentIncome+=6700;const mp=Math.round((p-dp)*0.045/12);G.loanPayment+=mp;G._properties.push({id:'prop_'+Date.now(), name:'标准住宅', value:p, rent:6700, type:'rental'});G._loans.push({id:'loan_'+Date.now(), name:'标准住宅房贷', amount:p-dp, payment:mp, type:'mortgage'});addLog(`购入住宅！首付 ¥600,000，贷款 ¥${(p-dp).toLocaleString()}，月供 ¥${mp}，月租 +¥6,700`);return{cashDelta:-dp,msg:`首付 ¥600,000，月租 ¥6,700`};}},
+    {text:'🏡 别墅 ¥5,000,000',type:'primary',condition:()=>G&&G.cash>=1500000,require:'首付≥¥1,500,000',
+      effect:()=>{const p=5000000;const dp=1500000;G.cash-=dp;G.loans+=(p-dp);G.realEstate+=p;G.rentIncome+=16700;const mp=Math.round((p-dp)*0.045/12);G.loanPayment+=mp;G._properties.push({id:'prop_'+Date.now(), name:'别墅', value:p, rent:16700, type:'rental'});G._loans.push({id:'loan_'+Date.now(), name:'别墅房贷', amount:p-dp, payment:mp, type:'mortgage'});addLog(`购入别墅！首付 ¥1,500,000，贷款 ¥${(p-dp).toLocaleString()}，月供 ¥${mp}，月租 +¥16,700`);return{cashDelta:-dp,msg:`首付 ¥1.5M，月租 ¥16,700`};}},
+    {text:'🏰 豪华别墅 ¥10,000,000',type:'primary',condition:()=>G&&G.cash>=3000000,require:'首付≥¥3,000,000',
+      effect:()=>{const p=10000000;const dp=3000000;G.cash-=dp;G.loans+=(p-dp);G.realEstate+=p;G.rentIncome+=33300;const mp=Math.round((p-dp)*0.045/12);G.loanPayment+=mp;G._properties.push({id:'prop_'+Date.now(), name:'豪华别墅', value:p, rent:33300, type:'rental'});G._loans.push({id:'loan_'+Date.now(), name:'豪华别墅房贷', amount:p-dp, payment:mp, type:'mortgage'});addLog(`购入豪华别墅！首付 ¥3,000,000，贷款 ¥${(p-dp).toLocaleString()}，月供 ¥${mp}，月租 +¥33,300`);return{cashDelta:-dp,msg:`首付 ¥3M，月租 ¥33,300`};}},
     {text:'❌ 不操作',type:'danger',effect:()=>{addLog('放弃操作');return{cashDelta:0,msg:'放弃'}}}
   ]
 },
@@ -655,7 +924,7 @@ const EVENTS = [
     {text:'🎊 全部收下',type:'primary',
       effect:()=>{const a=500+Math.floor(Math.random()*1500);G.cash+=a;addLog(`意外收入 +¥${a}`);return{cashDelta:a,msg:`获得 ¥${a}`};}},
     {text:'📈 投入投资',type:'primary',
-      effect:()=>{const a=500+Math.floor(Math.random()*1500);G.investments+=Math.floor(a*0.8);G.dividendIncome+=Math.round(a*0.8*0.06/12);G.cash+=Math.floor(a*0.2);addLog(`¥${a} 其中80%投入投资`);return{cashDelta:Math.floor(a*0.2),msg:`¥${Math.floor(a*0.8)} 投入投资`};}}
+      effect:()=>{const a=500+Math.floor(Math.random()*1500);const invAmt=Math.floor(a*0.8);G.investments+=invAmt;G.dividendIncome+=Math.round(invAmt*0.06/12);G.cash+=Math.floor(a*0.2);G._investments.push({id:'inv_'+Date.now(), name:'意外之财投资', amount:invAmt, dividend:Math.round(invAmt*0.06/12), type:'stock'});addLog(`¥${a} 其中80%投入投资`);return{cashDelta:Math.floor(a*0.2),msg:`¥${invAmt} 投入投资`};}}
   ]
 },
 // 6: 紧急支出
@@ -664,7 +933,7 @@ const EVENTS = [
   desc:'家里水管爆了/车子需要维修！费用 ¥3,000。',
   choices:[
     {text:'💵 现金支付',type:'',condition:()=>G&&G.cash>=3000,require:"需≥¥3,000",effect:()=>{G.cash-=3000;addLog('应急 -¥3,000（现金）');return{cashDelta:-3000,msg:'现金支付 ¥3,000'};}},
-    {text:'🏦 贷款支付',type:'loan',condition:()=>G&&G.cash<3000,effect:()=>{const s=3000-G.cash;G.cash=0;G.loans+=s;const mp=Math.round(s*0.06/12);G.loanPayment+=mp;addLog(`应急贷款 ¥${s}，月供 +¥${mp}`);return{cashDelta:-G.cash,msg:`贷款 ¥${s}`};}},
+    {text:'🏦 贷款支付',type:'loan',condition:()=>G&&G.cash<3000,effect:()=>{const s=3000-G.cash;G.cash=0;G.loans+=s;const mp=Math.round(s*0.06/12);G.loanPayment+=mp;G._loans.push({id:'loan_'+Date.now(), name:'应急贷款', amount:s, payment:mp, type:'personal'});addLog(`应急贷款 ¥${s}，月供 +¥${mp}`);return{cashDelta:-G.cash,msg:`贷款 ¥${s}`};}},
     {text:'💳 刷信用卡',type:'danger',effect:()=>{G.creditCard+=3000;G.creditInterest+=Math.round(3000*0.18/12);addLog(`应急刷信用卡，月利息 +¥${Math.round(3000*0.18/12)}`);return{cashDelta:0,msg:'信用卡垫付 ¥3,000'};}}
   ]
 },
@@ -674,9 +943,9 @@ const EVENTS = [
   desc:'朋友邀请你周末一起做点小生意。',
   choices:[
     {text:'🚀 投入 ¥1,000',type:'primary',condition:()=>G&&G.cash>=1000,require:"需≥¥1,000",
-      effect:()=>{G.cash-=1000;const inc=300+Math.floor(Math.random()*700);G.sideIncome+=inc;addLog(`副业 +¥${inc}/月`);return{cashDelta:-1000,msg:`月副业收入 +¥${inc}`};}},
+      effect:()=>{G.cash-=1000;const inc=300+Math.floor(Math.random()*700);G.sideIncome+=inc;G._incomeSources.push({id:'src_'+Date.now(), name:'副业（¥1,000投入）', amount:inc, type:'side'});addLog(`副业 +¥${inc}/月`);return{cashDelta:-1000,msg:`月副业收入 +¥${inc}`};}},
     {text:'🃏 小额尝试 ¥300',type:'',condition:()=>G&&G.cash>=300,require:"需≥¥300",
-      effect:()=>{G.cash-=300;const inc=100+Math.floor(Math.random()*300);G.sideIncome+=inc;addLog(`副业尝试 +¥${inc}/月`);return{cashDelta:-300,msg:`月副业收入 +¥${inc}`};}},
+      effect:()=>{G.cash-=300;const inc=100+Math.floor(Math.random()*300);G.sideIncome+=inc;G._incomeSources.push({id:'src_'+Date.now(), name:'小额副业尝试', amount:inc, type:'side'});addLog(`副业尝试 +¥${inc}/月`);return{cashDelta:-300,msg:`月副业收入 +¥${inc}`};}},
     {text:'❌ 不参与',type:'danger',effect:()=>{addLog('放弃副业');return{cashDelta:0,msg:'放弃副业'};}}
   ]
 },
@@ -687,9 +956,9 @@ const EVENTS = [
   choices:[
     {text:'🫣 持有不动',type:'primary',effect:()=>{addLog('坚持长期投资');return{cashDelta:0,msg:'长期持有'};}},
     {text:'😱 恐慌卖出',type:'danger',condition:()=>G&&G.investments>0,
-      effect:()=>{const loss=Math.floor(G.investments*0.1);G.cash+=G.investments-loss;G.dividendIncome=Math.max(0,G.dividendIncome-G.dividendIncome*0.3);addLog(`恐慌卖出！亏损 ¥${loss}`);G.investments=0;return{cashDelta:G.cash,msg:`卖出亏损 ¥${loss}`};}},
-    {text:'📈 逆势加仓 ¥2,000',type:'primary',condition:()=>G&&G.cash>=2000,require:"需≥¥2,000",
-      effect:()=>{const a=Math.min(G.cash,2000);G.cash-=a;G.investments+=a;G.dividendIncome+=Math.round(a*0.08/12);addLog(`加仓 ¥${a}`);return{cashDelta:-a,msg:`加仓 ¥${a}`};}}
+      effect:()=>{const loss=Math.floor(G.investments*0.1);G.cash+=G.investments-loss;G.dividendIncome=Math.max(0,G.dividendIncome-G.dividendIncome*0.3);addLog(`恐慌卖出！亏损 ¥${loss}`);G.investments=0;G._investments=[];return{cashDelta:G.cash,msg:`卖出亏损 ¥${loss}`};}},
+    {text:'📈 逆势加仓 ¥2,000',type:'primary',condition:()=>G&&G.cash>=2000,require:'需≥¥2,000',
+      effect:()=>{const a=Math.min(G.cash,2000);G.cash-=a;G.investments+=a;G.dividendIncome+=Math.round(a*0.08/12);G._investments.push({id:'inv_'+Date.now(), name:'逆势加仓', amount:a, dividend:Math.round(a*0.08/12), type:'stock'});addLog(`加仓 ¥${a}`);return{cashDelta:-a,msg:`加仓 ¥${a}`};}}
   ]
 },
 // 9: 学习提升
@@ -698,7 +967,7 @@ const EVENTS = [
   desc:'有职业技能培训班，可以提升收入潜力。',
   choices:[
     {text:'📖 报名 ¥2,000',type:'primary',condition:()=>G&&G.cash>=2000,require:"需≥¥2,000",
-      effect:()=>{G.cash-=2000;const b=300+Math.floor(Math.random()*500);G.salary+=Math.floor(b*0.3);G.dividendIncome+=Math.floor(b*0.3);G.sideIncome+=Math.floor(b*0.4);addLog(`学习提升！综合收入 +¥${b}/月`);return{cashDelta:-2000,msg:`综合收入 +¥${b}/月`};}},
+      effect:()=>{G.cash-=2000;const b=300+Math.floor(Math.random()*500);const sal=Math.floor(b*0.3);const div=Math.floor(b*0.3);const side=Math.floor(b*0.4);G.salary+=sal;G.dividendIncome+=div;G.sideIncome+=side;G._incomeSources.push({id:'src_'+Date.now(), name:'学习提升副业', amount:side, type:'side'});if(sal>0)G._incomeSources.push({id:'src_'+Date.now()+'_sal', name:'学习提升薪资', amount:sal, type:'active'});if(div>0)G._investments.push({id:'inv_'+Date.now()+'_div', name:'学习提升分红', amount:div*200, dividend:div, type:'stock'});addLog(`学习提升！综合收入 +¥${b}/月`);return{cashDelta:-2000,msg:`综合收入 +¥${b}/月`};}},
     {text:'❌ 不参加',type:'danger',effect:()=>{addLog('放弃学习');return{cashDelta:0,msg:'放弃学习'};}}
   ]
 },
@@ -708,13 +977,13 @@ const EVENTS = [
   desc:'银行推出优惠活动。',
   choices:[
     {text:'💪 还贷 ¥5,000',type:'primary',condition:()=>G&&G.loans>=5000&&G.cash>=5000,require:"贷款≥¥5,000",
-      effect:()=>{const p=5000;G.cash-=p;G.loans-=p;G.loanPayment=Math.round(G.loans*0.045/12);addLog(`还贷 ¥${p}，月供降低`);return{cashDelta:-p,msg:`还贷 ¥${p}`};}},
+      effect:()=>{const p=5000;G.cash-=p;G.loans-=p;G.loanPayment=Math.round(G.loans*0.045/12);(function(){let r=p;for(let i=G._loans.length-1;i>=0&&r>0;i--){const sub=Math.min(r,G._loans[i].amount);G._loans[i].amount-=sub;G._loans[i].payment=Math.round(G._loans[i].payment*(1-sub/(G._loans[i].amount+sub||1)));r-=sub;if(G._loans[i].amount<=0)G._loans.splice(i,1);}})();addLog(`还贷 ¥${p}，月供降低`);return{cashDelta:-p,msg:`还贷 ¥${p}`};}},
     {text:'💪 还贷 ¥20,000',type:'primary',condition:()=>G&&G.loans>=20000&&G.cash>=20000,require:"贷款≥¥20,000",
-      effect:()=>{const p=20000;G.cash-=p;G.loans-=p;G.loanPayment=Math.round(G.loans*0.045/12);addLog(`大额还贷 ¥${p}，月供大幅降低`);return{cashDelta:-p,msg:`还贷 ¥${p}`};}},
+      effect:()=>{const p=20000;G.cash-=p;G.loans-=p;G.loanPayment=Math.round(G.loans*0.045/12);(function(){let r=p;for(let i=G._loans.length-1;i>=0&&r>0;i--){const sub=Math.min(r,G._loans[i].amount);G._loans[i].amount-=sub;G._loans[i].payment=Math.round(G._loans[i].payment*(1-sub/(G._loans[i].amount+sub||1)));r-=sub;if(G._loans[i].amount<=0)G._loans.splice(i,1);}})();addLog(`大额还贷 ¥${p}，月供大幅降低`);return{cashDelta:-p,msg:`还贷 ¥${p}`};}},
     {text:'💪 还贷 ¥50,000',type:'warning',condition:()=>G&&G.loans>=50000&&G.cash>=50000,require:"贷款≥¥50,000",
-      effect:()=>{const p=50000;G.cash-=p;G.loans-=p;G.loanPayment=Math.round(G.loans*0.045/12);addLog(`巨额还贷 ¥${p}，月供大幅降低！`);return{cashDelta:-p,msg:`还贷 ¥${p}`};}},
+      effect:()=>{const p=50000;G.cash-=p;G.loans-=p;G.loanPayment=Math.round(G.loans*0.045/12);(function(){let r=p;for(let i=G._loans.length-1;i>=0&&r>0;i--){const sub=Math.min(r,G._loans[i].amount);G._loans[i].amount-=sub;G._loans[i].payment=Math.round(G._loans[i].payment*(1-sub/(G._loans[i].amount+sub||1)));r-=sub;if(G._loans[i].amount<=0)G._loans.splice(i,1);}})();addLog(`巨额还贷 ¥${p}，月供大幅降低！`);return{cashDelta:-p,msg:`还贷 ¥${p}`};}},
     {text:'💪 还贷 ¥100,000',type:'warning',condition:()=>G&&G.loans>=100000&&G.cash>=100000,require:"贷款≥¥100,000",
-      effect:()=>{const p=100000;G.cash-=p;G.loans-=p;G.loanPayment=Math.round(G.loans*0.045/12);addLog(`超巨额还贷 ¥${p}，月供大幅降低！`);return{cashDelta:-p,msg:`还贷 ¥${p}`};}},
+      effect:()=>{const p=100000;G.cash-=p;G.loans-=p;G.loanPayment=Math.round(G.loans*0.045/12);(function(){let r=p;for(let i=G._loans.length-1;i>=0&&r>0;i--){const sub=Math.min(r,G._loans[i].amount);G._loans[i].amount-=sub;G._loans[i].payment=Math.round(G._loans[i].payment*(1-sub/(G._loans[i].amount+sub||1)));r-=sub;if(G._loans[i].amount<=0)G._loans.splice(i,1);}})();addLog(`超巨额还贷 ¥${p}，月供大幅降低！`);return{cashDelta:-p,msg:`还贷 ¥${p}`};}},
     {text:'💳 还信用卡',type:'primary',condition:()=>G&&G.creditCard>0&&G.cash>=1000,
       effect:()=>{const p=Math.min(G.cash,G.creditCard);G.cash-=p;G.creditCard-=p;G.creditInterest=Math.round(G.creditCard*0.18/12);addLog(`还信用卡 ¥${p}`);return{cashDelta:-p,msg:`还信用卡 ¥${p}`};}},
     {text:'💪 自由还贷',type:'primary',condition:()=>G&&G.loans>0&&G.cash>0,
@@ -724,6 +993,7 @@ const EVENTS = [
         if(amount && amount>0 && amount<=maxCanPay){
           const p = parseInt(amount);
           G.cash-=p;G.loans-=p;G.loanPayment=Math.round(G.loans*0.045/12);
+          (function(){let r=p;for(let i=G._loans.length-1;i>=0&&r>0;i--){const sub=Math.min(r,G._loans[i].amount);G._loans[i].amount-=sub;G._loans[i].payment=Math.round(G._loans[i].payment*(1-sub/(G._loans[i].amount+sub||1)));r-=sub;if(G._loans[i].amount<=0)G._loans.splice(i,1);}})();
           addLog('自由还贷 ¥' + p.toLocaleString() + '，月供降低 ¥' + Math.round(p*0.045/12));
           return{cashDelta:-p,msg:'还贷 ¥' + p.toLocaleString()};
         }else if(amount && amount>maxCanPay){
@@ -734,8 +1004,8 @@ const EVENTS = [
           return{cashDelta:0,msg:'取消还款'};
         }
       }},
-    {text:'📤 卖出投资还债',type:'loan',condition:()=>G&&G.investments>=3000,require:"持有投资≥¥3,000",
-      effect:()=>{const s=Math.min(G.investments,20000);G.cash+=s;G.investments-=s;G.dividendIncome=Math.max(0,G.dividendIncome-Math.round(s*0.06/12));if(G.loans>0){const d=Math.min(s,G.loans);G.loans-=d;G.loanPayment=Math.round(G.loans*0.045/12);addLog(`卖出 ¥${s} 投资还贷 ¥${d}`);return{cashDelta:s,msg:`还贷 ¥${d}`};}addLog(`卖出 ¥${s} 投资`);return{cashDelta:s,msg:'现金增加'};}},
+    {text:'📤 卖出投资还债',type:'loan',condition:()=>G&&G.investments>=3000,require:'持有投资≥¥3,000',
+      effect:()=>{const s=Math.min(G.investments,20000);G.cash+=s;G.investments-=s;G.dividendIncome=Math.max(0,G.dividendIncome-Math.round(s*0.06/12));if(G.loans>0){const d=Math.min(s,G.loans);G.loans-=d;G.loanPayment=Math.round(G.loans*0.045/12);(function(){let r=d;for(let i=G._loans.length-1;i>=0&&r>0;i--){const sub=Math.min(r,G._loans[i].amount);G._loans[i].amount-=sub;G._loans[i].payment=Math.round(G._loans[i].payment*(1-sub/(G._loans[i].amount+sub||1)));r-=sub;if(G._loans[i].amount<=0)G._loans.splice(i,1);}})();G._investments=[];addLog(`卖出 ¥${s} 投资还贷 ¥${d}`);return{cashDelta:s,msg:`还贷 ¥${d}`};}G._investments=[];addLog(`卖出 ¥${s} 投资`);return{cashDelta:s,msg:'现金增加'};}},
     {text:'⏰ 暂不处理',type:'',effect:()=>{addLog('暂不处理债务');return{cashDelta:0,msg:'保持现状'}}}
   ]
 },
@@ -745,19 +1015,38 @@ const EVENTS = [
   desc:'行业精英聚会，参加需要购置正装。',
   choices:[
     {text:'💼 参加 ¥800',type:'primary',condition:()=>G&&G.cash>=800,require:"需≥¥800",
-      effect:()=>{G.cash-=800;const t=Math.random();if(t<0.3){const b=300+Math.floor(Math.random()*500);G.salary+=b;addLog(`人脉带来加薪 ¥${b}/月`);return{cashDelta:-800,msg:`加薪 ¥${b}/月`};}else if(t<0.6){const inc=200+Math.floor(Math.random()*400);G.sideIncome+=inc;addLog(`人脉带来副业 ¥${inc}/月`);return{cashDelta:-800,msg:`副业 +¥${inc}/月`};}else{addLog('人脉暂无直接收益');return{cashDelta:-800,msg:'拓展人脉，长期受益'}}}},
+      effect:()=>{G.cash-=800;const t=Math.random();if(t<0.3){const b=300+Math.floor(Math.random()*500);G.salary+=b;addLog(`人脉带来加薪 ¥${b}/月`);return{cashDelta:-800,msg:`加薪 ¥${b}/月`};}else if(t<0.6){const inc=200+Math.floor(Math.random()*400);G.sideIncome+=inc;G._incomeSources.push({id:'src_'+Date.now(), name:'人脉副业', amount:inc, type:'side'});addLog(`人脉带来副业 ¥${inc}/月`);return{cashDelta:-800,msg:`副业 +¥${inc}/月`};}else{addLog('人脉暂无直接收益');return{cashDelta:-800,msg:'拓展人脉，长期受益'}}}},
     {text:'❌ 不去',type:'danger',effect:()=>{addLog('放弃社交');return{cashDelta:0,msg:'放弃'}}}
   ]
 },
-// 12: 保险
+// 12: 保险（分级）
 {
-  id:'insurance',cellType:'life',title:'🛡️ 保险推销',badge:'badge-life',badgeText:'🛡️ 风险管理',
-  desc:'保险代理人推荐健康险，每月 ¥200，生病可报销80%。',
-  choices:[
-    {text:'✅ 购买保险',type:'primary',condition:()=>G&&G.cash>=2000,require:"需≥¥2,000",
-      effect:()=>{const monthly=200;G.livingExpense+=monthly;G.hasInsurance=true;addLog(`购买保险，月支出 +¥${monthly}`);return{cashDelta:-2000,msg:'年缴 ¥2,000，月均 ¥200'};}},
-    {text:'❌ 不买',type:'danger',effect:()=>{addLog('放弃保险');return{cashDelta:0,msg:'自担风险'};}}
-  ]
+  id:'insurance',cellType:'life',title:'🛡️ 保险方案',badge:'badge-life',badgeText:'🛡️ 风险管理',
+  desc:()=>{
+    if(!G) return '保险代理人推荐了几种方案。';
+    const fee = Math.round(calcTotalIncome() * 0.05);
+    const levels = ['无','基础(减30%)','全面(减60%)','高端(减90%)'];
+    return `保险代理人推荐了几种方案。<br>当前等级：<b>${levels[G.insuranceLevel||0]}</b><br>月费：月收入的5% = <b>¥${fee.toLocaleString()}/月</b>`;
+  },
+  choices:()=>{
+    const monthlyFee = G ? Math.round(calcTotalIncome() * 0.05) : 0;
+    const currentLevel = G ? (G.insuranceLevel || 0) : 0;
+    const choices=[];
+    if(currentLevel < 1){
+      choices.push({text:'🛡️ 基础保障（费用减30%）',type:'primary',condition:()=>G&&G.cash>=monthlyFee*3,require:`预付3个月 ¥${(monthlyFee*3).toLocaleString()}`,
+        effect:()=>{const prepay=monthlyFee*3;G.cash-=prepay;G.hasInsurance=true;G.insuranceLevel=1;addLog(`🛡️ 购买基础保险，预付 ¥${prepay.toLocaleString()}`);return{cashDelta:-prepay,msg:'基础保险生效，生病/意外费用减30%'};}});
+    }
+    if(currentLevel < 2){
+      choices.push({text:'🛡️ 全面保障（费用减60%）',type:'primary',condition:()=>G&&G.cash>=monthlyFee*6,require:`预付6个月 ¥${(monthlyFee*6).toLocaleString()}`,
+        effect:()=>{const prepay=monthlyFee*6;G.cash-=prepay;G.hasInsurance=true;G.insuranceLevel=2;addLog(`🛡️ 购买全面保险，预付 ¥${prepay.toLocaleString()}`);return{cashDelta:-prepay,msg:'全面保险生效，生病/意外费用减60%'};}});
+    }
+    if(currentLevel < 3){
+      choices.push({text:'🛡️ 高端保障（费用减90%）',type:'primary',condition:()=>G&&G.cash>=monthlyFee*12,require:`预付12个月 ¥${(monthlyFee*12).toLocaleString()}`,
+        effect:()=>{const prepay=monthlyFee*12;G.cash-=prepay;G.hasInsurance=true;G.insuranceLevel=3;addLog(`🛡️ 购买高端保险，预付 ¥${prepay.toLocaleString()}`);return{cashDelta:-prepay,msg:'高端保险生效，生病/意外费用减90%'};}});
+    }
+    choices.push({text:'❌ 暂不购买',type:'danger',effect:()=>{addLog('放弃保险');return{cashDelta:0,msg:'自担风险'};}});
+    return choices;
+  }
 },
 // 13: 孩子出生
 {
@@ -775,9 +1064,9 @@ const EVENTS = [
   id:'carloan',cellType:'exp',title:'🚗 购车计划',badge:'badge-debt',badgeText:'🚗 大宗消费',
   desc:'你需要一辆代步车。新车总价 ¥100,000，贷款70%分3年还清，月供约 ¥1,500。',
   choices:[
-    {text:'🚗 贷款买车',type:'loan',condition:()=>G&&G.cash>=15000,require:"需≥¥15,000",
-      effect:()=>{const dp=30000;const loan=70000;G.cash-=dp;G.loans+=loan;G.vehicleExpense+=1500;G.vehicle+=100000;addLog(`贷款买车！首付 ¥${dp}，月供 ¥1,500`);return{cashDelta:-dp,msg:`首付 ¥${dp}，月供 ¥1,500`};}},
-    {text:'🚲 买辆电动车',type:'',condition:()=>G&&G.cash>=2000,require:"需≥¥2,000",
+    {text:'🚗 贷款买车',type:'loan',condition:()=>G&&G.cash>=15000,require:'需≥¥15,000',
+      effect:()=>{const ts=Date.now();const dp=30000;const loan=70000;const loanMp=1500;const runCost=1500;G.cash-=dp;G.loans+=loan;G.loanPayment+=loanMp;G.vehicleRunningCost+=runCost;G.vehicle+=100000;G._vehicles.push({id:'veh_'+ts, name:'家用轿车（贷款）', value:100000, expense:runCost, loanId:'car_loan_'+ts});G._loans.push({id:'car_loan_'+ts, name:'车贷', amount:loan, payment:loanMp, type:'car'});scheduleEvent('career_field_opportunity', 3);addLog(`贷款买车！首付 ¥${dp}，月供 ¥${loanMp}，养车费 ¥${runCost}/月，后续可能有外勤机会`);return{cashDelta:-dp,msg:`首付 ¥${dp}，月供 ¥${loanMp}，养车费 ¥${runCost}/月`};}},
+    {text:'🚲 买辆电动车',type:'',condition:()=>G&&G.cash>=2000,require:'需≥¥2,000',
       effect:()=>{G.cash-=2000;addLog('买电动车 ¥2,000，无后续费用');return{cashDelta:-2000,msg:'电动车 ¥2,000'};}},
     {text:'🚶 继续步行/公交',type:'primary',
       effect:()=>{addLog('省钱，继续公共交通');return{cashDelta:0,msg:'省下购车费用'};}}
@@ -810,25 +1099,44 @@ const EVENTS = [
 // 16: 中奖
 {
   id:'lottery',cellType:'pay',title:'🎰 刮刮乐',badge:'badge-income',badgeText:'🍀 小幸运',
-  desc:'路过彩票店顺手买了一张刮刮乐。',
-  choices:[
-    {text:'🎊 买一张 ¥10',type:'primary',condition:()=>G&&G.cash>=10,require:"需¥10",
-      effect:()=>{G.cash-=10;const win=Math.random();if(win<0.02){const prize=2000+Math.floor(Math.random()*3000);G.cash+=prize;addLog(`🎉🎉🎉 大奖！¥${prize}`);return{cashDelta:prize-10,msg:`🎉 中大奖 ¥${prize}！`};}else if(win<0.10){const prize=100+Math.floor(Math.random()*400);G.cash+=prize;addLog(`🎉 中奖！¥${prize}`);return{cashDelta:prize-10,msg:`中奖 ¥${prize}`};}else if(win<0.30){const prize=10+Math.floor(Math.random()*40);G.cash+=prize;addLog(`🍀 小奖 ¥${prize}`);return{cashDelta:prize-10,msg:`小奖 ¥${prize}`};}else{addLog('没中奖');return{cashDelta:-10,msg:'没中奖，损失 ¥10'};}}},
-    {text:'❌ 不买',type:'danger',effect:()=>{addLog('不买彩票');return{cashDelta:0,msg:'理性消费'};}}
-  ]
+  desc:function(){
+    const luck=G._luck||0;
+    if(luck>0) return `路过彩票店，你感觉今天运气不错（幸运值+${luck}）🍀\n💡 幸运来自爱心捐助，每月会衰减哦`;
+    return '路过彩票店顺手买了一张刮刮乐。\n💡 试试去❤️爱心捐助攒点运气？';
+  },
+  choices:function(){
+    const luck=G._luck||0;
+    const shift = Math.min(luck * 0.03, 0.20); // 每点幸运+3%，最多移20%
+    return [
+      {text:'🎊 买一张 ¥10',type:'primary',condition:()=>G&&G.cash>=10,require:"需¥10",
+        effect:()=>{G.cash-=10;const win=Math.random();const noWin=0.30-shift;const medium=0.08+shift*0.3;const grand=0.02+shift*0.1;if(win<grand){const prize=2000+Math.floor(Math.random()*3000);G.cash+=prize;addLog(`🎉🎉🎉 大奖！¥${prize}`);return{cashDelta:prize-10,msg:`🎉 中大奖 ¥${prize}！`};}else if(win<medium){const prize=100+Math.floor(Math.random()*400);G.cash+=prize;addLog(`🎉 中奖！¥${prize}`);return{cashDelta:prize-10,msg:`中奖 ¥${prize}`};}else if(win<noWin){const prize=10+Math.floor(Math.random()*40);G.cash+=prize;addLog(`🍀 小奖 ¥${prize}`);return{cashDelta:prize-10,msg:`小奖 ¥${prize}`};}else{addLog('没中奖');return{cashDelta:-10,msg:'没中奖，损失 ¥10'};}}},
+      {text:'❌ 不买',type:'danger',effect:()=>{addLog('不买彩票');return{cashDelta:0,msg:'理性消费'};}}
+    ];
+  }
 },
 // 17: 生病住院
 {
   id:'sick',cellType:'exp',title:'🏥 生病住院',badge:'badge-emergency',badgeText:'🩺 健康危机',
-  desc:G&&G.hasInsurance?'你不舒服去医院检查，需要住院治疗几天。\n好在你有保险，可以报销大部分费用。':'你突然生病需要住院治疗，医药费 ¥6,000。',
-  choices:[
-    {text:'🏥 住院治疗',type:G&&G.hasInsurance?'primary':'danger',
+  weight: 10, cooldownMonths: 6,
+  desc:()=>{
+    const level = G ? G.insuranceLevel || 0 : 0;
+    const reductions = ['','减30%','减60%','减90%'];
+    const hasIns = level > 0;
+    return hasIns ? `你不舒服去医院检查，需要住院治疗几天。\n你有${reductions[level]}的保险，可以报销大部分费用。` : '你突然生病需要住院治疗，医药费 ¥6,000。';
+  },
+  choices:()=>{
+    const level = G ? G.insuranceLevel || 0 : 0;
+    const hasIns = level > 0;
+    return [
+    {text:'🏥 住院治疗',type:hasIns?'primary':'danger',
       effect:()=>{
         const total=4000+Math.floor(Math.random()*4000);
-        if(G.hasInsurance){
-          const pay=Math.round(total*0.2);
+        const level = G.insuranceLevel || 0;
+        const reduction = level === 3 ? 0.9 : level === 2 ? 0.6 : level === 1 ? 0.3 : 0;
+        if(reduction > 0){
+          const pay=Math.round(total*(1-reduction));
           G.cash-=pay;
-          addLog(`住院治疗！总费用 ¥${total}，保险报销80%，自付 ¥${pay}`);
+          addLog(`住院治疗！总费用 ¥${total}，保险减免${Math.round(reduction*100)}%，自付 ¥${pay}`);
           return{cashDelta:-pay,msg:`总费 ¥${total}，保险报销后自付 ¥${pay}`};
         }else{
           const pay=total;
@@ -839,11 +1147,12 @@ const EVENTS = [
       }},
     {text:'💊 硬扛着不去',type:'',
       effect:()=>{G.salary=Math.floor(G.salary*0.8);addLog(`硬扛不去医院，身体变差，工资降为 ¥${G.salary}/月`);return{cashDelta:0,msg:'工资降低20%'};}}
-  ]
-},
+  ];
+}},
 // 18: 房市热潮
 {
   id:'boom',cellType:'inv',title:'🏠 房市波动',badge:'badge-investment',badgeText:'📊 市场波动',
+  weight: 10, cooldownMonths: 4,
   desc:()=>{
     const isUp=Math.random()>0.4;
     if(isUp){G._marketMultiplier=1+Math.random()*0.3;return '🔥 房市火爆！房价上涨 '+Math.round((G._marketMultiplier-1)*100)+'%！持有房产可高价出售或租金上涨。';}
@@ -856,14 +1165,14 @@ const EVENTS = [
     if(G&&G.realEstate>=100000){
       const price=Math.floor(G.realEstate*mkt);
       const diff=price-G.realEstate;
-      choices.push({text:isUp?`🏠 趁高出售（+${Math.round((mkt-1)*100)}%）`:'🏠 出售止损',type:'primary',condition:()=>G&&G.realEstate>=100000,require:"持有房产",
-        effect:()=>{G.cash+=price;G.rentIncome=Math.max(0,G.rentIncome-Math.round(G.realEstate*0.04/12));addLog(`出售房产！获现 ¥${price.toLocaleString()}`+(diff>0?`（溢价 +${diff.toLocaleString()}）`:diff<0?`（亏损 ${Math.abs(diff).toLocaleString()}）`:''));G.realEstate=0;return{cashDelta:price,msg:`出售获现 ¥${price.toLocaleString()}`};}});
+      choices.push({text:isUp?`🏠 趁高出售（+${Math.round((mkt-1)*100)}%）`:'🏠 出售止损',type:'primary',condition:()=>G&&G.realEstate>=100000,require:'持有房产',
+        effect:()=>{G.cash+=price;G.rentIncome=Math.max(0,G.rentIncome-Math.round(G.realEstate*0.04/12));addLog(`出售房产！获现 ¥${price.toLocaleString()}`+(diff>0?`（溢价 +${diff.toLocaleString()}）`:diff<0?`（亏损 ${Math.abs(diff).toLocaleString()}）`:''));G.realEstate=0;G._properties=[];return{cashDelta:price,msg:`出售获现 ¥${price.toLocaleString()}`};}});
     }
     if(isUp){
-      choices.push({text:'🏠 继续持有收租',type:'',effect:()=>{const boost=Math.floor(G.rentIncome*0.2);G.rentIncome+=boost;addLog(`租金上涨 +¥${boost}/月`);return{cashDelta:0,msg:`租金上涨 ¥${boost}/月`};}});
+      choices.push({text:'🏠 继续持有收租',type:'',effect:()=>{const boost=Math.floor(G.rentIncome*0.2);G.rentIncome+=boost;if(G._properties.length>0){G._properties.forEach(p=>{p.rent+=Math.floor(p.rent*0.2);});}addLog(`租金上涨 +¥${boost}/月`);return{cashDelta:0,msg:`租金上涨 ¥${boost}/月`};}});
     }else{
-      choices.push({text:'🏠 趁低买入',type:'primary',condition:()=>G&&G.cash>=30000,require:"需≥¥30,000",
-        effect:()=>{const p=2000000;const dp=600000;G.cash-=dp;G.loans+=(p-dp);G.realEstate+=p;G.rentIncome+=6700;const mp=Math.round((p-dp)*0.045/12);G.loanPayment+=mp;addLog(`趁低买入房产！首付 ¥600,000`);return{cashDelta:-dp,msg:`首付 ¥600,000，月租 ¥6,700`};}});
+      choices.push({text:'🏠 趁低买入',type:'primary',condition:()=>G&&G.cash>=30000,require:'需≥¥30,000',
+        effect:()=>{const p=2000000;const dp=600000;G.cash-=dp;G.loans+=(p-dp);G.realEstate+=p;G.rentIncome+=6700;const mp=Math.round((p-dp)*0.045/12);G.loanPayment+=mp;G._properties.push({id:'prop_'+Date.now(), name:'趁低购入房产', value:p, rent:6700, type:'rental'});G._loans.push({id:'loan_'+Date.now(), name:'趁低购入房贷', amount:p-dp, payment:mp, type:'mortgage'});addLog(`趁低买入房产！首付 ¥600,000`);return{cashDelta:-dp,msg:`首付 ¥600,000，月租 ¥6,700`};}});
     }
     choices.push({text:'❌ 观望',type:'danger',effect:()=>{addLog('观望房市');return{cashDelta:0,msg:'保持现状'}}});
     return choices;
@@ -872,14 +1181,548 @@ const EVENTS = [
 // 19: 商业投资
 {
   id:'venture',cellType:'inv',title:'💼 商业投资',badge:'badge-investment',badgeText:'🚀 高风险高回报',
+  weight: 10, cooldownMonths: 8,
   desc:'朋友介绍了一个有潜力的创业项目，需要一笔资金入股。',
   choices:[
     {text:'🚀 大额投入 ¥80,000',type:'primary',condition:()=>G&&G.cash>=30000,require:"需≥¥30,000",
-      effect:()=>{const a=80000;G.cash-=a;const r=Math.random();if(r<0.3){const inc=5000+Math.floor(Math.random()*5000);G.dividendIncome+=inc;addLog(`🎉 创业成功！月分红 +¥${inc}`);return{cashDelta:-a,msg:`成功！月分红 +¥${inc}`};}else if(r<0.6){const inc=1000+Math.floor(Math.random()*2000);G.dividendIncome+=inc;addLog(`创业略有起色，月分红 +¥${inc}`);return{cashDelta:-a,msg:`月分红 +¥${inc}`};}else{G.cash+=Math.floor(a*0.3);addLog(`创业失败，仅回收 ¥${Math.floor(a*0.3)}`);return{cashDelta:-Math.floor(a*0.7),msg:`失败，回收 ¥${Math.floor(a*0.3)}`};}}},
+      effect:()=>{const a=80000;G.cash-=a;const r=Math.random();if(r<0.3){const inc=5000+Math.floor(Math.random()*5000);G.dividendIncome+=inc;G._investments.push({id:'inv_'+Date.now(), name:'商业投资（大额）', amount:a, dividend:inc, type:'stock'});addLog(`🎉 创业成功！月分红 +¥${inc}`);return{cashDelta:-a,msg:`成功！月分红 +¥${inc}`};}else if(r<0.6){const inc=1000+Math.floor(Math.random()*2000);G.dividendIncome+=inc;G._investments.push({id:'inv_'+Date.now(), name:'商业投资（大额）', amount:a, dividend:inc, type:'stock'});addLog(`创业略有起色，月分红 +¥${inc}`);return{cashDelta:-a,msg:`月分红 +¥${inc}`};}else{G.cash+=Math.floor(a*0.3);addLog(`创业失败，仅回收 ¥${Math.floor(a*0.3)}`);return{cashDelta:-Math.floor(a*0.7),msg:`失败，回收 ¥${Math.floor(a*0.3)}`};}}},
     {text:'💵 适度投入 ¥30,000',type:'primary',condition:()=>G&&G.cash>=10000,require:"需≥¥10,000",
-      effect:()=>{const a=30000;G.cash-=a;const r=Math.random();if(r<0.25){const inc=2000+Math.floor(Math.random()*3000);G.dividendIncome+=inc;addLog(`🎉 创业成功！月分红 +¥${inc}`);return{cashDelta:-a,msg:`成功！月分红 +¥${inc}`};}else if(r<0.55){const inc=500+Math.floor(Math.random()*1000);G.dividendIncome+=inc;addLog(`创业略有起色，月分红 +¥${inc}`);return{cashDelta:-a,msg:`月分红 +¥${inc}`};}else{G.cash+=Math.floor(a*0.3);addLog(`创业失败，回收 ¥${Math.floor(a*0.3)}`);return{cashDelta:-Math.floor(a*0.7),msg:`失败，回收 ¥${Math.floor(a*0.3)}`};}}},
+      effect:()=>{const a=30000;G.cash-=a;const r=Math.random();if(r<0.25){const inc=2000+Math.floor(Math.random()*3000);G.dividendIncome+=inc;G._investments.push({id:'inv_'+Date.now(), name:'商业投资（适度）', amount:a, dividend:inc, type:'stock'});addLog(`🎉 创业成功！月分红 +¥${inc}`);return{cashDelta:-a,msg:`成功！月分红 +¥${inc}`};}else if(r<0.55){const inc=500+Math.floor(Math.random()*1000);G.dividendIncome+=inc;G._investments.push({id:'inv_'+Date.now(), name:'商业投资（适度）', amount:a, dividend:inc, type:'stock'});addLog(`创业略有起色，月分红 +¥${inc}`);return{cashDelta:-a,msg:`月分红 +¥${inc}`};}else{G.cash+=Math.floor(a*0.3);addLog(`创业失败，仅回收 ¥${Math.floor(a*0.3)}`);return{cashDelta:-Math.floor(a*0.7),msg:`失败，回收 ¥${Math.floor(a*0.3)}`};}}},
     {text:'❌ 不投',type:'danger',effect:()=>{addLog('放弃商业投资');return{cashDelta:0,msg:'放弃'}}}
   ]
+},
+// 20: 自由职业
+{
+  id:'freelance',cellType:'opp',title:'🎨 自由职业机会',badge:'badge-opportunity',badgeText:'🌟 额外收入',
+  desc:'朋友介绍了一个自由职业项目，可以利用周末时间完成。',
+  choices:[
+    {text:'🚀 接项目 ¥2,000',type:'primary',condition:()=>G&&G.cash>=500,require:"需≥¥500",
+      effect:()=>{const inc=500+Math.floor(Math.random()*1000);G.sideIncome+=inc;G._incomeSources.push({id:'src_'+Date.now(), name:'自由职业项目', amount:inc, type:'side'});addLog(`自由职业 +¥${inc}/月`);return{cashDelta:-500,msg:`月副业收入 +¥${inc}`};}},
+    {text:'🃏 尝试小项目 ¥800',type:'',condition:()=>G&&G.cash>=200,require:"需≥¥200",
+      effect:()=>{const inc=200+Math.floor(Math.random()*400);G.sideIncome+=inc;G._incomeSources.push({id:'src_'+Date.now(), name:'小项目', amount:inc, type:'side'});addLog(`自由职业尝试 +¥${inc}/月`);return{cashDelta:-200,msg:`月副业收入 +¥${inc}`};}},
+    {text:'❌ 不接',type:'danger',effect:()=>{addLog('放弃自由职业');return{cashDelta:0,msg:'放弃'};}}
+  ]
+},
+// 21: 家教辅导
+{
+  id:'tutoring',cellType:'opp',title:'📐 家教辅导',badge:'badge-opportunity',badgeText:'🌟 额外收入',
+  desc:'邻居家的孩子需要辅导功课，每小时 ¥150。',
+  choices:[
+    {text:'📖 每周4小时',type:'primary',condition:()=>G&&G.cash>=200,require:"需≥¥200",
+      effect:()=>{G.cash-=200;const inc=600;G.sideIncome+=inc;G._incomeSources.push({id:'src_'+Date.now(), name:'家教辅导', amount:inc, type:'side'});addLog(`家教 +¥${inc}/月`);return{cashDelta:-200,msg:`月副业收入 +¥${inc}`};}},
+    {text:'📖 每周2小时',type:'',condition:()=>G&&G.cash>=100,require:"需≥¥100",
+      effect:()=>{G.cash-=100;const inc=300;G.sideIncome+=inc;G._incomeSources.push({id:'src_'+Date.now(), name:'家教辅导（少量）', amount:inc, type:'side'});addLog(`家教 +¥${inc}/月`);return{cashDelta:-100,msg:`月副业收入 +¥${inc}`};}},
+    {text:'❌ 没时间',type:'danger',effect:()=>{addLog('放弃家教');return{cashDelta:0,msg:'放弃'};}}
+  ]
+},
+// 22: 外卖配送
+{
+  id:'delivery',cellType:'opp',title:'🛵 外卖配送',badge:'badge-opportunity',badgeText:'🌟 额外收入',
+  desc:'平台招募兼职配送员，按单结算，多劳多得。',
+  choices:[
+    {text:'⚡ 高强度跑单',type:'primary',condition:()=>G&&G.cash>=1000,require:"需≥¥1,000",
+      effect:()=>{G.cash-=1000;const inc=800+Math.floor(Math.random()*500);G.sideIncome+=inc;G._incomeSources.push({id:'src_'+Date.now(), name:'外卖配送', amount:inc, type:'side'});addLog(`配送 +¥${inc}/月`);return{cashDelta:-1000,msg:`月副业收入 +¥${inc}`};}},
+    {text:'🚴 佛系跑单',type:'',condition:()=>G&&G.cash>=500,require:"需≥¥500",
+      effect:()=>{G.cash-=500;const inc=300+Math.floor(Math.random()*300);G.sideIncome+=inc;G._incomeSources.push({id:'src_'+Date.now(), name:'佛系配送', amount:inc, type:'side'});addLog(`佛系配送 +¥${inc}/月`);return{cashDelta:-500,msg:`月副业收入 +¥${inc}`};}},
+    {text:'❌ 不加入',type:'danger',effect:()=>{addLog('放弃配送');return{cashDelta:0,msg:'放弃'};}}
+  ]
+},
+// 23: 摄影约拍
+{
+  id:'photo',cellType:'opp',title:'📸 摄影约拍',badge:'badge-opportunity',badgeText:'🌟 额外收入',
+  desc:'你的摄影技术在朋友圈很受欢迎，有人找你约拍。',
+  choices:[
+    {text:'📷 接婚礼拍摄 ¥3,000',type:'primary',condition:()=>G&&G.cash>=1500,require:"需≥¥1,500",
+      effect:()=>{G.cash-=1500;const inc=1200+Math.floor(Math.random()*800);G.sideIncome+=inc;G._incomeSources.push({id:'src_'+Date.now(), name:'摄影约拍', amount:inc, type:'side'});addLog(`摄影 +¥${inc}/月`);return{cashDelta:-1500,msg:`月副业收入 +¥${inc}`};}},
+    {text:'📱 接个人写真 ¥1,000',type:'',condition:()=>G&&G.cash>=500,require:"需≥¥500",
+      effect:()=>{G.cash-=500;const inc=400+Math.floor(Math.random()*400);G.sideIncome+=inc;G._incomeSources.push({id:'src_'+Date.now(), name:'个人写真', amount:inc, type:'side'});addLog(`写真 +¥${inc}/月`);return{cashDelta:-500,msg:`月副业收入 +¥${inc}`};}},
+    {text:'❌ 不接单',type:'danger',effect:()=>{addLog('放弃约拍');return{cashDelta:0,msg:'放弃'};}}
+  ]
+},
+// 24: 直播带货
+{
+  id:'stream',cellType:'opp',title:'🎥 直播带货',badge:'badge-opportunity',badgeText:'🌟 额外收入',
+  desc:'短视频平台邀请你尝试直播带货，需要先购买设备。',
+  choices:[
+    {text:'🎬 投入专业设备 ¥5,000',type:'primary',condition:()=>G&&G.cash>=5000,require:"需≥¥5,000",
+      effect:()=>{G.cash-=5000;const inc=1000+Math.floor(Math.random()*2000);G.sideIncome+=inc;G._incomeSources.push({id:'src_'+Date.now(), name:'直播带货', amount:inc, type:'side'});addLog(`直播 +¥${inc}/月`);return{cashDelta:-5000,msg:`月副业收入 +¥${inc}`};}},
+    {text:'📱 用手机开播 ¥500',type:'',condition:()=>G&&G.cash>=500,require:"需≥¥500",
+      effect:()=>{G.cash-=500;const inc=200+Math.floor(Math.random()*600);G.sideIncome+=inc;G._incomeSources.push({id:'src_'+Date.now(), name:'手机直播', amount:inc, type:'side'});addLog(`手机直播 +¥${inc}/月`);return{cashDelta:-500,msg:`月副业收入 +¥${inc}`};}},
+    {text:'❌ 不尝试',type:'danger',effect:()=>{addLog('放弃直播');return{cashDelta:0,msg:'放弃'};}}
+  ]
+},
+// 25: 二手转卖（一次性收入）
+{
+  id:'resell',cellType:'opp',title:'📦 二手转卖',badge:'badge-opportunity',badgeText:'🌟 额外收入',
+  desc:'发现二手平台上有热门商品可以低价买入高价卖出。',
+  choices:[
+    {text:'💰 投入 ¥2,000 倒货',type:'primary',condition:()=>G&&G.cash>=2000,require:"需≥¥2,000",
+      effect:()=>{const pr=600+Math.floor(Math.random()*900);G.cash-=2000;G.cash+=pr;addLog(`转卖收入 +¥${pr}`);return{cashDelta:-2000+pr,msg:`转卖收入 +¥${pr}`};}},
+    {text:'💵 试水 ¥500',type:'',condition:()=>G&&G.cash>=500,require:"需≥¥500",
+      effect:()=>{const pr=150+Math.floor(Math.random()*250);G.cash-=500;G.cash+=pr;addLog(`试水转卖 +¥${pr}`);return{cashDelta:-500+pr,msg:`试水转卖收入 +¥${pr}`};}},
+    {text:'❌ 不做',type:'danger',effect:()=>{addLog('放弃转卖');return{cashDelta:0,msg:'放弃'};}}
+  ]
+},
+// 26: 手机碎屏
+{
+  id:'phone',cellType:'exp',title:'📱 手机碎屏',badge:'badge-expense',badgeText:'⚠️ 意外支出',
+  desc:'你的手机不小心掉在地上，屏幕碎了！维修费 ¥1,500。',
+  choices:[
+    {text:'💵 现金维修',type:'',condition:()=>G&&G.cash>=1500,require:"需≥¥1,500",effect:()=>{G.cash-=1500;addLog('维修手机 -¥1,500');return{cashDelta:-1500,msg:'维修手机 ¥1,500'};}},
+    {text:'💳 刷信用卡维修',type:'danger',effect:()=>{G.creditCard+=1500;G.creditInterest+=Math.round(1500*0.18/12);addLog(`刷信用卡修手机，月利息 +¥${Math.round(1500*0.18/12)}`);return{cashDelta:0,msg:'信用卡垫付 ¥1,500'};}},
+    {text:'📌 先凑合用',type:'primary',effect:()=>{addLog('碎屏继续用');return{cashDelta:0,msg:'省下了维修费'};}}
+  ]
+},
+// 27: 看牙医
+{
+  id:'tooth',cellType:'exp',title:'🦷 看牙医',badge:'badge-expense',badgeText:'⚠️ 意外支出',
+  desc:'智齿发炎了！需要拔牙，费用 ¥2,000。',
+  choices:[
+    {text:'💵 现金支付',type:'',condition:()=>G&&G.cash>=2000,require:"需≥¥2,000",effect:()=>{G.cash-=2000;addLog('看牙医 -¥2,000');return{cashDelta:-2000,msg:'拔牙 ¥2,000'};}},
+    {text:'💳 刷信用卡',type:'danger',effect:()=>{G.creditCard+=2000;G.creditInterest+=Math.round(2000*0.18/12);addLog(`信用卡看牙，月利息 +¥${Math.round(2000*0.18/12)}`);return{cashDelta:0,msg:'信用卡垫付 ¥2,000'};}},
+    {text:'💊 吃止痛药扛着',type:'',effect:()=>{addLog('吃止痛药忍忍');return{cashDelta:0,msg:'暂时省钱'};}}
+  ]
+},
+// 28: 宠物生病
+{
+  id:'pet',cellType:'exp',title:'🐱 宠物生病',badge:'badge-expense',badgeText:'⚠️ 意外支出',
+  desc:'你的宠物突然不吃不喝，带去医院检查需要花不少钱。',
+  choices:[
+    {text:'🏥 全面检查治疗 ¥3,000',type:'',condition:()=>G&&G.cash>=3000,require:"需≥¥3,000",effect:()=>{G.cash-=3000;addLog('宠物治疗 -¥3,000');return{cashDelta:-3000,msg:'宠物治疗 ¥3,000'};}},
+    {text:'💳 刷信用卡支付',type:'danger',effect:()=>{G.creditCard+=3000;G.creditInterest+=Math.round(3000*0.18/12);addLog(`信用卡支付宠物治疗，月利息 +¥${Math.round(3000*0.18/12)}`);return{cashDelta:0,msg:'信用卡垫付 ¥3,000'};}},
+    {text:'🏠 自己买药试试 ¥500',type:'primary',condition:()=>G&&G.cash>=500,require:"需≥¥500",effect:()=>{G.cash-=500;addLog('自行买药 -¥500');return{cashDelta:-500,msg:'自行买药 ¥500'};}}
+  ]
+},
+// 29: 交通罚单
+{
+  id:'ticket',cellType:'exp',title:'🚦 交通罚单',badge:'badge-expense',badgeText:'⚠️ 意外支出',
+  desc:'你收到了一张交通违规罚单，需要缴纳罚款。',
+  choices:[
+    {text:'💵 现金缴纳 ¥500',type:'',condition:()=>G&&G.cash>=500,require:"需≥¥500",effect:()=>{G.cash-=500;addLog('缴纳罚款 -¥500');return{cashDelta:-500,msg:'罚款 ¥500'};}},
+    {text:'💳 刷信用卡',type:'danger',effect:()=>{G.creditCard+=500;G.creditInterest+=Math.round(500*0.18/12);addLog(`信用卡缴罚款，月利息 +¥${Math.round(500*0.18/12)}`);return{cashDelta:0,msg:'信用卡垫付 ¥500'};}},
+    {text:'🚗 找黄牛消分 ¥1,000',type:'',condition:()=>G&&G.cash>=1000,require:"需≥¥1,000",effect:()=>{G.cash-=1000;addLog('找黄牛 -¥1,000');return{cashDelta:-1000,msg:'黄牛消分 ¥1,000'};}}
+  ]
+},
+// 30: 家电损坏
+{
+  id:'appliance',cellType:'exp',title:'🔧 家电损坏',badge:'badge-expense',badgeText:'⚠️ 意外支出',
+  desc:'冰箱突然不制冷了，需要换新的。冰箱价格 ¥4,000。',
+  choices:[
+    {text:'💵 现金购买新冰箱',type:'',condition:()=>G&&G.cash>=4000,require:"需≥¥4,000",effect:()=>{G.cash-=4000;addLog('购买冰箱 -¥4,000');return{cashDelta:-4000,msg:'新冰箱 ¥4,000'};}},
+    {text:'💳 刷信用卡分期',type:'danger',effect:()=>{G.creditCard+=4000;G.creditInterest+=Math.round(4000*0.18/12);addLog(`分期买冰箱，月利息 +¥${Math.round(4000*0.18/12)}`);return{cashDelta:0,msg:'信用卡分期 ¥4,000'};}},
+    {text:'♻️ 买二手冰箱 ¥1,500',type:'primary',condition:()=>G&&G.cash>=1500,require:"需≥¥1,500",effect:()=>{G.cash-=1500;addLog('二手冰箱 -¥1,500');return{cashDelta:-1500,msg:'二手冰箱 ¥1,500'};}}
+  ]
+},
+// 31: 诈骗损失
+{
+  id:'scam',cellType:'exp',title:'⚠️ 网络诈骗',badge:'badge-expense',badgeText:'⚠️ 意外支出',
+  desc:'收到假冒银行的短信，诱导点击了钓鱼链接！',
+  choices:[
+    {text:'😱 已输入信息！损失 ¥5,000',type:'danger',effect:()=>{const loss=5000;G.cash-=loss;addLog(`被骗 -¥${loss}`);return{cashDelta:-loss,msg:`被骗 ¥${loss}`};}},
+    {text:'📞 及时报警冻结',type:'primary',effect:()=>{addLog('及时报警，没有损失');return{cashDelta:0,msg:'及时止损'};}},
+    {text:'🏦 联系银行挂失 ¥200',type:'',condition:()=>G&&G.cash>=200,require:"需≥¥200",effect:()=>{G.cash-=200;addLog('挂失手续费 -¥200');return{cashDelta:-200,msg:'挂失费 ¥200'};}}
+  ]
+},
+// 32: 黄金投资
+{
+  id:'gold',cellType:'inv',title:'🥇 黄金投资',badge:'badge-investment',badgeText:'💰 实物资产',
+  desc:function(){
+    const gp=G._goldPrice||100;
+    const trend=gp>105?'📈 金价走强':gp<95?'📉 金价走弱':'➡️ 金价平稳';
+    const pct=((gp/100)-1)*100;
+    const hasGold=G._investments&&G._investments.some(i=>i.type==='gold');
+    let s=`国际金价指数 ${gp.toFixed(1)}（${pct>0?'+':''}${pct.toFixed(1)}%）${trend}。`;
+    if(hasGold)s+=` 你持有黄金，当前出售${gp>=100?'有利可图':'可能亏损'}。`;
+    else s+=' 现在可能是入手黄金的好时机。';
+    return s;
+  },
+  choices:function(){
+    const gp=G._goldPrice||100;
+    const ratio=gp/100;
+    const hasGold=G._investments&&G._investments.some(i=>i.type==='gold');
+    const totalGold=hasGold?G._investments.filter(i=>i.type==='gold').reduce((s,i)=>s+i.amount,0):0;
+    const sellPrice=Math.floor(totalGold*ratio);
+    const opts=[];
+    // 买入选项
+    opts.push({text:'🥇 买入金条 ¥10,000',type:'primary',condition:()=>G&&G.cash>=10000,require:'需≥¥10,000',
+      effect:()=>{const a=10000;G.cash-=a;G.investments+=a;G._investments.push({id:'inv_'+Date.now(), name:'金条', amount:a, dividend:0, type:'gold'});addLog(`购入金条 ¥${a}`);return{cashDelta:-a,msg:`购入金条 ¥${a}`};}});
+    opts.push({text:'🪙 买入金币 ¥3,000',type:'',condition:()=>G&&G.cash>=3000,require:'需≥¥3,000',
+      effect:()=>{const a=3000;G.cash-=a;G.investments+=a;G._investments.push({id:'inv_'+Date.now(), name:'金币', amount:a, dividend:0, type:'gold'});addLog(`购入金币 ¥${a}`);return{cashDelta:-a,msg:`购入金币 ¥${a}`};}});
+    // 卖出选项（如有持仓）
+    if(hasGold){
+      opts.push({text:`💰 全部卖出（指数${gp.toFixed(1)}，估值¥${sellPrice.toLocaleString()}）`,type:'primary',
+        effect:()=>{const sp=Math.floor(totalGold*ratio);G.cash+=sp;G._investments=G._investments.filter(i=>i.type!=='gold');G.investments=Math.max(0,G.investments-totalGold);addLog(`💰 卖出黄金，获现 ¥${sp.toLocaleString()}（指数${gp.toFixed(1)}）`);return{cashDelta:sp,msg:`卖出黄金 ¥${sp.toLocaleString()}`};}});
+    }
+    opts.push({text:'❌ 观望',type:'danger',effect:()=>{addLog('观望黄金');return{cashDelta:0,msg:'保持观望'};}});
+    return opts;
+  }
+},
+// 33: 基金定投
+{
+  id:'fund',cellType:'inv',title:'📊 基金定投',badge:'badge-investment',badgeText:'💰 稳健投资',
+  desc:'基金经理推荐了一只表现稳定的混合型基金。',
+  choices:[
+    {text:'📈 定投 ¥5,000/月',type:'primary',condition:()=>G&&G.cash>=5000,require:'需≥¥5,000',
+      effect:()=>{const a=5000;G.cash-=a;G.investments+=a;G.dividendIncome+=Math.round(a*0.07/12);G._investments.push({id:'inv_'+Date.now(), name:'基金定投', amount:a, dividend:Math.round(a*0.07/12), type:'fund'});addLog(`基金定投 ¥${a}`);return{cashDelta:-a,msg:`基金定投 ¥${a}`};}},
+    {text:'📈 定投 ¥2,000/月',type:'',condition:()=>G&&G.cash>=2000,require:'需≥¥2,000',
+      effect:()=>{const a=2000;G.cash-=a;G.investments+=a;G.dividendIncome+=Math.round(a*0.07/12);G._investments.push({id:'inv_'+Date.now(), name:'小额定投', amount:a, dividend:Math.round(a*0.07/12), type:'fund'});addLog(`基金小额定投 ¥${a}`);return{cashDelta:-a,msg:`基金定投 ¥${a}`};}},
+    {text:'❌ 不投',type:'danger',effect:()=>{addLog('不买基金');return{cashDelta:0,msg:'保持现金'};}}
+  ]
+},
+// 34: 债券投资
+{
+  id:'bond',cellType:'inv',title:'📜 债券投资',badge:'badge-investment',badgeText:'💰 固定收益',
+  desc:'政府发行新一批国债，利率4.5%，风险极低。',
+  choices:[
+    {text:'📜 购买 ¥20,000',type:'primary',condition:()=>G&&G.cash>=20000,require:'需≥¥20,000',
+      effect:()=>{const a=20000;G.cash-=a;G.investments+=a;G.dividendIncome+=Math.round(a*0.045/12);G._investments.push({id:'inv_'+Date.now(), name:'国债', amount:a, dividend:Math.round(a*0.045/12), type:'bond'});addLog(`国债 ¥${a}`);return{cashDelta:-a,msg:`国债 ¥${a}`};}},
+    {text:'📜 购买 ¥10,000',type:'',condition:()=>G&&G.cash>=10000,require:'需≥¥10,000',
+      effect:()=>{const a=10000;G.cash-=a;G.investments+=a;G.dividendIncome+=Math.round(a*0.045/12);G._investments.push({id:'inv_'+Date.now(), name:'国债', amount:a, dividend:Math.round(a*0.045/12), type:'bond'});addLog(`国债 ¥${a}`);return{cashDelta:-a,msg:`国债 ¥${a}`};}},
+    {text:'❌ 不买',type:'danger',effect:()=>{addLog('不买国债');return{cashDelta:0,msg:'放弃'};}}
+  ]
+},
+// 35: NFT数字藏品
+{
+  id:'nft',cellType:'inv',title:'🎨 NFT 数字藏品',badge:'badge-investment',badgeText:'💰 新兴投资',
+  desc:'艺术家朋友发行了一组限量NFT数字藏品，可能升值。',
+  choices:[
+    {text:'🎨 买入一套 ¥8,000',type:'primary',condition:()=>G&&G.cash>=8000,require:'需≥¥8,000',
+      effect:()=>{const a=8000;G.cash-=a;G.investments+=a;const r=Math.random();if(r<0.3){const inc=2000+Math.floor(Math.random()*2000);G.dividendIncome+=inc;G._investments.push({id:'inv_'+Date.now(), name:'NFT藏品', amount:a, dividend:inc, type:'stock'});addLog(`NFT暴涨！月分红 +¥${inc}`);return{cashDelta:-a,msg:`NFT升值！月分红 +¥${inc}`};}else{G.cash+=Math.floor(a*0.4);addLog(`NFT价值下跌，回收 ¥${Math.floor(a*0.4)}`);return{cashDelta:-Math.floor(a*0.6),msg:`NFT亏损，回收 ¥${Math.floor(a*0.4)}`};}}},
+    {text:'🖼️ 买入一幅 ¥2,000',type:'',condition:()=>G&&G.cash>=2000,require:'需≥¥2,000',
+      effect:()=>{const a=2000;G.cash-=a;G.investments+=a;const r=Math.random();if(r<0.3){const inc=500+Math.floor(Math.random()*500);G.dividendIncome+=inc;G._investments.push({id:'inv_'+Date.now(), name:'NFT单品', amount:a, dividend:inc, type:'stock'});addLog(`NFT小赚！月分红 +¥${inc}`);return{cashDelta:-a,msg:`NFT小赚 ¥${inc}`};}else{G.cash+=Math.floor(a*0.4);addLog(`NFT小幅亏损，回收 ¥${Math.floor(a*0.4)}`);return{cashDelta:-Math.floor(a*0.6),msg:`NFT回收 ¥${Math.floor(a*0.4)}`};}}},
+    {text:'❌ 不参与',type:'danger',effect:()=>{addLog('不买NFT');return{cashDelta:0,msg:'放弃'};}}
+  ]
+},
+// 36: 专利授权
+{
+  id:'patent',cellType:'inv',title:'💡 专利授权',badge:'badge-investment',badgeText:'💰 知识产权',
+  desc:'你有项小发明可以申请专利，授权给企业使用获得版税。',
+  choices:[
+    {text:'📝 申请专利 ¥5,000',type:'primary',condition:()=>G&&G.cash>=5000,require:'需≥¥5,000',
+      effect:()=>{const a=5000;G.cash-=a;G.investments+=a;const inc=800+Math.floor(Math.random()*1200);G.dividendIncome+=inc;G._investments.push({id:'inv_'+Date.now(), name:'专利投资', amount:a, dividend:inc, type:'stock'});addLog(`专利授权成功！月版税 +¥${inc}`);return{cashDelta:-a,msg:`月版税收入 +¥${inc}`};}},
+    {text:'📝 简易申请 ¥2,000',type:'',condition:()=>G&&G.cash>=2000,require:'需≥¥2,000',
+      effect:()=>{const a=2000;G.cash-=a;G.investments+=a;const inc=300+Math.floor(Math.random()*500);G.dividendIncome+=inc;G._investments.push({id:'inv_'+Date.now(), name:'简易专利', amount:a, dividend:inc, type:'stock'});addLog(`简易专利申请成功！月版税 +¥${inc}`);return{cashDelta:-a,msg:`月版税 +¥${inc}`};}},
+    {text:'❌ 不申请',type:'danger',effect:()=>{addLog('不申请专利');return{cashDelta:0,msg:'放弃'};}}
+  ]
+},
+// 37: 加盟经营
+{
+  id:'franchise',cellType:'inv',title:'🏪 加盟经营',badge:'badge-investment',badgeText:'💰 实体生意',
+  desc:'知名连锁品牌开放新区域加盟，有成熟的运营模式。',
+  choices:[
+    {text:'🏪 加盟 ¥50,000',type:'primary',condition:()=>G&&G.cash>=50000,require:'需≥¥50,000',
+      effect:()=>{const a=50000;G.cash-=a;G.investments+=a;const inc=2000+Math.floor(Math.random()*3000);G.dividendIncome+=inc;G._investments.push({id:'inv_'+Date.now(), name:'加盟经营', amount:a, dividend:inc, type:'stock'});addLog(`加盟成功！月分红 +¥${inc}`);return{cashDelta:-a,msg:`月分红 +¥${inc}`};}},
+    {text:'🏪 小微加盟 ¥15,000',type:'',condition:()=>G&&G.cash>=15000,require:'需≥¥15,000',
+      effect:()=>{const a=15000;G.cash-=a;G.investments+=a;const inc=600+Math.floor(Math.random()*900);G.dividendIncome+=inc;G._investments.push({id:'inv_'+Date.now(), name:'小微加盟', amount:a, dividend:inc, type:'stock'});addLog(`小微加盟成功！月分红 +¥${inc}`);return{cashDelta:-a,msg:`月分红 +¥${inc}`};}},
+    {text:'❌ 不加盟',type:'danger',effect:()=>{addLog('放弃加盟');return{cashDelta:0,msg:'放弃'};}}
+  ]
+},
+// 38: 旅行度假
+{
+  id:'travel',cellType:'life',title:'✈️ 旅行度假',badge:'badge-life',badgeText:'🌴 休闲时光',
+  desc:'年假到了，想出国旅行放松一下。',
+  choices:[
+    {text:'🌍 豪华海外游 ¥15,000',type:'',condition:()=>G&&G.cash>=15000,require:"需≥¥15,000",
+      effect:()=>{G.cash-=15000;addLog('豪华旅行 -¥15,000');return{cashDelta:-15000,msg:'豪华旅行 ¥15,000'};}},
+    {text:'🏕️ 国内游 ¥5,000',type:'primary',condition:()=>G&&G.cash>=5000,require:"需≥¥5,000",
+      effect:()=>{G.cash-=5000;addLog('国内旅行 -¥5,000');return{cashDelta:-5000,msg:'国内旅行 ¥5,000'};}},
+    {text:'🏠 宅家休息',type:'danger',effect:()=>{addLog('宅家省钱了');return{cashDelta:0,msg:'省钱'};}}
+  ]
+},
+// 39: 婚礼筹备
+{
+  id:'wedding',cellType:'life',title:'💍 婚礼筹备',badge:'badge-life',badgeText:'🎊 人生大事',
+  desc:'你和伴侣决定结婚，需要筹备婚礼。',
+  choices:[
+    {text:'💒 豪华婚礼 ¥50,000',type:'',condition:()=>G&&G.cash>=50000,require:"需≥¥50,000",
+      effect:()=>{G.cash-=50000;addLog('豪华婚礼 -¥50,000');return{cashDelta:-50000,msg:'豪华婚礼 ¥50,000'};}},
+    {text:'🎎 简约婚礼 ¥15,000',type:'primary',condition:()=>G&&G.cash>=15000,require:"需≥¥15,000",
+      effect:()=>{G.cash-=15000;const gift=2000+Math.floor(Math.random()*3000);G.cash+=gift;addLog(`简约婚礼 +¥${gift} 红包`);return{cashDelta:-15000+gift,msg:`婚礼支出 ¥15,000，收到红包 ¥${gift}`};}},
+    {text:'📋 先领证不办酒席',type:'danger',effect:()=>{addLog('只领证不办婚礼');return{cashDelta:0,msg:'省钱'};}}
+  ]
+},
+// 40: 搬家换房
+{
+  id:'move',cellType:'life',title:'🚚 搬家换房',badge:'badge-life',badgeText:'🏠 生活变动',
+  desc:'房租到期了，需要换一个地方住。',
+  choices:[
+    {text:'🏠 搬到更好的地方（月租+¥1,500）',type:'',condition:()=>G&&G.cash>=5000,require:"需≥¥5,000",
+      effect:()=>{G.cash-=5000;G.rentExpense+=1500;addLog(`搬家！月租 +¥1,500`);return{cashDelta:-5000,msg:'月租金上涨 ¥1,500'};}},
+    {text:'🏠 搬到更便宜的地方（月租-¥800）',type:'primary',condition:()=>G&&G.rentExpense>=800,require:"当前需有房租支出",
+      effect:()=>{G.cash-=2000;G.rentExpense=Math.max(0,G.rentExpense-800);addLog(`搬到便宜地方，月租 -¥800`);return{cashDelta:-2000,msg:'月租金降低 ¥800'};}},
+    {text:'🏠 续租原地',type:'danger',effect:()=>{addLog('继续续租');return{cashDelta:0,msg:'不搬家'};}}
+  ]
+},
+// 41: 装修翻新
+{
+  id:'renovate',cellType:'life',title:'🔨 装修翻新',badge:'badge-life',badgeText:'🏠 房屋改造',
+  desc:'你想把房子翻新一下，提升居住品质。',
+  choices:[
+    {text:'🔨 全面装修 ¥30,000',type:'',condition:()=>G&&G.cash>=30000,require:"需≥¥30,000",
+      effect:()=>{G.cash-=30000;G.realEstate+=5000;if(G._properties.length>0){G._properties.forEach(p=>{p.value+=Math.round(5000/G._properties.length);});}addLog(`全面装修！房产增值 ¥5,000`);return{cashDelta:-30000,msg:'房产增值 ¥5,000'};}},
+    {text:'🖌️ 局部翻新 ¥8,000',type:'primary',condition:()=>G&&G.cash>=8000,require:"需≥¥8,000",
+      effect:()=>{G.cash-=8000;G.realEstate+=1500;if(G._properties.length>0){G._properties.forEach(p=>{p.value+=Math.round(1500/G._properties.length);});}addLog(`局部翻新！房产增值 ¥1,500`);return{cashDelta:-8000,msg:'房产增值 ¥1,500'};}},
+    {text:'❌ 暂不装修',type:'danger',effect:()=>{addLog('暂不装修');return{cashDelta:0,msg:'保持原样'};}}
+  ]
+},
+// 42: 升级保险
+{
+  id:'insure',cellType:'life',title:'🛡️ 升级保险',badge:'badge-life',badgeText:'🛡️ 风险管理',
+  desc:'保险顾问建议升级你的保险方案，增加重疾和意外险。',
+  choices:[
+    {text:'🛡️ 升级全面保障 ¥500/月',type:'primary',condition:()=>G&&G.cash>=6000,require:"需≥¥6,000",
+      effect:()=>{G.cash-=6000;G.livingExpense+=500;G.hasInsurance=true;G.insuranceLevel=Math.max(G.insuranceLevel||0,2);addLog(`升级保险（全面），月支出 +¥500，保险等级${G.insuranceLevel}`);return{cashDelta:-6000,msg:'升级全面保障，年缴 ¥6,000'};}},
+    {text:'🛡️ 基本保障 ¥200/月',type:'',condition:()=>G&&G.cash>=2400,require:"需≥¥2,400",
+      effect:()=>{G.cash-=2400;G.livingExpense+=200;G.hasInsurance=true;G.insuranceLevel=Math.max(G.insuranceLevel||0,1);addLog(`基本保险，月支出 +¥200，保险等级${G.insuranceLevel}`);return{cashDelta:-2400,msg:'基本保险，年缴 ¥2,400'};}},
+    {text:'❌ 保持现状',type:'danger',effect:()=>{addLog('不升级保险');return{cashDelta:0,msg:'保持现状'};}}
+  ]
+},
+// 43: 爱心捐助
+{
+  id:'donate',cellType:'life',title:'❤️ 爱心捐助',badge:'badge-life',badgeText:'🤝 公益活动',
+  desc:'社区发起了爱心捐助活动，帮助山区儿童。\n🍀 捐款能提升运气，提高刮刮乐中奖概率！',
+  choices:[
+    {text:'❤️ 慷慨捐助 ¥2,000',type:'primary',condition:()=>G&&G.cash>=2000,require:"需≥¥2,000",
+      effect:()=>{G.cash-=2000;G._luck=Math.min(10,(G._luck||0)+3);addLog(`捐助 ¥2,000，幸运+3（当前${G._luck}）`);return{cashDelta:-2000,msg:'爱心捐助 ¥2,000 幸运+3🍀'};}},
+    {text:'💖 小小心意 ¥500',type:'',condition:()=>G&&G.cash>=500,require:"需≥¥500",
+      effect:()=>{G.cash-=500;G._luck=Math.min(10,(G._luck||0)+1);addLog(`捐助 ¥500，幸运+1（当前${G._luck}）`);return{cashDelta:-500,msg:'爱心捐助 ¥500 幸运+1🍀'};}},
+    {text:'❌ 这次不捐',type:'danger',effect:()=>{addLog('不捐助');return{cashDelta:0,msg:'放弃'};}}
+  ]
+},
+// 44: 个税退税
+{
+  id:'rebate',cellType:'pay',title:'🧾 个税退税',badge:'badge-income',badgeText:'🎉 意外之财',
+  desc:'年度个税汇算清缴，你有一些可以退税的项目。',
+  choices:[
+    {text:'📋 申请退税',type:'primary',
+      effect:()=>{const a=500+Math.floor(Math.random()*2500);G.cash+=a;addLog(`退税 +¥${a}`);return{cashDelta:a,msg:`退税到账 ¥${a}`};}},
+    {text:'🏦 直接抵扣下年税款',type:'',effect:()=>{addLog('选择抵扣下年税款');return{cashDelta:0,msg:'抵扣下年'};}}
+  ]
+},
+// 45: 收到红包
+{
+  id:'redpack',cellType:'pay',title:'🧧 收到红包',badge:'badge-income',badgeText:'🎉 意外之财',
+  desc:'过节了，长辈和朋友们给你发了红包！',
+  choices:[
+    {text:'🎊 全部收下',type:'primary',
+      effect:()=>{const a=200+Math.floor(Math.random()*800);G.cash+=a;addLog(`红包 +¥${a}`);return{cashDelta:a,msg:`收到红包 ¥${a}`};}},
+    {text:'🔄 存起来投资',type:'',
+      effect:()=>{const a=200+Math.floor(Math.random()*800);const invAmt=Math.floor(a*0.7);G.investments+=invAmt;G.dividendIncome+=Math.round(invAmt*0.06/12);G.cash+=Math.floor(a*0.3);G._investments.push({id:'inv_'+Date.now(), name:'红包投资', amount:invAmt, dividend:Math.round(invAmt*0.06/12), type:'stock'});addLog(`红包 ¥${a}，70%存起来投资`);return{cashDelta:Math.floor(a*0.3),msg:`¥${invAmt} 投入投资`};}}
+  ]
+},
+// 46: 退货退款
+{
+  id:'return',cellType:'pay',title:'📦 退货退款',badge:'badge-income',badgeText:'🎉 意外之财',
+  desc:'之前购买的商品不满意，成功退货退款了。',
+  choices:[
+    {text:'💵 现金已到账',type:'primary',
+      effect:()=>{const a=300+Math.floor(Math.random()*1200);G.cash+=a;addLog(`退款 +¥${a}`);return{cashDelta:a,msg:`退款 ¥${a}`};}},
+    {text:'🛒 退一赔一',type:'',
+      effect:()=>{const a=300+Math.floor(Math.random()*1200);G.cash+=a*2;addLog(`退一赔一 +¥${a*2}`);return{cashDelta:a*2,msg:`获赔 ¥${a*2}`};}}
+  ]
+},
+// 47: 获得奖项
+{
+  id:'award',cellType:'pay',title:'🏆 获得奖项',badge:'badge-income',badgeText:'🎉 意外之财',
+  desc:'你在行业比赛中获得了优秀奖，有奖金！',
+  choices:[
+    {text:'🏆 一等奖 ¥5,000',type:'primary',condition:()=>Math.random()<0.2,require:"需要好运气",
+      effect:()=>{const a=5000;G.cash+=a;addLog(`一等奖 +¥${a}`);return{cashDelta:a,msg:`🎉 一等奖 ¥${a}`};}},
+    {text:'🥈 二等奖 ¥2,000',type:'primary',
+      effect:()=>{const a=2000;G.cash+=a;addLog(`二等奖 +¥${a}`);return{cashDelta:a,msg:`二等奖 ¥${a}`};}},
+    {text:'🥉 参与奖 ¥500',type:'',
+      effect:()=>{const a=500;G.cash+=a;addLog(`参与奖 +¥${a}`);return{cashDelta:a,msg:`参与奖 ¥${a}`};}}
+  ]
+},
+// 48: 版税收入
+{
+  id:'royalty',cellType:'pay',title:'📖 版税收入',badge:'badge-income',badgeText:'🎉 意外之财',
+  desc:'你之前写的书/文章被出版社看中，结算了一笔版税。',
+  choices:[
+    {text:'📚 全部领取',type:'primary',
+      effect:()=>{const a=1000+Math.floor(Math.random()*4000);G.cash+=a;addLog(`版税 +¥${a}`);return{cashDelta:a,msg:`版税收入 ¥${a}`};}},
+    {text:'📚 续约预付款 ¥3,000',type:'',
+      effect:()=>{const a=3000;G.cash+=a;G.dividendIncome+=Math.floor(a*0.06/12);addLog(`续约预付款 +¥${a}`);return{cashDelta:a,msg:`续约费 ¥${a}`};}}
+  ]
+},
+// 49: 额外分红
+{
+  id:'dividend2',cellType:'pay',title:'📊 额外分红',badge:'badge-income',badgeText:'🎉 意外之财',
+  desc:'持有的一只股票派发了特别股息！',
+  choices:[
+    {text:'💰 领取现金分红',type:'primary',
+      effect:()=>{const a=500+Math.floor(Math.random()*2000);G.cash+=a;addLog(`分红 +¥${a}`);return{cashDelta:a,msg:`现金分红 ¥${a}`};}},
+    {text:'🔄 红利再投资',type:'',
+      effect:()=>{const a=500+Math.floor(Math.random()*2000);G.investments+=a;G.dividendIncome+=Math.round(a*0.06/12);G._investments.push({id:'inv_'+Date.now(), name:'红利再投资', amount:a, dividend:Math.round(a*0.06/12), type:'stock'});addLog(`红利再投资 ¥${a}`);return{cashDelta:0,msg:`红利再投资 ¥${a}`};}}
+  ]
+},
+// V2: 职场事件
+{
+  id:'career_training',cellType:'opp',title:'📚 职业培训',badge:'badge-career',badgeText:'💪 职业发展',
+  desc:'公司组织了专业技能培训，参加可以提升职业竞争力。',
+  isEligible: G => G.careerSkill < 60, weight: 10, cooldownMonths: 12,
+  choices:[
+    {text:'📖 自费参加 ¥3,000',type:'primary',condition:()=>G&&G.cash>=3000,require:'需≥¥3,000',
+      effect:()=>{const baseChance=0.85;const mod=getLifeStateModifier();const finalChance=Math.min(0.95,Math.max(0.05,baseChance+mod));if(Math.random()<finalChance){G.cash-=3000;G.careerSkill+=15;G.careerPerformance+=10;scheduleEvent('career_cert_exam', 2);addLog('参加职业培训！职业技能+15，后续可参加认证考试');return{cashDelta:-3000,msg:'职业技能 +15，绩效 +10，即将迎来认证考试'};}else{G.cash-=3000;G.careerSkill+=5;addLog('培训效果不佳...');return{cashDelta:-3000,msg:'培训效果不佳，技能+5'};}}},
+    {text:'📖 公司报销 ¥500',type:'',condition:()=>G&&G.cash>=500,require:'需≥¥500',
+      effect:()=>{G.cash-=500;G.careerSkill+=5;addLog('参加培训（公司报销大部分）');return{cashDelta:-500,msg:'职业技能 +5'};}},
+    {text:'❌ 不参加',type:'danger',effect:()=>{addLog('放弃培训');return{cashDelta:0,msg:'放弃培训机会'};}}
+  ]
+},
+{
+  id:'career_project',cellType:'opp',title:'📋 重要项目',badge:'badge-career',badgeText:'💪 职业发展',
+  desc:'部门启动了一个关键项目，如果做得好可能会有晋升机会。',
+  isEligible: G => G.careerSkill >= 10, weight: 10,
+  choices:[
+    {text:'🔥 主动请缨',type:'primary',
+      effect:()=>{const baseChance=0.5;const mod=getLifeStateModifier();const finalChance=Math.min(0.95,Math.max(0.05,baseChance+mod));const r=Math.random();if(r<finalChance){G.careerPerformance+=20;G.careerSkill+=5;addLog('项目圆满完成！绩效+20');return{cashDelta:0,msg:'项目成功！绩效+20，技能+5'};}else{G.careerPerformance+=5;addLog('项目有挑战，绩效微增');return{cashDelta:0,msg:'项目完成，绩效+5'};}}},
+    {text:'🙋 参与协助',type:'',
+      effect:()=>{G.careerPerformance+=8;addLog('参与项目协助');return{cashDelta:0,msg:'绩效+8'};}},
+    {text:'❌ 保持低调',type:'danger',effect:()=>{addLog('不参与项目');return{cashDelta:0,msg:'错过表现机会'};}}
+  ]
+},
+{
+  id:'career_promotion',cellType:'opp',title:'⬆️ 晋升机会',badge:'badge-career',badgeText:'💪 职业发展',
+  desc:()=>G&&G.careerPerformance>=60?'你的工作表现突出，领导考虑给你晋升！':`领导在考虑晋升人选，你的绩效评分 ${G.careerPerformance||50}，需要更多努力。`,
+  isEligible: G => G.careerSkill >= 30, weight: 10, cooldownMonths: 6,
+  choices:[
+    {text:'⬆️ 争取晋升',type:'primary',condition:()=>G&&G.careerPerformance>=50,require:'绩效≥50',
+      effect:()=>{G.careerLevel++;const boost=Math.floor(G.salary*0.2);G.salary+=boost;G.careerPerformance=Math.max(0,G.careerPerformance-30);addLog(`晋升成功！薪资 +¥${boost}/月`);return{cashDelta:0,msg:`晋升！月薪增加 ¥${boost}`};}},
+    {text:'💼 要求加薪不晋升',type:'',condition:()=>G&&G.careerPerformance>=40,require:'绩效≥40',
+      effect:()=>{const inc=Math.floor(G.salary*0.08);G.salary+=inc;G.careerPerformance=Math.max(0,G.careerPerformance-15);addLog(`加薪成功 +¥${inc}/月`);return{cashDelta:0,msg:`加薪 ¥${inc}/月`};}},
+    {text:'❌ 时机未到',type:'danger',effect:()=>{addLog('放弃晋升机会');return{cashDelta:0,msg:'保持现状'};}}
+  ]
+},
+{
+  id:'career_layoff',cellType:'life',title:'⚠️ 职场危机',badge:'badge-risk',badgeText:'⚡ 职业危机',
+  desc:()=>G&&G.careerStability<30?'公司经营困难，你的岗位岌岌可危...':`公司有小规模裁员风声，你的岗位稳定性：${Math.round(G.careerStability||50)}%`,
+  choices:[
+    {text:'💼 提前找下家',type:'primary',
+      effect:()=>{if(G.careerStability<30){const newSalary=Math.floor(G.salary*0.75);G.salary=newSalary;G.careerStability=60;addLog(`被迫换工作，薪资降为 ¥${newSalary}/月`);return{cashDelta:0,msg:`换工作，薪资 ¥${newSalary}/月`};}else{G.careerStability=Math.min(100,G.careerStability+10);addLog('提前储备了退路');return{cashDelta:0,msg:'稳定了岗位'};}}},
+    {text:'💪 努力表现保岗位',type:'',
+      effect:()=>{G.careerPerformance+=15;G.careerStability=Math.min(100,G.careerStability+5);addLog('努力表现稳住岗位');return{cashDelta:0,msg:'绩效+15，稳定性+5'};}},
+    {text:'😰 听天由命',type:'danger',
+      effect:()=>{if(Math.random()<0.3){G.salary=Math.floor(G.salary*0.6);G.careerStability=40;addLog('被裁员！找到薪资更低的工作');return{cashDelta:0,msg:'被裁员，薪资大幅下降'};}addLog('侥幸躲过一劫');return{cashDelta:0,msg:'侥幸保住工作'};}}
+  ]
+},
+{
+  id:'career_jobhop',cellType:'opp',title:'🔄 跳槽机会',badge:'badge-career',badgeText:'💪 职业发展',
+  desc:'猎头联系你，有一个薪资更高的职位机会。',
+  choices:[
+    {text:'💼 接受跳槽',type:'primary',condition:()=>G&&G.careerSkill>=20,require:'技能≥20',
+      effect:()=>{const boost=Math.floor(G.salary*(0.15+Math.random()*0.2));G.salary+=boost;G.careerStability=50+Math.floor(Math.random()*20);G.careerSkill-=5;addLog(`跳槽成功！薪资 +¥${boost}/月`);return{cashDelta:0,msg:`跳槽涨薪 ¥${boost}/月`};}},
+    {text:'🔍 观望一下',type:'',
+      effect:()=>{G.careerStability=Math.min(100,G.careerStability+5);addLog('了解市场行情');return{cashDelta:0,msg:'了解市场，稳定性+5'};}},
+    {text:'❌ 留在现公司',type:'danger',effect:()=>{addLog('拒绝跳槽');return{cashDelta:0,msg:'保持现状'};}}
+  ]
+},
+{
+  id:'career_network',cellType:'life',title:'🤝 职场人脉',badge:'badge-career',badgeText:'💪 职业发展',
+  desc:'行业交流会，可以结识同行和潜在的合作伙伴。',
+  choices:[
+    {text:'🤝 参加交流 ¥1,000',type:'primary',condition:()=>G&&G.cash>=1000,require:'需≥¥1,000',
+      effect:()=>{G.cash-=1000;G.careerSkill+=8;G.careerStability=Math.min(100,G.careerStability+10);addLog('参加交流会拓展人脉');return{cashDelta:-1000,msg:'技能+8，稳定性+10'};}},
+    {text:'☕ 小型聚会 ¥300',type:'',condition:()=>G&&G.cash>=300,require:'需≥¥300',
+      effect:()=>{G.cash-=300;G.careerSkill+=3;addLog('小型聚会交流');return{cashDelta:-300,msg:'技能+3'};}},
+    {text:'❌ 不去',type:'danger',effect:()=>{addLog('放弃社交');return{cashDelta:0,msg:'放弃人脉机会'};}}
+  ]
+},
+// V2: 车辆/房产事件
+{
+  id:'vehicle_maintenance',cellType:'exp',title:'🔧 车辆保养',badge:'badge-expense',badgeText:'⚠️ 日常维护',
+  desc:'车辆到了保养周期，需要更换机油和滤芯。',
+  choices:[
+    {text:'🔧 4S店保养 ¥2,000',type:'',condition:()=>G&&G.cash>=2000,require:'需≥¥2,000',
+      effect:()=>{G.cash-=2000;addLog('4S店保养 -¥2,000');return{cashDelta:-2000,msg:'4S店保养 ¥2,000'};}},
+    {text:'🔧 汽修店保养 ¥800',type:'primary',condition:()=>G&&G.cash>=800,require:'需≥¥800',
+      effect:()=>{G.cash-=800;addLog('汽修店保养 -¥800');return{cashDelta:-800,msg:'汽修店保养 ¥800'};}},
+    {text:'⏰ 再拖一拖',type:'danger',
+      effect:()=>{if(Math.random()<0.3){G.vehicleRunningCost+=500;addLog('车辆出故障，维修费增加！');return{cashDelta:0,msg:'拖延导致维修费+500/月'};}addLog('暂时不保养');return{cashDelta:0,msg:'侥幸无事'};}}
+  ]
+},
+{
+  id:'career_field_opportunity',cellType:'opp',title:'🚗 车辆兼职',badge:'badge-opportunity',badgeText:'🌟 车辆机会',
+  desc:'平台招募车辆兼职，可以利用空闲时间接单。',
+  choices:[
+    {text:'🚗 加入网约车 ¥2,000',type:'primary',condition:()=>G&&G.vehicleRunningCost>0&&G.cash>=2000,require:'需有车+≥¥2,000',
+      effect:()=>{G.cash-=2000;const inc=1000+Math.floor(Math.random()*1500);G.sideIncome+=inc;G._incomeSources.push({id:'src_'+Date.now(), name:'网约车兼职', amount:inc, type:'side'});addLog(`网约车兼职 +¥${inc}/月`);return{cashDelta:-2000,msg:`月副业收入 +¥${inc}`};}},
+    {text:'🚗 偶尔接单 ¥500',type:'',condition:()=>G&&G.vehicleRunningCost>0&&G.cash>=500,require:'需有车+≥¥500',
+      effect:()=>{G.cash-=500;const inc=300+Math.floor(Math.random()*500);G.sideIncome+=inc;G._incomeSources.push({id:'src_'+Date.now(), name:'偶尔接单', amount:inc, type:'side'});addLog(`偶尔接单 +¥${inc}/月`);return{cashDelta:-500,msg:`月副业收入 +¥${inc}`};}},
+    {text:'❌ 不参与',type:'danger',effect:()=>{addLog('放弃车辆兼职');return{cashDelta:0,msg:'放弃'};}}
+  ]
+},
+{
+  id:'property_lease',cellType:'inv',title:'🏘️ 房屋出租',badge:'badge-investment',badgeText:'🏠 房产管理',
+  desc:'你有闲置房间可以出租，增加租金收入。',
+  choices:[
+    {text:'🏠 装修后出租 ¥10,000',type:'primary',condition:()=>G&&G.rentalCount>0&&G.cash>=10000,require:'需有房产+≥¥10,000',
+      effect:()=>{G.cash-=10000;G.rentIncome+=1500;addLog('装修出租！月租+¥1,500');return{cashDelta:-10000,msg:'月租金收入 +¥1,500'};}},
+    {text:'🏠 简装出租 ¥3,000',type:'',condition:()=>G&&G.rentalCount>0&&G.cash>=3000,require:'需有房产+≥¥3,000',
+      effect:()=>{G.cash-=3000;G.rentIncome+=500;addLog('简装出租！月租+¥500');return{cashDelta:-3000,msg:'月租金收入 +¥500'};}},
+    {text:'❌ 不出租',type:'danger',effect:()=>{addLog('不出租闲置房间');return{cashDelta:0,msg:'保持现状'};}}
+  ]
+},
+// V3: 认证考试
+{
+  id:'career_cert_exam',cellType:'opp',title:'📜 认证考试',badge:'badge-career',badgeText:'🎓 技能认证',
+  desc:'经过之前的培训，你有机会参加专业认证考试，一旦通过可以大幅提升技能水平！',
+  choices:[
+    {text:'📝 参加认证考试 ¥2,000',type:'primary',condition:()=>G&&G.cash>=2000,require:'需≥¥2,000',
+      effect:()=>{G.cash-=2000;const pass=Math.random()<0.7;if(pass){G.careerSkill+=10;addLog('🎉 通过认证考试！职业技能+10');return{cashDelta:-2000,msg:'通过认证！职业技能+10'};}else{addLog('遗憾未通过认证考试...');return{cashDelta:-2000,msg:'未通过考试，下次加油'};}}},
+    {text:'❌ 暂不参加',type:'danger',effect:()=>{addLog('放弃认证考试机会');return{cashDelta:0,msg:'放弃考试'};}}
+  ]
+},
+// 50: 资产变现机会
+{
+  id:'asset_sell_opp', cellType:'opp',
+  title:'💰 资产变现机会',
+  desc:'市场上有买家愿意溢价收购你的资产，是否考虑出售？',
+  choices:()=>{
+    const choices=[];
+    // 房产出售选项
+    if(G._properties && G._properties.length>0){
+      G._properties.forEach(prop=>{
+        const sellPrice=Math.floor(prop.value*1.1);
+        choices.push({
+          text:'🏠 出售「'+prop.name+'」¥'+sellPrice.toLocaleString(),
+          type:'primary',
+          effect:()=>{
+            G.cash+=sellPrice;
+            G.realEstate-=prop.value;
+            G.rentIncome=Math.max(0,G.rentIncome-(prop.rent||0));
+            G._properties=G._properties.filter(p=>p.id!==prop.id);
+            addLog('出售房产「'+prop.name+'」，获现 ¥'+sellPrice.toLocaleString());
+            return{cashDelta:sellPrice,msg:'出售「'+prop.name+'」¥'+sellPrice.toLocaleString()};
+          }
+        });
+      });
+    }
+    // 投资出售选项
+    if(G._investments && G._investments.length>0){
+      G._investments.forEach(inv=>{
+        const sellPrice=Math.floor(inv.amount*1.05);
+        choices.push({
+          text:'📈 出售「'+inv.name+'」¥'+sellPrice.toLocaleString(),
+          type:'primary',
+          effect:()=>{
+            G.cash+=sellPrice;
+            G.investments=Math.max(0,G.investments-inv.amount);
+            G.dividendIncome=Math.max(0,G.dividendIncome-(inv.dividend||0));
+            G._investments=G._investments.filter(i=>i.id!==inv.id);
+            addLog('出售投资「'+inv.name+'」，获现 ¥'+sellPrice.toLocaleString());
+            return{cashDelta:sellPrice,msg:'出售「'+inv.name+'」¥'+sellPrice.toLocaleString()};
+          }
+        });
+      });
+    }
+    if(choices.length===0){
+      choices.push({text:'❌ 暂无资产可出售',type:'danger',effect:()=>{addLog('暂无资产可出售');return{cashDelta:0,msg:'暂无资产'}}});
+    }else{
+      choices.push({text:'❌ 暂不出售',type:'danger',effect:()=>{addLog('放弃出售资产');return{cashDelta:0,msg:'保持现状'}}});
+    }
+    return choices;
+  },
+  weight: 8, cooldownMonths: 6
 }
 ];
 
@@ -891,8 +1734,10 @@ function formatMoney(n){return'¥'+Math.round(n).toLocaleString();}
 // ===== 音效系统（Web Audio API，无需音频文件） =====
 const Sound = {
   ctx: null,
-  _init(){try{if(!this.ctx)this.ctx = new (window.AudioContext||window.webkitAudioContext)();if(this.ctx.state==='suspended')this.ctx.resume();}catch(e){}},
+  _muted: localStorage.getItem('game_muted') === 'true',
+  _init(){try{if(!this.ctx||this.ctx.state==='closed')this.ctx=new(window.AudioContext||window.webkitAudioContext)();if(this.ctx.state==='suspended')this.ctx.resume().catch(()=>{this.ctx=null;});}catch(e){this.ctx=null;}},
   _beep(freq,dur,vol=0.5,type='sine'){
+    if(this._muted) return;
     try{this._init();const o=this.ctx.createOscillator(),g=this.ctx.createGain();
     o.type=type;o.frequency.setValueAtTime(freq,this.ctx.currentTime);
     g.gain.setValueAtTime(vol,this.ctx.currentTime);
@@ -907,8 +1752,27 @@ const Sound = {
   achieve(){this._beep(523,0.12);setTimeout(()=>this._beep(659,0.12),120);setTimeout(()=>this._beep(784,0.2),240);},
   victory(){[523,587,659,784,880,1047].forEach((f,i)=>setTimeout(()=>this._beep(f,0.15),i*100));},
   fail(){this._beep(400,0.2,'sawtooth');setTimeout(()=>this._beep(300,0.3,'sawtooth'),200);},
-  click(){this._beep(800,0.04,0.5);}
+  click(){this._beep(800,0.04,0.5);},
+  toggleMute(){
+    this._muted = !this._muted;
+    localStorage.setItem('game_muted', this._muted);
+    const btn = document.getElementById('soundToggle');
+    if(btn) btn.textContent = this._muted ? '🔇' : '🔊';
+  }
 };
+// 首次用户点击预热音频（浏览器自动播放策略）
+let _audioWarmed = false;
+document.addEventListener('click', function _warmAudio(){
+  if(_audioWarmed) return;
+  _audioWarmed = true;
+  Sound._init();
+  document.removeEventListener('click', _warmAudio);
+}, {once:true});
+// 初始化声音按钮状态
+document.addEventListener('DOMContentLoaded', function(){
+  const btn = document.getElementById('soundToggle');
+  if(btn && Sound._muted) btn.textContent = '🔇';
+});
 
 // ===== 趣味事件反馈 =====
 const FUNNY_MSGS = {
@@ -964,9 +1828,6 @@ function checkAchievements(){
   ACHIEVEMENTS.forEach(a=>{if(!unlockedAchievements.has(a.id)&&a.check())unlockAchievement(a.id);});
 }
 
-const POSITIVE_RISE=new Set(['cashBalance','passiveIncome','totalIncome','totalIncomeReport','totalAssets','assetCash','assetInvestments','assetRealEstate','incomeSalary','incomeDividend','incomeRent','incomeSide','netWorthLabel','victoryPassive','assetVehicle','cashFlowLabel','fmAssets','fmCash','fmInvestments','fmRealEstate','fmIncome','fmSalary','fmDividend','fmRent','fmSide','fmNetWorth','fmCashFlow']);
-const NEGATIVE_RISE=new Set(['totalExpense','totalExpenseReport','totalLiabilities','liabLoans','liabCredit','expLiving','expLoan','expCredit','victoryTarget','expChild','fmLiability','fmLoans','fmCredit','fmExpense','fmLiving','fmLoanPay','fmCreditInt','fmChild']);
-
 function flashValue(id,val){
   const el=document.getElementById(id);if(!el)return;
   const raw=el.getAttribute('data-raw');
@@ -1020,6 +1881,37 @@ function updateAll(){
   flashValue('liabCredit',G.creditCard);document.getElementById('liabCredit').textContent=formatMoney(G.creditCard);
   document.getElementById('netWorthLabel').textContent='净资产: '+formatMoney(nw);
   flashValue('netWorthLabel',nw);
+  // 市场行情指示器（桌面端）
+  const mktEl=document.getElementById('marketIndicatorDesk');
+  if(mktEl){
+    const regimes={'bull':'📈 牛市','sideways':'➡️ 震荡','bear':'📉 熊市'};
+    const reg=regimes[G._marketRegime]||'➡️ 震荡';
+    const gp=G._goldPrice||100;
+    const sp=G._stockPrice||50;
+    mktEl.innerHTML=`${reg} <span style="color:#8e44ad">指数${Math.round(G._marketIndex||100)}</span> · 股价¥${sp} · 金价${gp.toFixed(0)}`;
+  }
+  // 桌面端资产负债表子项
+  renderDesktopSubItems('investDesktopItems', G._investments, inv => {
+    const tl={stock:'股票',fund:'基金',bond:'债券',gold:'黄金',nft:'NFT',patent:'专利',franchise:'加盟'}[inv.type]||inv.type;
+    const annDiv=(inv.dividend||0)*12; const yieldPct=inv.amount>0?Math.round(annDiv/inv.amount*100):0;
+    const meta = inv.type==='gold' ? '价格波动' : '月分红¥'+((inv.dividend||0).toLocaleString())+' · 年化'+yieldPct+'%';
+    return '<div class="sub-item" data-type="investment" data-id="'+inv.id+'"><span>'+tl+' ¥'+((inv.amount||0).toLocaleString())+'<span class="item-meta">'+meta+'</span></span><span><span class="sale-tag">出售</span></span></div>';
+  });
+  renderDesktopSubItems('propDesktopItems', G._properties, p => {
+    const label=p.type==='rental'?'出租':'自住';
+    const annRent=(p.rent||0)*12; const yieldPct=p.value>0?Math.round(annRent/p.value*100):0;
+    return '<div class="sub-item" data-type="property" data-id="'+p.id+'"><span>'+p.name+' ¥'+((p.value||0).toLocaleString())+'<span class="item-meta">'+(p.type==='rental'?'月租¥'+((p.rent||0).toLocaleString())+' · 年化'+yieldPct+'%':label)+'</span></span><span><span class="sale-tag">出售</span></span></div>';
+  });
+  renderDesktopSubItems('vehDesktopItems', G._vehicles, v => {
+    const carLoan = G._loans.find(l=>l.id===v.loanId);
+    let meta = '养车费¥' + ((v.expense||0).toLocaleString());
+    if(carLoan) meta += ' · 车贷¥' + ((carLoan.payment||0).toLocaleString())+'/月';
+    return '<div class="sub-item" data-type="vehicle" data-id="'+v.id+'"><span>🚗 '+v.name+' ¥'+((v.value||0).toLocaleString())+'<span class="item-meta">'+meta+'</span></span><span><span class="sale-tag">出售</span></span></div>';
+  });
+  renderDesktopSubItems('loanDesktopItems', G._loans, l => {
+    const rate=l.amount>0?Math.round((l.payment||0)*12/l.amount*100):0;
+    return '<div class="sub-item negative" data-type="loan" data-id="'+l.id+'"><span>'+l.name+' ¥'+((l.amount||0).toLocaleString())+'<span class="item-meta">月供¥'+((l.payment||0).toLocaleString())+' · 利率'+rate+'%</span></span><span><span class="sale-tag">还款</span></span></div>';
+  });
   flashValue('totalIncomeReport',ti);document.getElementById('totalIncomeReport').textContent=formatMoney(ti);
   flashValue('incomeSalary',G.salary);document.getElementById('incomeSalary').textContent=formatMoney(G.salary);
   flashValue('incomeDividend',G.dividendIncome);document.getElementById('incomeDividend').textContent=formatMoney(G.dividendIncome);
@@ -1030,6 +1922,7 @@ function updateAll(){
   flashValue('expLoan',G.loanPayment);document.getElementById('expLoan').textContent=formatMoney(G.loanPayment);
   flashValue('expCredit',G.creditInterest);document.getElementById('expCredit').textContent=formatMoney(G.creditInterest);
   flashValue('expChild',G.childExpense);document.getElementById('expChild').textContent=formatMoney(G.childExpense);
+  flashValue('expVehicleRun',G.vehicleRunningCost);document.getElementById('expVehicleRun').textContent=formatMoney(G.vehicleRunningCost);
   document.getElementById('cashFlowLabel').textContent='月现金流: '+formatMoney(ti-te);
   flashValue('cashFlowLabel',ti-te);
   const gap=te-tp,ratio=te>0?Math.min(1,tp/te):0;
@@ -1044,6 +1937,26 @@ function updateAll(){
     else if(ratio>=0.5){bl.textContent=`🟡 ${Math.round(ratio*100)}%`;se.innerHTML='💪 进度过半！';se.style.background='#fef9e7';gl.textContent='差距: '+formatMoney(gap);gl.style.color='#f39c12';}
     else if(ratio>=0.25){bl.textContent=`🟠 ${Math.round(ratio*100)}%`;se.innerHTML='🏃‍♂️ 继续加油！';se.style.background='#f8f9fa';gl.textContent='差距: '+formatMoney(gap);gl.style.color='#e67e22';}
     else{bl.textContent=`🔴 ${Math.round(ratio*100)}%`;se.innerHTML='🐭 还在老鼠赛跑';se.style.background='#fdedec';gl.textContent='差距: '+formatMoney(gap);gl.style.color='#e74c3c';}
+  }
+  // 风险保障信息更新
+  const cbEl=document.getElementById('cashBufferDisplay');
+  const insEl=document.getElementById('insuranceDisplay');
+  const credEl=document.getElementById('creditDisplay');
+  if(cbEl){
+    const buffer=getCashBufferMonths();
+    const colors=['#e74c3c','#e67e22','#f39c12','#27ae60','#2ecc71','#1abc9c'];
+    const idx=Math.min(Math.floor(buffer),colors.length-1);
+    cbEl.textContent='💰 缓冲: '+(buffer>=99?'∞':buffer.toFixed(1)+'个月');
+    cbEl.style.color=colors[idx];
+  }
+  if(insEl){
+    const levels=['无','基础','全面','高端'];
+    insEl.textContent='🔒 保险: '+(G&&G.insuranceLevel>0?levels[G.insuranceLevel]:'无');
+    insEl.style.color=G&&G.insuranceLevel>0?'#27ae60':'#888';
+  }
+  if(credEl){
+    credEl.textContent='💳 信用卡: '+(G&&G.creditCard>0?formatMoney(G.creditCard):'¥0');
+    credEl.style.color=G&&G.creditCard>0?'#e74c3c':'#888';
   }
   // 手机端胜利进度
   const ms=document.getElementById('mobileVictoryStatus'),mp=document.getElementById('mobileVictoryPct'),mf=document.getElementById('mobileVictoryFill');
@@ -1066,18 +1979,18 @@ function updateAll(){
 
 // ===== 蛇形棋盘 =====
 const BOARD_CELLS = [
-  {icon:'🚀',label:'起点',type:'start',eids:['baby','venture']},
-  {icon:'💼',label:'机遇',type:'opp',eids:['raise','sidehustle','layoff']},
-  {icon:'🛍️',label:'消费',type:'exp',eids:['shopping','carloan']},
-  {icon:'📈',label:'投资',type:'inv',eids:['stock','market','venture']},
-  {icon:'🎉',label:'社交',type:'life',eids:['social','insurance','baby']},
-  {icon:'💰',label:'发薪日',type:'pay',eids:['bonus','lottery']},
-  {icon:'📚',label:'学习',type:'opp',eids:['learning','sidehustle']},
-  {icon:'🏥',label:'意外',type:'exp',eids:['sick','emergency']},
-  {icon:'🏘️',label:'房产',type:'inv',eids:['realestate','boom']},
-  {icon:'💳',label:'债务',type:'life',eids:['debt','carloan']},
-  {icon:'🎁',label:'好运',type:'pay',eids:['lottery','bonus']},
-  {icon:'🏁',label:'月底',type:'start',eids:['emergency','boom']}
+  {icon:'🚀',label:'起点',type:'start',eids:['baby','venture','freelance','sidehustle']},
+  {icon:'💼',label:'机遇',type:'opp',eids:['raise','stock','sidehustle','layoff','career_training','career_project','career_promotion','career_jobhop','asset_sell_opp','sidehustle','sidehustle']},
+  {icon:'🛍️',label:'消费',type:'exp',eids:['shopping','carloan','phone','tooth','pet','vehicle_maintenance']},
+  {icon:'📈',label:'投资',type:'inv',eids:['stock','market','venture','gold','fund','bond','career_field_opportunity','sidehustle','asset_sell_opp','stock','market','gold','stock']},
+  {icon:'🎉',label:'社交',type:'life',eids:['social','stock','insurance','baby','career_network','career_layoff','sidehustle']},
+  {icon:'💰',label:'发薪日',type:'pay',eids:['bonus','stock','lottery','rebate','redpack','return','sidehustle']},
+  {icon:'📚',label:'学习',type:'opp',eids:['learning','sidehustle','resell','sidehustle']},
+  {icon:'🏥',label:'意外',type:'exp',eids:['sick','emergency','ticket','appliance','scam']},
+  {icon:'🏘️',label:'房产',type:'inv',eids:['realestate','boom','nft','patent','franchise','property_lease','realestate','asset_sell_opp','boom','sidehustle']},
+  {icon:'💳',label:'债务',type:'life',eids:['debt','carloan','renovate','insure','donate','sidehustle']},
+  {icon:'🎁',label:'好运',type:'pay',eids:['lottery','bonus','award','royalty','dividend2']},
+  {icon:'🏁',label:'月底',type:'start',eids:['emergency','boom','freelance']}
 ];
 function createBoard(){
   const wrap=document.getElementById('boardWrap');wrap.innerHTML='';wrap.style.display='';
@@ -1146,11 +2059,31 @@ function rollDice(){
       G.boardPos = G.boardPos - BOARD_CELLS.length;
     }
     updateBoard();
-    // 根据棋盘格子类型筛选事件
     const cell = BOARD_CELLS[G.boardPos];
-    const eid = cell.eids ? cell.eids[Math.floor(Math.random() * cell.eids.length)] : null;
-    G.currentEvent = eid ? EVENTS.find(e => e.id === eid) : null;
-    if(!G.currentEvent) G.currentEvent = EVENTS[Math.floor(Math.random() * EVENTS.length)];
+    // 根据棋盘格子类型筛选事件
+    // 优先展示排程事件
+    if(G._pendingScheduled && G._pendingScheduled.length > 0){
+      const peid = G._pendingScheduled.shift();
+      G.currentEvent = EVENTS.find(e => e.id === peid);
+      if(!G.currentEvent) G.currentEvent = EVENTS[Math.floor(Math.random() * EVENTS.length)];
+    }else{
+      // 从当前格子的候选事件中筛选符合条件且不在冷却中的事件
+      const candidates = (cell.eids || [])
+        .map(eid => EVENTS.find(e => e.id === eid))
+        .filter(e => e !== undefined);
+      const eligible = candidates.filter(e => {
+        if(G._cooldowns && G._cooldowns[e.id] && G._cooldowns[e.id] > G.month) return false;
+        if(typeof e.isEligible === 'function') return e.isEligible(G);
+        return true;
+      });
+      if(eligible.length > 0){
+        G.currentEvent = pickWeightedEvent(eligible);
+      }else{
+        // 后备：从所有可用事件中按权重抽取
+        const allEligible = getEligibleEvents();
+        G.currentEvent = allEligible.length > 0 ? pickWeightedEvent(allEligible) : EVENTS[Math.floor(Math.random() * EVENTS.length)];
+      }
+    }
     G.currentEvent._boardInfo = cell.icon + cell.label;
     showEvent(G.currentEvent);updateAll();btn.disabled=false;G.phase='choosing';
   },600);
@@ -1163,7 +2096,12 @@ function showEvent(event){
     <div style="font-size:.7em;color:#888;margin-bottom:6px">📍 落在 <b>${event._boardInfo||'未知'}</b></div>
     <div class="event-type-badge ${event.badge}">${event.badgeText}</div>
     <div class="event-title">${event.title}</div>
-    <div class="event-desc">${descText.replace(/\\n/g,'<br>')}</div>`;
+    <div class="event-desc">${descText.replace(/\\n/g,'<br>')}</div>
+    <div style="font-size:.75em;color:#888;border-top:1px solid #eee;padding-top:8px;margin-top:8px">
+      🌡️ 生活状态 <b style="color:${G&&G.lifeState>=70?'#27ae60':G&&G.lifeState>=40?'#f39c12':'#e74c3c'}">${G?G.lifeState:'--'}</b>
+      &nbsp;|&nbsp; 🛠️ 副业 <b style="color:#e67e22">¥${G?formatMoney(calcTotalSideIncome()):'0'}</b>
+      &nbsp;|&nbsp; 🎯 技能 <b>${Math.round(G.careerSkill||0)}</b> &nbsp;|&nbsp; 🏢 稳定度 <b>${Math.round(G.careerStability||0)}</b>
+    </div>`;
   card.className='event-card fade-in';
   const ca=document.getElementById('choiceArea');ca.innerHTML='';
   (typeof event.choices==='function'?event.choices():event.choices).forEach(c=>{
@@ -1180,38 +2118,134 @@ function handleChoice(event,choice){
   if(G.phase!=='choosing')return;
   G.phase='processing';document.getElementById('choiceArea').innerHTML='';
   const result=choice.effect();
+  // 设置事件冷却
+  if(event && event.id){
+    setCooldown(event.id, event.cooldownMonths || 6);
+  }
   // 自动处理余额负数：转为贷款
-  if(G.cash<0){const s=Math.round(Math.abs(G.cash));G.loans+=s;const mp=Math.round(s*0.06/12);G.loanPayment+=mp;addLog(`💳 余额不足，自动贷款 ¥${s}，月供 +¥${mp}`);G.cash=0;}
+  if(G.cash<0){const s=Math.round(Math.abs(G.cash));G.loans+=s;const mp=Math.round(s*0.06/12);G.loanPayment+=mp;G._loans.push({id:'loan_'+Date.now(), name:'自动透支贷款', amount:s, payment:mp, type:'personal'});addLog(`💳 余额不足，自动贷款 ¥${s}，月供 +¥${mp}`);G.cash=0;}
   if(result===null){showEvent(event);G.phase='choosing';return;}
   // Sound + fun message
   const cd=result.cashDelta||0;
   if(cd>0){try{Sound.cash();}catch(e){}result.msg+=' '+randomMsg('cash_up');}else if(cd<0){try{Sound.spend();}catch(e){}result.msg+=' '+randomMsg('cash_down');}
   document.getElementById('eventCard').innerHTML+=`<div class="event-impact">📍 ${choice.text}<br>💫 ${result.msg}</div>`;
   updateAll();showFinanceToast();
-  // 🚨 每轮破产检测：现金为0、现金流为负、净资产为负 → 立即破产
-  if(checkBankruptcy()){setTimeout(()=>showBankruptcy(),500);G.phase='settling';return;}
-  const tp=calcTotalPassive(),te=calcTotalExpense();
-  if(tp>=te){G.phase='settling';setTimeout(()=>showVictory(),500);return;}
+  // 🚨 破产检测（带缓冲）
+  const bkStatus=checkBankruptcy();
+  if(bkStatus==='bankrupt'){setTimeout(()=>showBankruptcy(),500);G.phase='settling';return;}
+  if(bkStatus==='warn'){setTimeout(()=>showBankruptcyWarning(),500);G.phase='settling';return;}
+  const winPaths=checkGameEnd();
+  if(winPaths && winPaths.length>0){G.phase='settling';setTimeout(()=>showVictory(),500);return;}
   if(G.roundInMonth>=5){G.phase='settling';setTimeout(()=>doMonthlySettlement(),800);}
   else{G.phase='waiting';setTimeout(()=>{document.getElementById('dice').textContent='🎲';},500);}
 }
 
 function doMonthlySettlement(){
+  // 处理到期排程事件
+  if(G._scheduled){
+    G._scheduled = G._scheduled.filter(s => {
+      if(s.dueMonth <= G.month){
+        if(!G._pendingScheduled) G._pendingScheduled = [];
+        G._pendingScheduled.push(s.eventId);
+        return false; // 从排程中移除
+      }
+      return true;
+    });
+  }
   const ti=calcTotalIncome(),te=calcTotalExpense(),cf=ti-te;
   G.cash+=cf;
-  if(G.cash<0){const s=Math.abs(G.cash);G.loans+=s;const mp=Math.round(s*0.06/12);G.loanPayment+=mp;addLog(`💳 入不敷出！贷款 ¥${s}，月供 +¥${mp}`);G.cash=0;}
+  // 信用卡利息
+  if(G.creditCard > 0){
+    const int = Math.round(G.creditCard * 0.015);
+    G.creditCard += int;
+    G.creditInterest = Math.round(G.creditCard * 0.18 / 12);
+    addLog(`💳 信用卡利息 ¥${int}`);
+  }
+  // 保险月费
+  if(G.hasInsurance && G.insuranceLevel > 0){
+    const insCost = Math.round(calcTotalIncome() * 0.05);
+    G.cash -= insCost;
+    addLog(`🔒 保险月费 ¥${insCost}`);
+  }
+  // 幸运值自然衰减
+  if((G._luck||0) > 0){
+    G._luck = Math.max(0, G._luck - 1);
+    if(G._luck > 0) addLog(`🍀 幸运衰减至${G._luck}`);
+  }
+  if(G.cash<0){const s=Math.abs(G.cash);G.loans+=s;const mp=Math.round(s*0.06/12);G.loanPayment+=mp;G._loans.push({id:'loan_'+Date.now(), name:'入不敷出贷款', amount:s, payment:mp, type:'personal'});addLog(`💳 入不敷出！贷款 ¥${s}，月供 +¥${mp}`);G.cash=0;}
   const banner=document.getElementById('settlementBanner');banner.style.display='block';
   const d=document.getElementById('settlementDetail');
   const cfDisp=cf>=0?`+¥${cf.toLocaleString()}`:`-¥${Math.abs(cf).toLocaleString()}`;
   d.innerHTML=`📊 收入 <b>${formatMoney(ti)}</b> &nbsp;|&nbsp; 支出 <b>${formatMoney(te)}</b> &nbsp;|&nbsp; 现金流 <b class="${cf>=0?'positive':'negative'}">${cfDisp}</b><br>💵 现金余额 <b>${formatMoney(G.cash)}</b>`;
+  // V2 月报简报
+  if(G.monthlyBulletins&&G.monthlyBulletins.length>0){
+    d.innerHTML+=`<br>📋 月报：${G.monthlyBulletins.join(' · ')}`;
+  }
   updateAll();addLog(`📅 第${G.month}月结算：现金流${cfDisp}，余额 ${formatMoney(G.cash)}`);
   showFinanceToast();
-  const tp=calcTotalPassive();
-  if(tp>=te){setTimeout(()=>showVictory(),1500);return;}
-  // 破产检测
-  if(checkBankruptcy()){setTimeout(()=>showBankruptcy(),1500);return;}
+  settleLifeState();
+  advanceMarketCycle();
+  const winPaths=checkGameEnd();
+  if(winPaths && winPaths.length>0){setTimeout(()=>showVictory(),1500);return;}
+  // 破产检测（带缓冲）
+  const bkStatus=checkBankruptcy();
+  if(bkStatus==='bankrupt'){setTimeout(()=>showBankruptcy(),1500);return;}
+  if(bkStatus==='warn'){setTimeout(()=>showBankruptcyWarning(),1500);return;}
   G.month++;G.roundInMonth=0;G.phase='waiting';
   setTimeout(()=>{document.getElementById('dice').textContent='🎲';document.getElementById('monthProgress').style.width='0%';updateAll();document.getElementById('eventCard').innerHTML=`<div class="event-type-badge badge-opportunity">📅 新的一月</div><div class="event-title">第 ${G.month} 个月开始</div><div class="event-desc">🎯 目标：被动收入 ≥ ${formatMoney(te)}<br>掷骰子开始新月份！</div>`;},2000);
+}
+
+// ===== 市场周期系统 =====
+function advanceMarketCycle(){
+  if(!G) return;
+  G._marketMonthsLeft--;
+  if(G._marketMonthsLeft <= 0){
+    // 切换市场状态：40%牛/40%震荡/20%熊
+    const r = Math.random();
+    if(r < 0.4) G._marketRegime = 'bull';
+    else if(r < 0.8) G._marketRegime = 'sideways';
+    else G._marketRegime = 'bear';
+    G._marketMonthsLeft = 2 + Math.floor(Math.random() * 3); // 持续2-4个月
+  }
+  
+  // 根据市场状态更新指数
+  let change = 0;
+  let label = '';
+  if(G._marketRegime === 'bull'){
+    change = 2 + Math.random() * 6; // +2% ~ +8%
+    label = '📈 牛市';
+  } else if(G._marketRegime === 'sideways'){
+    change = -2 + Math.random() * 4; // -2% ~ +2%
+    label = '➡️ 震荡';
+  } else {
+    change = -(2 + Math.random() * 6); // -2% ~ -8%
+    label = '📉 熊市';
+  }
+  
+  G._marketIndex += change;
+  G._lowRiskNav += change * 0.3;
+  G._growthNav += change * 1.2;
+  
+  // 金价波动（避险资产，与股市负相关）
+  let goldChg = 0;
+  if(G._marketRegime === 'bear') goldChg = 1 + Math.random() * 4;   // +1% ~ +5%
+  else if(G._marketRegime === 'bull') goldChg = -2 + Math.random() * 3; // -2% ~ +1%
+  else goldChg = -1 + Math.random() * 4;  // -1% ~ +3%
+  G._goldPrice = Math.max(75, Math.min(150, G._goldPrice + goldChg));
+  
+  // 每月股价波动（与市场指数联动）
+  const basePrice = 50;
+  const mktRatio = (G._marketIndex || 100) / 100;
+  let stockRange = 0;
+  if(G._marketRegime === 'bull') stockRange = 0.1;      // ±10%
+  else if(G._marketRegime === 'bear') stockRange = 0.15; // ±15%（更波动）
+  else stockRange = 0.12;                                 // ±12%
+  const noise = 1 - stockRange + Math.random() * stockRange * 2;
+  G._stockPrice = Math.max(10, Math.round(basePrice * mktRatio * noise));
+  
+  // 生成简报
+  if(!G.monthlyBulletins) G.monthlyBulletins = [];
+  G.monthlyBulletins.push(`${label}：市场指数 ${G._marketIndex.toFixed(1)}（${change > 0 ? '+' : ''}${change.toFixed(1)}%）`);
 }
 
 // 排行榜渲染
@@ -1221,21 +2255,61 @@ function renderLeaderboard(){
     const records=JSON.parse(localStorage.getItem('lbRecords')||'[]');
     if(records.length===0){el.innerHTML='<div class="lb-empty">🏆 还没有通关记录<br>快来第一个登榜吧！</div>';return;}
     const medals=['🥇','🥈','🥉'];
-    el.innerHTML='<div class="lb-title">🏆 通关排行榜</div>'+records.slice(0,10).map((r,i)=>{
+    const tierIcons={balanced:'🌈',stable:'🌟',basic:'🎉'};
+    el.innerHTML='<div class="lb-title">🏆 通关排行榜（按品质排序）</div>'+records.slice(0,10).map((r,i)=>{
       const rank=i<3?medals[i]:`<span class="lb-rank">#${i+1}</span>`;
-      return `<div class="lb-row">${rank}<span class="lb-char">${r.char}</span><span class="lb-score">${r.rounds}轮</span><span style="color:#bbb;font-size:.78em">${r.date||''}</span></div>`;
+      const tierIcon=tierIcons[r.tier]||'🎉';
+      return `<div class="lb-row">${rank}<span class="lb-char">${tierIcon} ${r.char}</span><span class="lb-score">${r.rounds}轮</span><span style="color:#bbb;font-size:.72em">${r.date||''}</span></div>`;
     }).join('');
   }catch(e){el.innerHTML='<div class="lb-empty">排行榜加载失败</div>';}
 }
 
 function showVictory(){
   try{Sound.victory();}catch(e){}
-  // 保存记录到排行榜
+  // 计算胜利层级
+  const tp=calcTotalPassive(),te=calcTotalExpense();
+  const cashBuffer = te>0 ? G.cash/te : 0;
+  const debtRatio = calcTotalIncome()>0 ? (G.loanPayment||0)/calcTotalIncome() : 0;
+  let victoryTier = 'basic';
+  let victoryEmoji = '🎉';
+  let victoryTitle = '🎉 恭喜获得财务自由！';
+  let victoryDesc = '你的被动收入已经超过了月支出！<br>从"老鼠赛跑"中成功脱离！';
+  // 检查稳态自由
+  const hasGoodIns = G.insuranceLevel >= 2;
+  if(tp >= te * 1.2 && cashBuffer >= (hasGoodIns ? 4 : 6) && debtRatio <= (hasGoodIns ? 0.4 : 0.3)){
+    victoryTier = 'stable';
+    victoryEmoji = '🌟';
+    victoryTitle = '🌟 稳态自由';
+    victoryDesc = '自由状态稳定，不靠脆弱杠杆维持。<br>你拥有坚实的财务基础！';
+  }
+  // 检查人生平衡
+  if(victoryTier === 'stable' && G.lifeState >= 60){
+    victoryTier = 'balanced';
+    victoryEmoji = '🌈';
+    victoryTitle = '🌈 人生平衡';
+    victoryDesc = '财务与生活质量同时成立。<br>你是真正的人生赢家！';
+  }
+  // 保存记录到排行榜（附带复盘数据）
   try{
     const records=JSON.parse(localStorage.getItem('lbRecords')||'[]');
     const char=CHARACTERS.find(c=>c.id===G.charId);
-    records.push({char:char?char.emoji+char.name:'?',rounds:G.round,date:new Date().toLocaleDateString('zh-CN')});
-    records.sort((a,b)=>a.rounds-b.rounds);
+    const nw=calcNetWorth();
+    records.push({
+      char:char?char.emoji+char.name:'?',
+      rounds:G.round,
+      date:new Date().toLocaleDateString('zh-CN'),
+      tier:victoryTier,
+      winPaths:G.winPaths||[],
+      pathLabel:G._pathLabel||'',
+      netWorth:nw,
+      lifeState:G.lifeState
+    });
+    records.sort((a,b)=>{
+      const order={balanced:0,stable:1,basic:2};
+      const ta=order[a.tier]||2,tb=order[b.tier]||2;
+      if(ta!==tb)return ta-tb;
+      return a.rounds-b.rounds;
+    });
     if(records.length>20)records.length=20;
     localStorage.setItem('lbRecords',JSON.stringify(records));
   }catch(e){}
@@ -1245,9 +2319,44 @@ function showVictory(){
   document.getElementById('victoryRound').textContent=G.round;
   document.getElementById('modalOverlay').style.display='block';
   document.getElementById('victoryModal').style.display='block';
+  // 设置胜利层级样式
+  const vm=document.getElementById('victoryModal');
+  vm.classList.remove('victory-tier-stable','victory-tier-balanced');
+  if(victoryTier==='stable') vm.classList.add('victory-tier-stable');
+  if(victoryTier==='balanced') vm.classList.add('victory-tier-balanced');
+  // 显示胜利路径
+  const wpEl=document.getElementById('victoryWinPaths');
+  if(G.winPaths&&G.winPaths.length>0){
+    wpEl.style.display='flex';
+    wpEl.innerHTML=G.winPaths.map(p=>`<span>${p}</span>`).join('');
+  }else{
+    wpEl.style.display='none';
+  }
+  // 显示复盘报告
+  const rp=document.getElementById('reviewPanel');
+  if(rp){
+    rp.style.display='block';
+    document.getElementById('rChar').textContent=((CHARACTERS.find(c=>c.id===G.charId)?.emoji||'')+' '+(CHARACTERS.find(c=>c.id===G.charId)?.name||'?')).trim();
+    document.getElementById('rDuration').textContent=G.month+'个月 / '+G.round+'轮';
+    document.getElementById('rNetWorth').textContent=formatMoney(calcNetWorth());
+    document.getElementById('rActiveIncome').textContent=formatMoney(G.salary);
+    document.getElementById('rSideIncome').textContent=formatMoney(calcTotalSideIncome());
+    document.getElementById('rPassiveIncome').textContent=formatMoney(tp);
+    document.getElementById('rExpense').textContent=formatMoney(te);
+    document.getElementById('rCashBuffer').textContent=cashBuffer.toFixed(1);
+    document.getElementById('rDebtRatio').textContent=(debtRatio*100).toFixed(0);
+    document.getElementById('rLifeState').textContent=G.lifeState;
+    document.getElementById('rPathLabel').textContent='🧭 路线标签：'+(G._pathLabel||'综合型自由');
+  }
+  const emojiEl=vm.querySelector('.emoji-big');
+  const titleEl=vm.querySelector('h2');
+  const msgEl=document.getElementById('victoryMsg');
+  if(emojiEl) emojiEl.textContent=victoryTier==='balanced'?'🌈🌟🌈':victoryTier==='stable'?'🌟':'🎉';
+  if(titleEl) titleEl.textContent=victoryTitle;
+  if(msgEl) msgEl.innerHTML=victoryDesc;
   // 新手模式通关 → 引导进入正常模式
   if(G.mode==='easy'){
-    document.getElementById('victoryMsg').innerHTML=`
+    if(msgEl) msgEl.innerHTML=`
       🎉 你已经掌握了基本玩法！<br><br>
       🔥 准备好迎接<b>真正的财务挑战</b>了吗？<br>
       正常模式下收入更低、支出更高！
@@ -1262,13 +2371,6 @@ function showVictory(){
     // 正常模式通关 → 最终胜利，撒花！
     try{
       spawnConfetti();
-      document.getElementById('victoryModal').querySelector('.emoji-big').textContent='🎉🎉🎉';
-      document.getElementById('victoryModal').querySelector('h2').textContent='🏆 恭喜获得财务自由！';
-      document.getElementById('victoryMsg').innerHTML=`
-        你从老鼠赛跑中成功脱离！<br><br>
-        <b>第 ${G.month} 个月 · ${G.round} 轮</b><br><br>
-        <span style="font-size:.85em;color:#888">👏 你是真正的理财高手！</span>
-      `;
       document.getElementById('victoryModal').querySelector('.restart-btn').textContent='🔄 再来一局';
       document.getElementById('victoryModal').querySelector('.restart-btn').onclick=showCharSelect;
     }catch(e){console.error('胜利画面错误:',e);}
@@ -1288,6 +2390,7 @@ function openBank(){
     if(amt&&parseInt(amt)>0&&parseInt(amt)<=maxLoan){
       const p=parseInt(amt);G.cash+=p;G.loans+=p;
       G.loanPayment=Math.round(G.loans*0.045/12);
+      G._loans.push({id:'loan_'+Date.now(), name:'银行贷款', amount:p, payment:Math.round(p*0.045/12), type:'personal'});
       addLog('🏦 银行贷款 ¥'+p.toLocaleString()+'，月供 +¥'+Math.round(p*0.045/12));
       updateAll();showFinanceToast();openBank();
     }else if(amt&&parseInt(amt)>maxLoan){
@@ -1304,6 +2407,7 @@ function openBank(){
     if(amt&&parseInt(amt)>0&&parseInt(amt)<=maxPay){
       const p=parseInt(amt);G.cash-=p;G.loans-=p;
       G.loanPayment=Math.round(G.loans*0.045/12);
+      (function(){let r=p;for(let i=G._loans.length-1;i>=0&&r>0;i--){const sub=Math.min(r,G._loans[i].amount);G._loans[i].amount-=sub;G._loans[i].payment=Math.round(G._loans[i].payment*(1-sub/(G._loans[i].amount+sub||1)));r-=sub;if(G._loans[i].amount<=0)G._loans.splice(i,1);}})();
       addLog('🏦 主动还款 ¥'+p.toLocaleString()+'，月供降低 ¥'+Math.round(p*0.045/12));
       updateAll();showFinanceToast();openBank();
     }else if(amt&&parseInt(amt)>maxPay){
@@ -1340,16 +2444,89 @@ function spawnConfetti(){
   setTimeout(()=>container.innerHTML='', 5000);
 }
 
-// 破产检测：现金≤0、现金流为负、净资产≤0 → 立即破产
+// 破产检测：带缓冲机制，连续2个月现金为负才破产
 function checkBankruptcy(){
-  if(!G) return false;
-  if(G.cash>0) return false;        // 还有现金，不破产
+  if(!G) return 'none';
+  const te=calcTotalExpense(),ti=calcTotalIncome();
+  const cashOk = G.cash >= Math.round(te * 0.5); // 至少有半个月支出
   const ta=G.cash+G.investments+G.realEstate+G.vehicle;
   const tl=G.loans+G.creditCard;
-  const te=calcTotalExpense(),ti=calcTotalIncome();
-  if(ta-tl<=0 && ti<te) return true;  // 净资产≤0 且 入不敷出
-  if(G.loans>G.salary*18 && ti<te) return true; // 贷款超1.5年工资且入不敷出
-  return false;
+  const isDanger = G.cash <= 0 && ((ta-tl<=0 && ti<te) || (G.loans>G.salary*18 && ti<te));
+  if(!isDanger){
+    G._bankruptcyWarned = false;
+    return 'none';
+  }
+  if(!G._bankruptcyWarned){
+    G._bankruptcyWarned = true;
+    addLog('⚠️ 财务预警！现金不足，下月将面临破产风险');
+    return 'warn';
+  }
+  // 连续两个月都在危险状态 → 破产
+  return 'bankrupt';
+}
+
+function showBankruptcyWarning(){
+  try{Sound.fail();}catch(e){}
+  const card=document.getElementById('eventCard');
+  const ca=document.getElementById('choiceArea');
+  card.innerHTML=`
+    <div class="event-type-badge badge-emergency">⚠️ 财务危机警告</div>
+    <div class="event-title">💸 资金链即将断裂</div>
+    <div class="event-desc">
+      你的财务状况非常危险！当前现金 <b>${formatMoney(G.cash)}</b>，月支出 <b>${formatMoney(calcTotalExpense())}</b>。<br>
+      请选择应对方案，或宣告破产结束游戏。
+    </div>`;
+  ca.innerHTML='';
+  // 选项1: 出售流动资产
+  if(G.investments > 0 || (G.stockShares||0) > 0){
+    const sellBtn=document.createElement('button');
+    sellBtn.className='choice-btn primary';
+    sellBtn.innerHTML='💹 出售流动资产应急<br><span style="font-size:.72em;font-weight:400;opacity:.6">可回笼 ¥'+(G.investments + ((G.stockShares||0)*(G._stockPrice||0))).toLocaleString()+'</span>';
+    sellBtn.onclick=()=>{
+      const sellAmount = G.investments + ((G.stockShares||0)*(G._stockPrice||0));
+      G.cash += sellAmount;
+      G.dividendIncome = Math.max(0, G.dividendIncome - Math.round(G.investments * 0.06 / 12));
+      addLog(`💹 出售流动资产，回笼 ¥${sellAmount.toLocaleString()}`);
+      G.investments = 0;
+      G.stockShares = 0;
+      G._investCost = 0;
+      G._bankruptcyWarned = false;
+      updateAll();
+      document.getElementById('eventCard').innerHTML+=`<div class="event-impact">💫 出售资产回笼 ¥${sellAmount.toLocaleString()}，缓解了危机</div>`;
+      ca.innerHTML='';
+      G.phase='waiting';
+    };
+    ca.appendChild(sellBtn);
+  }
+  // 选项2: 向银行贷款
+  const maxLoan = Math.round(G.salary * 12 * 0.8);
+  if(maxLoan > 0 && G.loans < maxLoan){
+    const loanBtn=document.createElement('button');
+    loanBtn.className='choice-btn loan';
+    loanBtn.innerHTML='🏦 申请紧急贷款<br><span style="font-size:.72em;font-weight:400;opacity:.6">最高可贷 ¥'+maxLoan.toLocaleString()+'</span>';
+    loanBtn.onclick=()=>{
+      const amt = Math.round(Math.min(maxLoan - G.loans, calcTotalExpense() * 3));
+      G.cash += amt;
+      G.loans += amt;
+      G.loanPayment = Math.round(G.loans * 0.045 / 12);
+      G._loans.push({id:'loan_'+Date.now(), name:'紧急救助贷款', amount:amt, payment:Math.round(amt*0.045/12), type:'personal'});
+      G._bankruptcyWarned = false;
+      addLog(`🏦 紧急贷款 ¥${amt.toLocaleString()}，月供 +¥${Math.round(amt*0.045/12)}`);
+      updateAll();
+      document.getElementById('eventCard').innerHTML+=`<div class="event-impact">💫 贷款 ¥${amt.toLocaleString()}，暂时渡过危机</div>`;
+      ca.innerHTML='';
+      G.phase='waiting';
+    };
+    ca.appendChild(loanBtn);
+  }
+  // 选项3: 宣告破产
+  const bankBtn=document.createElement('button');
+  bankBtn.className='choice-btn danger';
+  bankBtn.innerHTML='💸 宣告破产结束游戏';
+  bankBtn.onclick=()=>{
+    showBankruptcy();
+  };
+  ca.appendChild(bankBtn);
 }
 
 function showBankruptcy(){
@@ -1395,9 +2572,18 @@ function showFinanceToast(){
 function updateFinanceModal(){
   if(!G)return;
   const ta=G.cash+G.investments+G.realEstate+G.vehicle,tl=G.loans+G.creditCard,nw=ta-tl;
-  const ti=G.salary+G.dividendIncome+G.rentIncome+G.sideIncome,te=G.livingExpense+G.loanPayment+G.creditInterest+G.childExpense+G.vehicleExpense;
+  const ti=calcTotalIncome(),te=calcTotalExpense(),tp=calcTotalPassive();
   flashValue('fmAssets',ta);document.getElementById('fmAssets').textContent='¥'+ta.toLocaleString();
   flashValue('fmCash',G.cash);document.getElementById('fmCash').textContent='¥'+G.cash.toLocaleString();
+  // 市场行情指示器（手机端）
+  const mktMobile=document.getElementById('marketIndicatorMobile');
+  if(mktMobile){
+    const regimes={'bull':'📈 牛市','sideways':'➡️ 震荡','bear':'📉 熊市'};
+    const reg=regimes[G._marketRegime]||'➡️ 震荡';
+    const gp=G._goldPrice||100;
+    const sp=G._stockPrice||50;
+    mktMobile.innerHTML=`${reg} <span style="color:#8e44ad">指数${Math.round(G._marketIndex||100)}</span> · 股价¥${sp} · 金价${gp.toFixed(0)}`;
+  }
   flashValue('fmInvestments',G.investments);document.getElementById('fmInvestments').textContent='¥'+G.investments.toLocaleString();
   flashValue('fmRealEstate',G.realEstate);document.getElementById('fmRealEstate').textContent='¥'+G.realEstate.toLocaleString();
   flashValue('fmVehicle',G.vehicle);document.getElementById('fmVehicle').textContent='¥'+G.vehicle.toLocaleString();
@@ -1405,6 +2591,63 @@ function updateFinanceModal(){
   flashValue('fmLoans',G.loans);document.getElementById('fmLoans').textContent='¥'+G.loans.toLocaleString();
   flashValue('fmCredit',G.creditCard);document.getElementById('fmCredit').textContent='¥'+G.creditCard.toLocaleString();
   flashValue('fmNetWorth',nw);document.getElementById('fmNetWorth').textContent='净资产: ¥'+nw.toLocaleString();
+  // 投资组合展开子项
+  const invSub=document.getElementById('investSubItems');
+  if(invSub){
+    let invHtml='';
+    if(G._investments && G._investments.length>0){
+      G._investments.forEach(inv=>{
+        const tl={stock:'股票',fund:'基金',bond:'债券',gold:'黄金',nft:'NFT',patent:'专利',franchise:'加盟'}[inv.type]||inv.type;
+        const annDiv=(inv.dividend||0)*12; const yieldPct=inv.amount>0?Math.round(annDiv/inv.amount*100):0;
+        const meta = inv.type==='gold' ? '价格波动' : '月分红¥'+((inv.dividend||0).toLocaleString())+' · 年化'+yieldPct+'%';
+        invHtml+='<div class="sub-item" data-type="investment" data-id="'+inv.id+'"><span>'+tl+' ¥'+((inv.amount||0).toLocaleString())+'<span class="item-meta">'+meta+'</span></span><span><span class="sale-tag">出售</span></span></div>';
+      });
+    }
+    invSub.innerHTML=invHtml||'<div class="sub-item" style="color:#999;cursor:default">暂无投资</div>';
+    if(invHtml) autoExpand('investSubItems');
+  }
+  // 房产展开子项
+  const propSub=document.getElementById('propSubItems');
+  if(propSub){
+    let propHtml='';
+    if(G._properties && G._properties.length>0){
+      G._properties.forEach(p=>{
+        const label=p.type==='rental'?'出租':'自住';
+        const annRent=(p.rent||0)*12; const yieldPct=p.value>0?Math.round(annRent/p.value*100):0;
+        propHtml+='<div class="sub-item" data-type="property" data-id="'+p.id+'"><span>'+p.name+' ¥'+((p.value||0).toLocaleString())+'<span class="item-meta">'+(p.type==='rental'?'月租¥'+((p.rent||0).toLocaleString())+' · 年化'+yieldPct+'%':label)+'</span></span><span><span class="sale-tag">出售</span></span></div>';
+      });
+    }
+    propSub.innerHTML=propHtml||'<div class="sub-item" style="color:#999;cursor:default">暂无房产</div>';
+    if(propHtml) autoExpand('propSubItems');
+  }
+  // 车辆展开子项
+  const vehSub=document.getElementById('vehSubItems');
+  if(vehSub){
+    let vehHtml='';
+    if(G._vehicles && G._vehicles.length>0){
+      G._vehicles.forEach(v=>{
+        const carLoan = G._loans.find(l=>l.id===v.loanId);
+        let meta = '养车费¥' + ((v.expense||0).toLocaleString());
+        if(carLoan) meta += ' · 车贷¥' + ((carLoan.payment||0).toLocaleString())+'/月';
+        vehHtml+='<div class="sub-item" data-type="vehicle" data-id="'+v.id+'"><span>🚗 '+v.name+' ¥'+((v.value||0).toLocaleString())+'<span class="item-meta">'+meta+'</span></span><span><span class="sale-tag">出售</span></span></div>';
+      });
+    }
+    vehSub.innerHTML=vehHtml||'<div class="sub-item" style="color:#999;cursor:default">暂无车辆</div>';
+    if(vehHtml) autoExpand('vehSubItems');
+  }
+  // 贷款展开子项
+  const loanSub=document.getElementById('loanSubItems');
+  if(loanSub){
+    let loanHtml='';
+    if(G._loans && G._loans.length>0){
+      G._loans.forEach(l=>{
+        const rate=l.amount>0?Math.round((l.payment||0)*12/l.amount*100):0;
+        loanHtml+='<div class="sub-item negative" data-type="loan" data-id="'+l.id+'"><span>'+l.name+' ¥'+((l.amount||0).toLocaleString())+'<span class="item-meta">月供¥'+((l.payment||0).toLocaleString())+' · 利率'+rate+'%</span></span><span><span class="sale-tag">还款</span></span></div>';
+      });
+    }
+    loanSub.innerHTML=loanHtml||'<div class="sub-item" style="color:#999;cursor:default">暂无贷款</div>';
+    if(loanHtml) autoExpand('loanSubItems');
+  }
   flashValue('fmIncome',ti);document.getElementById('fmIncome').textContent='¥'+ti.toLocaleString();
   flashValue('fmSalary',G.salary);document.getElementById('fmSalary').textContent='¥'+G.salary.toLocaleString();
   flashValue('fmDividend',G.dividendIncome);document.getElementById('fmDividend').textContent='¥'+G.dividendIncome.toLocaleString();
@@ -1415,8 +2658,124 @@ function updateFinanceModal(){
   flashValue('fmLoanPay',G.loanPayment);document.getElementById('fmLoanPay').textContent='¥'+G.loanPayment.toLocaleString();
   flashValue('fmCreditInt',G.creditInterest);document.getElementById('fmCreditInt').textContent='¥'+G.creditInterest.toLocaleString();
   flashValue('fmChild',G.childExpense);document.getElementById('fmChild').textContent='¥'+G.childExpense.toLocaleString();
+  if(document.getElementById('fmVehicleRunningCost')){flashValue('fmVehicleRunningCost',G.vehicleRunningCost);document.getElementById('fmVehicleRunningCost').textContent='¥'+G.vehicleRunningCost.toLocaleString();}
   flashValue('fmCashFlow',ti-te);document.getElementById('fmCashFlow').textContent='月现金流: ¥'+(ti-te).toLocaleString();
 }
+
+// 自动展开子项（数据存在时）
+function autoExpand(targetId){
+  const sub=document.getElementById(targetId);
+  const head=document.querySelector(`[data-target="${targetId}"]`);
+  if(!sub||!head)return;
+  sub.classList.add('open');
+  const arrow=head.querySelector('.expand-arrow');
+  if(arrow)arrow.classList.add('open');
+}
+// 桌面端子项渲染 + 自动展开
+function renderDesktopSubItems(containerId, data, renderFn){
+  const container=document.getElementById(containerId);
+  if(!container)return;
+  let html='';
+  if(data && data.length>0){
+    data.forEach(item => { html += renderFn(item); });
+  }
+  container.innerHTML=html || '<div class="sub-item" style="color:#999;cursor:default">暂无</div>';
+  if(html){
+    container.classList.add('open');
+    const head=document.querySelector(`[data-target="${containerId}"]`);
+    if(head){
+      const arrow=head.querySelector('.expand-arrow');
+      if(arrow)arrow.classList.add('open');
+    }
+  }
+}
+
+// 子项出售/还款操作
+function sellSubItem(type, id){
+  if(!G)return;
+  switch(type){
+    case 'investment':{
+      const inv=G._investments.find(i=>i.id===id);
+      if(!inv)return;
+      const multiplier = inv.type==='gold' ? ((G._goldPrice||100)/100) : 1.05;
+      const sp=Math.floor(inv.amount*multiplier);
+      if(!confirm(`💰 出售「${inv.name}」？\n成本: ¥${inv.amount.toLocaleString()}\n出售价: ¥${sp.toLocaleString()}\n确认出售？`)) return;
+      G.cash+=sp; G.investments=Math.max(0,G.investments-inv.amount);
+      G.dividendIncome=Math.max(0,G.dividendIncome-(inv.dividend||0));
+      G._investments=G._investments.filter(i=>i.id!==id);
+      addLog('📈 出售「'+inv.name+'」，获现 ¥'+sp.toLocaleString());
+      updateAll(); showFinanceToast(); break;
+    }
+    case 'property':{
+      const prop=G._properties.find(p=>p.id===id);
+      if(!prop)return;
+      const sp=Math.floor(prop.value*1.1);
+      if(!confirm(`🏠 出售「${prop.name}」？\n估值: ¥${prop.value.toLocaleString()}\n出售价: ¥${sp.toLocaleString()}\n确认出售？`)) return;
+      G.cash+=sp; G.realEstate-=prop.value;
+      G.rentIncome=Math.max(0,G.rentIncome-(prop.rent||0));
+      G._properties=G._properties.filter(p=>p.id!==id);
+      addLog('🏠 出售「'+prop.name+'」，获现 ¥'+sp.toLocaleString());
+      updateAll(); showFinanceToast(); break;
+    }
+    case 'vehicle':{
+      const veh=G._vehicles.find(v=>v.id===id);
+      if(!veh)return;
+      const sp=Math.floor(veh.value*0.8);
+      if(!confirm(`🚗 出售「${veh.name}」？\n估值: ¥${veh.value.toLocaleString()}\n出售价: ¥${sp.toLocaleString()}\n确认出售？`)) return;
+      G.cash+=sp; G.vehicle=Math.max(0,G.vehicle-veh.value);
+      G.vehicleRunningCost=Math.max(0,G.vehicleRunningCost-(veh.expense||0));
+      // 处理关联车贷
+      let loanMsg='';
+      if(veh.loanId){
+        const carLoan=G._loans.find(l=>l.id===veh.loanId);
+        if(carLoan){
+          G.loans=Math.max(0,G.loans-carLoan.amount);
+          G.loanPayment=Math.max(0,G.loanPayment-(carLoan.payment||0));
+          G._loans=G._loans.filter(l=>l.id!==veh.loanId);
+          loanMsg='，车贷已结清';
+        }
+      }
+      G._vehicles=G._vehicles.filter(v=>v.id!==id);
+      addLog('🚗 出售「'+veh.name+'」，获现 ¥'+sp.toLocaleString()+loanMsg);
+      updateAll(); showFinanceToast(); break;
+    }
+    case 'loan':{
+      const loan=G._loans.find(l=>l.id===id);
+      if(!loan)return;
+      const maxPay=Math.min(loan.amount,G.cash);
+      if(maxPay<=0){addLog('现金不足');return;}
+      if(!confirm(`💳 偿还「${loan.name}」？\n余额: ¥${loan.amount.toLocaleString()}\n可还: ¥${maxPay.toLocaleString()}\n确认还款？`)) return;
+      G.cash-=maxPay; G.loans-=maxPay;
+      loan.amount-=maxPay; loan.payment=Math.round(loan.amount*0.045/12);
+      if(loan.amount<=0) G._loans=G._loans.filter(l=>l.id!==id);
+      G.loanPayment=Math.round(G.loans*0.045/12);
+      addLog('💳 偿还「'+loan.name+'」¥'+maxPay.toLocaleString());
+      updateAll(); showFinanceToast(); break;
+    }
+  }
+}
+
+// 子项点击委托
+document.addEventListener('click',function(e){
+  const item=e.target.closest('.sub-item[data-type][data-id]');
+  if(!item)return;
+  e.stopPropagation();
+  sellSubItem(item.dataset.type, item.dataset.id);
+});
+
+// 展开/收起切换
+document.addEventListener('click',function(e){
+  // 点到了子项出售按钮，不触发展开/收起
+  if(e.target.closest('.sub-item[data-type]'))return;
+  const head=e.target.closest('.expand-head');
+  if(!head)return;
+  const targetId=head.dataset.target;
+  const sub=document.getElementById(targetId);
+  if(!sub)return;
+  const arrow=head.querySelector('.expand-arrow');
+  sub.classList.toggle('open');
+  if(arrow)arrow.classList.toggle('open');
+});
 
 function showCharSelect(){
   document.getElementById('modalOverlay').style.display='none';
@@ -1424,6 +2783,10 @@ function showCharSelect(){
   document.getElementById('bankruptcyModal').style.display='none';
   G=null;
   // 重置胜利弹窗
+  const vm=document.getElementById('victoryModal');
+  vm.classList.remove('victory-tier-stable','victory-tier-balanced');
+  document.getElementById('victoryWinPaths').style.display='none';
+  document.getElementById('reviewPanel').style.display='none';
   document.getElementById('victoryModal').querySelector('.emoji-big').textContent='🎉';
   document.getElementById('victoryModal').querySelector('h2').textContent='恭喜获得财务自由！';
   document.getElementById('victoryModal').querySelector('.restart-btn').textContent='🔄 重新开始';
