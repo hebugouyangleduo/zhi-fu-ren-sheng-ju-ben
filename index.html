@@ -894,6 +894,8 @@ const EVENTS = [
             G.dividendIncome=Math.max(0,G.dividendIncome-Math.round(proceeds*0.06/12));
             // 从追踪数组移除已卖出部分（LIFO）
             (function(){let r=q*price;for(let i=G._investments.length-1;i>=0&&r>0;i--){const sub=Math.min(r,G._investments[i].amount);G._investments[i].amount-=sub;G._investments[i].dividend=Math.round(G._investments[i].amount*0.06/12);r-=sub;if(G._investments[i].amount<=0)G._investments.splice(i,1);}})();
+            // 全部卖完时清空空壳条目（亏损卖出后 proceeds 扣不完 cost，会残留）
+            if((G.stockShares||0)<=0) G._investments=G._investments.filter(i=>i.type!=='stock'&&i.type!=='fund'&&i.type!=='bond');
             addLog('卖出'+q+'股@¥'+price+'，收入 ¥'+proceeds.toLocaleString());
             return{cashDelta:proceeds,msg:'卖出'+q+'股 @¥'+price};
           }else if(n&&parseInt(n)>maxSell){
@@ -2922,6 +2924,8 @@ function sellSubItem(type, id){
         G._investCost=Math.max(0,Math.round((G._investCost||0)*(1-ratio)));
         // 从追踪数组按比例移除
         (function(){let r=proceeds;for(let i=G._investments.length-1;i>=0&&r>0;i--){const sub=Math.min(r,G._investments[i].amount);G._investments[i].amount-=sub;G._investments[i].dividend=Math.round(G._investments[i].amount*0.06/12);r-=sub;if(G._investments[i].amount<=0)G._investments.splice(i,1);}})();
+        // 全部卖完时清空空壳条目（亏损卖出后 proceeds 扣不完 cost，会残留）
+        if(G.stockShares<=0) G._investments=G._investments.filter(i=>i.type!=='stock'&&i.type!=='fund'&&i.type!=='bond');
         addLog('📈 卖出'+q+'股@¥'+curPrice+'，收入 ¥'+proceeds.toLocaleString());
       }else{
         sp=Math.floor(inv.amount*1.05);
