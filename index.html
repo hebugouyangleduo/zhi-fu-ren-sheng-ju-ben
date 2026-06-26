@@ -988,7 +988,7 @@ const EVENTS = [
   desc:'有职业技能培训班，可以提升收入潜力。',
   choices:[
     {text:'📖 报名 ¥2,000',type:'primary',condition:()=>G&&G.cash>=2000,require:"需≥¥2,000",
-      effect:()=>{G.cash-=2000;const b=300+Math.floor(Math.random()*500);const sal=Math.floor(b*0.3);const div=Math.floor(b*0.3);const side=Math.floor(b*0.4);G.salary+=sal;G.dividendIncome+=div;G.sideIncome+=side;G._incomeSources.push({id:'src_'+Date.now(), name:'学习提升副业', amount:side, type:'side'});if(sal>0)G._incomeSources.push({id:'src_'+Date.now()+'_sal', name:'学习提升薪资', amount:sal, type:'active'});if(div>0)G._investments.push({id:'inv_'+Date.now()+'_div', name:'学习提升分红', amount:div*200, dividend:div, type:'stock'});addLog(`学习提升！综合收入 +¥${b}/月`);return{cashDelta:-2000,msg:`综合收入 +¥${b}/月`};}},
+      effect:()=>{G.cash-=2000;const b=300+Math.floor(Math.random()*500);const sal=Math.floor(b*0.3);const div=Math.floor(b*0.3);const side=Math.floor(b*0.4);G.salary+=sal;G.dividendIncome+=div;G.sideIncome+=side;G._incomeSources.push({id:'src_'+Date.now(), name:'学习提升副业', amount:side, type:'side'});if(sal>0)G._incomeSources.push({id:'src_'+Date.now()+'_sal', name:'学习提升薪资', amount:sal, type:'active'});if(div>0)G._incomeSources.push({id:'src_'+Date.now()+'_div', name:'学习提升分红', amount:div, type:'passive'});addLog(`学习提升！综合收入 +¥${b}/月`);return{cashDelta:-2000,msg:`综合收入 +¥${b}/月`};}},
     {text:'❌ 不参加',type:'danger',effect:()=>{addLog('放弃学习');return{cashDelta:0,msg:'放弃学习'};}}
   ]
 },
@@ -1936,7 +1936,7 @@ function updateAll(){
   renderDesktopSubItems('investDesktopItems', G._investments, inv => {
     const tl={stock:'股票',fund:'基金',bond:'债券',gold:'黄金',nft:'NFT',patent:'专利',franchise:'加盟'}[inv.type]||inv.type;
     const annDiv=(inv.dividend||0)*12; const yieldPct=inv.amount>0?Math.round(annDiv/inv.amount*100):0;
-    const stockSharesInfo = (inv.type==='stock'||inv.type==='fund'||inv.type==='bond') && (G.stockShares||0)>0 ? '持有'+(G.stockShares||0)+'股 · ' : (inv.type==='nft'||inv.type==='patent'||inv.type==='franchise') ? '1个 · ' : '';
+    const stockSharesInfo = (inv.type==='stock'||inv.type==='fund'||inv.type==='bond') && (G.stockShares||0)>0 ? '持有'+(G.stockShares||0)+'股 · ' : inv.type==='gold' ? '' : '1个 · ';
     const meta = inv.type==='gold' ? '价格波动' : stockSharesInfo+'月分红¥'+((inv.dividend||0).toLocaleString())+' · 年化'+yieldPct+'%';
     return '<div class="sub-item" data-type="investment" data-id="'+inv.id+'"><span>'+(inv.name||tl)+' ¥'+((inv.amount||0).toLocaleString())+'<span class="item-meta">'+meta+'</span></span><span><span class="sale-tag">出售</span></span></div>';
   });
@@ -2709,7 +2709,7 @@ function updateFinanceModal(){
       G._investments.forEach(inv=>{
         const tl={stock:'股票',fund:'基金',bond:'债券',gold:'黄金',nft:'NFT',patent:'专利',franchise:'加盟'}[inv.type]||inv.type;
         const annDiv=(inv.dividend||0)*12; const yieldPct=inv.amount>0?Math.round(annDiv/inv.amount*100):0;
-        const stockSharesInfo = (inv.type==='stock'||inv.type==='fund'||inv.type==='bond') && (G.stockShares||0)>0 ? '持有'+(G.stockShares||0)+'股 · ' : (inv.type==='nft'||inv.type==='patent'||inv.type==='franchise') ? '1个 · ' : '';
+        const stockSharesInfo = (inv.type==='stock'||inv.type==='fund'||inv.type==='bond') && (G.stockShares||0)>0 ? '持有'+(G.stockShares||0)+'股 · ' : inv.type==='gold' ? '' : '1个 · ';
         const meta = inv.type==='gold' ? '价格波动' : stockSharesInfo+'月分红¥'+((inv.dividend||0).toLocaleString())+' · 年化'+yieldPct+'%';
         invHtml+='<div class="sub-item" data-type="investment" data-id="'+inv.id+'"><span>'+(inv.name||tl)+' ¥'+((inv.amount||0).toLocaleString())+'<span class="item-meta">'+meta+'</span></span><span><span class="sale-tag">出售</span></span></div>';
       });
