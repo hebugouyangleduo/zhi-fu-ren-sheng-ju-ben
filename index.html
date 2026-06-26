@@ -363,7 +363,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Micr
             <div class="table-row" id="expRentRow" style="display:none"><span class="label">&nbsp;&nbsp;🏠 房租</span><span class="amount negative" id="expRent">¥0</span></div>
             <div class="table-row"><span class="label">&nbsp;&nbsp;🏠 生活费用</span><span class="amount negative" id="expLiving">¥0</span></div>
             <div class="table-row"><span class="label">&nbsp;&nbsp;🏦 贷款月供</span><span class="amount negative" id="expLoan">¥0</span></div>
-            <div class="table-row"><span class="label">&nbsp;&nbsp;💳 信用卡利息</span><span class="amount negative" id="expCredit">¥0</span></div>
+            <div class="table-row"><span class="label">&nbsp;&nbsp;💳 信用卡还款</span><span class="amount negative" id="expCredit">¥0</span></div>
             <div class="table-row"><span class="label">&nbsp;&nbsp;👶 子女费用</span><span class="amount negative" id="expChild">¥0</span></div>
             <div class="table-row"><span class="label">&nbsp;&nbsp;🚗 养车费</span><span class="amount negative" id="expVehicleRun">¥0</span></div>
           </div>
@@ -436,10 +436,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Micr
         <div class="table-row" style="background:#f8f9fa;font-weight:700;padding:5px 10px;font-size:.82em;margin-top:4px"><span class="label">📊 总收入</span><span class="amount positive" id="fmIncome">¥0</span></div>
         <div class="table-row" style="background:#fdedec;font-weight:700;padding:5px 10px;font-size:.82em"><span class="label">📉 支出</span><span class="amount negative" id="fmExpense">¥0</span></div>
         <div class="table-row" id="fmRentExpRow" style="display:none;padding:4px 10px;font-size:.78em"><span class="label">&nbsp;&nbsp;🏠 房租</span><span class="amount negative" id="fmRentExp">¥0</span></div>
-        <div class="table-row" style="padding:4px 10px;font-size:.78em"><span class="label">&nbsp;&nbsp;🏠 生活</span><span class="amount negative" id="fmLiving">¥0</span></div>
-        <div class="table-row" style="padding:4px 10px;font-size:.78em"><span class="label">&nbsp;&nbsp;🏦 月供</span><span class="amount negative" id="fmLoanPay">¥0</span></div>
-        <div class="table-row" style="padding:4px 10px;font-size:.78em"><span class="label">&nbsp;&nbsp;💳 信用卡利息</span><span class="amount negative" id="fmCreditInt">¥0</span></div>
-        <div class="table-row" style="padding:4px 10px;font-size:.78em"><span class="label">&nbsp;&nbsp;👶 子女</span><span class="amount negative" id="fmChild">¥0</span></div>
+        <div class="table-row" style="padding:4px 10px;font-size:.78em"><span class="label">&nbsp;&nbsp;🏠 生活费用</span><span class="amount negative" id="fmLiving">¥0</span></div>
+        <div class="table-row" style="padding:4px 10px;font-size:.78em"><span class="label">&nbsp;&nbsp;🏦 贷款月供</span><span class="amount negative" id="fmLoanPay">¥0</span></div>
+        <div class="table-row" style="padding:4px 10px;font-size:.78em"><span class="label">&nbsp;&nbsp;💳 信用卡还款</span><span class="amount negative" id="fmCreditInt">¥0</span></div>
+        <div class="table-row" style="padding:4px 10px;font-size:.78em"><span class="label">&nbsp;&nbsp;👶 子女费用</span><span class="amount negative" id="fmChild">¥0</span></div>
         <div class="table-row" style="padding:4px 10px;font-size:.78em"><span class="label">&nbsp;&nbsp;🚗 养车费</span><span class="amount negative" id="fmVehicleRunningCost">¥0</span></div>
       </div>
     </div>
@@ -2283,12 +2283,20 @@ function doMonthlySettlement(){
   }
   const ti=calcTotalIncome(),te=calcTotalExpense(),cf=ti-te;
   G.cash+=cf;
-  // 信用卡利息
+  // 信用卡利息 + 最低还款
   if(G.creditCard > 0){
     const int = Math.round(G.creditCard * 0.015);
     G.creditCard += int;
+    // 最低还款：利息 + 2%本金（至少¥50）
+    const minPrincipal = Math.max(50, Math.round(G.creditCard * 0.02));
+    const minPayment = Math.min(G.creditCard, int + minPrincipal);
+    const actualPay = Math.min(minPayment, Math.max(0, Math.round(G.cash)));
+    if(actualPay > 0){
+      G.cash -= actualPay;
+      G.creditCard -= actualPay;
+    }
     G.creditInterest = Math.round(G.creditCard * 0.18 / 12);
-    addLog(`💳 信用卡利息 ¥${int}`);
+    addLog(`💳 信用卡还款 ¥${actualPay}（利息¥${Math.min(int, actualPay)}，本金¥${Math.max(0, actualPay-int)}），余额 ¥${G.creditCard.toLocaleString()}`);
   }
   // 幸运值自然衰减
   if((G._luck||0) > 0){
