@@ -326,9 +326,52 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
   .board-cell.token-on .token{position:absolute!important;inset:0!important;z-index:3!important;display:grid!important;place-items:center!important;font-size:18px!important}.board-cell.token-on .token::before{content:none!important}
   .board-cell#bc0{left:16.7%;top:26.7%}.board-cell#bc1{left:41.2%;top:22.6%}.board-cell#bc2{left:62.3%;top:22.2%}.board-cell#bc3{left:85.2%;top:36%}.board-cell#bc4{left:90.4%;top:57.3%}.board-cell#bc5{left:69.3%;top:57.5%}.board-cell#bc6{left:47%;top:57.5%}.board-cell#bc7{left:23.2%;top:57.5%}.board-cell#bc8{left:20.3%;top:87.8%}.board-cell#bc9{left:40.3%;top:78.8%}.board-cell#bc10{left:64%;top:79.2%}.board-cell#bc11{left:83.1%;top:91.4%}
 }
+
+/* 参考图视觉定稿：1312px 桌面画布、暖白纸张、金色进度与墨绿财务卡 */
+@media(min-width:821px){
+  body{padding:0 16px 20px!important;background:radial-gradient(circle at 52% 8%,#fffdf7 0,#f8f5ec 42%,#f1eee5 100%)!important}
+  .container{width:100%!important;max-width:1280px!important;background:transparent!important;border-radius:0!important;box-shadow:none!important;overflow:visible!important}
+  .header{height:216px!important;min-height:216px!important;grid-template-columns:220px minmax(0,1fr) 58px!important;gap:14px!important;padding:16px 0!important;border:1px solid #eee6d7!important;border-top:0!important;border-radius:0 0 20px 20px!important;background:linear-gradient(110deg,#fffdf7 0%,#fffaf0 58%,#faf5e7 100%)!important;box-shadow:0 8px 28px rgba(69,61,41,.07)!important}
+  .header-left{height:184px!important;padding:14px 15px!important;border:1px solid #e9e3d8!important;border-left:1px solid #e9e3d8!important;border-radius:18px!important;background:#fff!important;box-shadow:0 6px 20px rgba(44,57,50,.07)!important}
+  .mission-title{padding-bottom:9px!important}.mission-goals{gap:6px!important;margin-top:8px!important;padding:8px 9px!important;background:#fbf9f4!important}
+  .mission-statuses span{min-height:23px!important;border-radius:9px!important;background:#fff!important}
+  .header-victory{margin:0!important;padding:5px 22px 0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important}
+  .header-victory-title span{color:#173b35!important;font-size:1.14rem!important}.victory-subtitle{color:#6e7772!important;font-size:.65rem!important}
+  .victory-milestones{margin:10px 10px 8px!important}.header-victory-track{height:34px!important;border-color:#e3ded2!important;background:#eeece5!important;box-shadow:inset 0 2px 5px rgba(54,57,48,.12),0 5px 12px rgba(89,72,34,.09)!important}
+  .header-victory-track #victoryBarFill{background:linear-gradient(90deg,#eda900 0%,#f8c32e 58%,#ffd95e 84%,#7dac55 100%)!important;box-shadow:0 0 15px rgba(226,165,24,.3)!important}
+  .header-victory-values{margin-top:10px!important}.header-victory-values b{color:#153f37!important}.victory-gap{border-color:#ecd7ae!important;background:#fff9ea!important}
+  .game-area{grid-template-columns:220px minmax(0,1fr) 309px!important;gap:15px!important;padding:15px 0 0!important}
+  .dashboard-sidebar,.dashboard-main{min-width:0}.dashboard-finance{top:231px!important;right:max(16px,calc((100vw - 1280px)/2))!important;width:309px!important;height:calc(100vh - 247px)!important;max-height:calc(100vh - 247px)!important}
+  .game-board-card{border-radius:18px!important}.board-card-head{padding:16px 17px 11px!important}.board-card-head strong{font-size:1.08rem!important;color:#173b35!important}
+  .board-wrap{height:360px!important;min-height:360px!important}
+  .board-actions.dice-section{padding:13px 16px 4px!important}.board-actions .roll-btn{background:#f3af08!important;border-color:#d69800!important;color:#3f351e!important}.board-actions .bank-btn{background:#286a58!important;color:#fff!important}
+  .sidebar-card,.game-board-card,.event-experience-card,.finance-shell{background:#fff!important;border-color:#e8e2d8!important;box-shadow:0 7px 22px rgba(48,55,49,.065)!important}
+  .sidebar-mini-grid .sidebar-mini:first-child{background:linear-gradient(135deg,#fff5d9,#ffe6aa)!important}.sidebar-mini-grid .sidebar-mini:last-child{background:linear-gradient(135deg,#eef3e7,#dfe9d5)!important}.sidebar-mini-grid .sidebar-mini:first-child strong{color:#e84c42!important}.sidebar-mini-grid .sidebar-mini:last-child strong{color:#346451!important}
+  .market-card{background:linear-gradient(145deg,#f7faef,#edf4e7)!important;border-color:#d5dfcc!important;box-shadow:0 6px 18px rgba(60,90,67,.05)!important}.market-card-indicator{background:rgba(255,255,255,.7)!important}
+  .finance-shell{border-color:#e5e0d7!important;box-shadow:0 7px 22px rgba(48,55,49,.065)!important}
+  .finance-tabs{background:#fff!important}.finance-tab.active{background:#296c5d!important;border-color:#296c5d!important;color:#fff!important}
+  .balance-hero{padding:21px 18px!important;border:0!important;background:linear-gradient(135deg,#296c61 0%,#1f6157 58%,#236d63 100%)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.14)!important}.balance-hero span{color:rgba(255,255,255,.68)!important}.balance-hero strong{color:#fff!important;font-size:1.8rem!important}.balance-hero .positive{color:#9bdd8b!important}
+  .cashflow-hero{border:0!important;background:linear-gradient(135deg,#296c61,#1f6157)!important}.cashflow-hero span,.cashflow-hero strong{color:#fff!important}
+}
 .board-map-image{display:block;position:absolute;inset:0;width:100%;height:100%;object-fit:fill;z-index:0}.board-wrap::before{z-index:1}.board-cell{z-index:2}
 .game-board-card .board-card-head{align-items:center}.game-board-card .board-card-head strong{font-size:1.25rem}.board-actions.dice-section{position:static!important;margin:0!important;padding:14px 16px 4px!important;background:transparent!important}.board-actions .dice-wrap{justify-content:center;gap:10px}.board-actions .dice{flex:0 0 auto}.board-actions .roll-btn,.board-actions .bank-btn{flex:0 0 auto;min-height:42px;padding:9px 22px}.board-actions .roll-btn{min-width:150px}.board-actions .bank-btn{min-width:90px}
 .market-card{margin-top:14px}.market-card .sidebar-section{padding:16px}.market-card-title{font-size:.92rem;font-weight:750;margin:2px 0 9px}.market-card-indicator{padding:10px 11px;border-radius:11px;background:#f6f3ed;color:#607069;font-size:.72rem;line-height:1.6}.market-card .market-buy-actions{display:grid;grid-template-columns:1fr;gap:7px;padding:11px 0 0;border:0}.market-card .market-buy-actions>span{display:grid!important;grid-template-columns:1fr!important;gap:7px!important}.market-card .market-buy-actions .choice-btn{width:100%;min-height:38px!important;padding:8px 7px!important;border:1px solid #c9dcd2!important;border-radius:10px!important;background:#f5faf7!important;color:#315c4c!important;font-size:.72rem!important;font-weight:750}.market-card-note{margin-top:10px;padding-top:9px;border-top:1px dashed #e2ddd3;color:var(--muted);font-size:.64rem;line-height:1.6}
+
+/* 黄色功能分区：财务摘要、投资市场与三张财务报表页签 */
+.sidebar-mini{background:#f2cf82}
+.market-card{background:#fcf1d1;border-color:#e3c878}
+.market-card .sidebar-section{background:transparent}
+.market-card-indicator{background:rgba(255,253,250,.46);color:var(--ink)}
+.market-card .market-buy-actions .choice-btn{background:rgba(255,253,250,.72)!important;border-color:#c99c45!important}
+.market-card-note{border-top-color:rgba(91,70,32,.22);color:#665b45}
+.finance-tabs{align-items:end;padding:12px 14px 0;gap:4px;background:var(--paper);border-bottom:1px solid var(--line);overflow:hidden}
+.finance-tab{position:relative;min-width:0;margin:0;min-height:56px;padding:17px 5px 14px;border:0;border-bottom:4px solid transparent;border-radius:0;background:transparent;color:#78827c;font-size:.86rem;font-weight:650;overflow:visible;box-shadow:none;transition:color .18s ease,border-color .18s ease}
+.finance-tab::before,.finance-tab::after{content:none}
+.finance-tab:nth-child(1),.finance-tab:nth-child(2),.finance-tab:nth-child(3){background:transparent;border-left:0;border-right:0;border-top:0}
+.finance-tab.active{color:#315c4c;border-bottom-color:#315c4c;font-weight:800;box-shadow:none}
+.finance-tab-label{position:relative;z-index:2;display:flex;min-width:0;align-items:center;justify-content:center;gap:4px;white-space:nowrap}
+.finance-tab-icon{display:inline-grid;flex:0 0 17px;place-items:center;width:17px;height:17px;font-size:.9rem;font-weight:500;line-height:1;color:#59461f}
+.finance-tab-icon.money{border:1.5px solid currentColor;border-radius:50%;font-size:.62rem}
 .sidebar-security{display:grid;grid-template-columns:1fr 1fr;gap:9px;align-items:stretch}.sidebar-security .security-item{min-width:0;padding:10px 9px;border-radius:11px;background:#f6f3ed}.sidebar-security .security-item span{display:block;text-align:left;font-size:.64rem;color:var(--muted);margin-bottom:5px}.sidebar-security .security-item strong{display:block;font-size:.78rem;line-height:1.4;color:var(--ink);overflow-wrap:anywhere}
 .finance-tab-panel .sub-item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px 5px 10px 20px}.sub-item-main{min-width:0}.sub-item-title{display:block;color:#52615b;font-weight:700;line-height:1.4}.finance-tab-panel .sub-item .item-meta{display:block;margin:3px 0 0;color:#8a928e;font-size:.7rem;line-height:1.45}.sub-item-action{border:1px solid #ddd5c8;background:#fffdf8;color:#315c4c;border-radius:9px;padding:5px 9px;font-size:.7rem;font-weight:700;cursor:pointer;white-space:nowrap}.sub-item-action:hover{border-color:#8fb5a3;background:#edf4ef}
 .table-row-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;margin-left:auto}.table-row-actions .amount{margin:0}.table-inline-action{border:1px solid #ddd5c8;background:#fffdf8;color:#315c4c;border-radius:9px;padding:5px 9px;font-size:.7rem;font-weight:700;cursor:pointer;white-space:nowrap}.table-inline-action:hover{border-color:#8fb5a3;background:#edf4ef}.table-inline-action:disabled{display:none}#investDesktopItems.open{max-height:340px!important;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;border-bottom:1px solid #e8e2d7}@media(min-width:821px){.dashboard-finance{max-height:calc(100vh - 110px)!important;overflow-y:auto!important;overscroll-behavior:contain}.finance-shell{min-height:0}}
@@ -354,7 +397,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 @media(max-width:600px){.char-select-modal{grid-template-rows:auto minmax(0,1fr) auto!important}.char-select-scroll{max-height:none!important}}
 /* 财富任务 Banner */
 @media(min-width:821px){
-  .header{position:relative;grid-template-columns:245px minmax(520px,1fr) 58px;min-height:236px;padding:18px 22px;gap:18px;align-items:stretch;background:linear-gradient(135deg,#fffdfa,#faf7f0);border-color:#e4dccf}
+  .header{position:relative;grid-template-columns:245px minmax(520px,1fr) 58px;min-height:236px;padding:18px 22px;gap:18px;align-items:stretch;background:#fcf1d1;border-color:#e4dccf}
   .header-left{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding:17px 19px;border:1px solid #e5ded2;border-radius:19px;background:rgba(255,255,255,.62);box-shadow:0 7px 20px rgba(44,57,50,.045)}.header-left .mission-crown{align-self:center;color:#dca640;font-size:1.35rem;line-height:1}.header-left h1{font-size:1.18rem;margin:3px 0 0}.header-left>small{align-self:center;color:#9a9f9b;font-size:.68rem}.mission-goals{display:grid;gap:5px;width:100%;margin-top:13px;padding-top:11px;border-top:1px dashed #ddd5c8}.mission-goals b{justify-self:center;margin-top:-23px;padding:3px 12px;border:1px solid #e1dbd0;border-radius:99px;background:#f7f4ee;color:#6d756f;font-size:.62rem}.mission-goals span{color:#59655f;font-size:.68rem;font-weight:650}.mission-goals span:nth-of-type(1){color:#3e8067}.mission-goals span:nth-of-type(2){color:#b77724}.mission-goals span:nth-of-type(3){color:#7655a6}
   .header-victory{max-width:none!important;padding:9px 16px 10px!important;background:transparent;border:0;border-radius:0;box-shadow:none}.header-victory-title{margin:0!important}.header-victory-title span{font-size:1.05rem;font-weight:850}.victory-subtitle{margin-top:1px;color:#8c938e;font-size:.66rem}.victory-milestones{position:relative;display:grid;grid-template-columns:repeat(5,1fr);align-items:end;margin:8px 10px 6px;color:#aaa79f;font-size:.59rem;font-weight:750}.victory-milestones::before{content:"";position:absolute;left:4%;right:4%;bottom:5px;height:2px;background:#ded9cf}.victory-milestones span{position:relative;z-index:1;display:grid;justify-items:center;gap:1px}.victory-milestones span::after{content:"";width:9px;height:9px;border-radius:50%;background:#e5e1d9;border:2px solid #d1cbc0}.victory-milestones span.active{color:#d28c20}.victory-milestones span.active::after{background:#f1ad37;border-color:#ffe0a5;box-shadow:0 0 0 2px rgba(225,160,52,.18)}.victory-milestones i{position:absolute;top:0;margin-left:30px;font-style:normal;font-size:.52rem}
   .header-victory-track{position:relative;height:35px!important;padding:4px!important}.header-victory-track #victoryBarFill{border-radius:99px}.header-victory-track>strong{position:absolute;z-index:2;left:50%;top:50%;transform:translate(-50%,-50%);min-width:66px;padding:2px 13px;border-radius:99px;background:rgba(255,253,250,.94);box-shadow:0 4px 13px rgba(53,62,57,.15);color:#c86b1d!important;font-size:1.2rem!important;line-height:1.45}
@@ -387,7 +430,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
   .header-left{width:220px!important;justify-self:start;margin-left:0!important}
   .mission-title{justify-content:center!important;text-align:center;transform:translateX(-3px)}.mission-title>div{text-align:center}.mission-title h1,.mission-title small{text-align:center}.mission-title>i{flex:0 0 auto}
 }
-@media(min-width:821px){.header-left{border-left:0!important;border-top-left-radius:0!important;border-bottom-left-radius:0!important;box-shadow:8px 0 18px rgba(44,57,50,.035)!important}}
+@media(min-width:821px){.header{background-color:#fcf1d1!important;background-image:none!important}.header-left{background-color:#fff!important;background-image:none!important;border-left:0!important;border-top-left-radius:0!important;border-bottom-left-radius:0!important;box-shadow:8px 0 18px rgba(44,57,50,.035)!important}}
 @media(min-width:821px){
   .header-victory{padding-top:0!important;padding-bottom:0!important}
   .victory-subtitle{margin-top:4px!important;margin-bottom:7px!important}
@@ -497,6 +540,70 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 }
 @keyframes mobileAssetAttention{0%,100%{box-shadow:var(--shadow)}50%{box-shadow:0 0 0 4px rgba(213,154,66,.2),0 12px 32px rgba(44,61,53,.14)}}
 @keyframes mobileAssetNavAttention{0%,100%{background:transparent}50%{background:#fff0d7;color:#a66a1e}}
+/* 2026-07 信息层级收口：胜利目标 > 三张报表 > 市场行情 */
+@media(min-width:821px){
+  .header{background:#f7f1df!important;border-color:#e3d7bd!important;box-shadow:0 10px 32px rgba(76,60,28,.09)!important}
+  .header-victory{margin:0 8px!important;padding:8px 18px 9px!important;border:1px solid #e2c276!important;border-radius:18px!important;background:linear-gradient(135deg,#fffaf0 0%,#fff2c9 58%,#f3ead1 100%)!important;box-shadow:0 10px 25px rgba(164,113,26,.13),inset 0 1px 0 rgba(255,255,255,.8)!important}
+  .header-victory-title span{color:#503d1d!important;font-size:1rem!important}
+  .victory-subtitle{color:#8b734a!important}
+  .header-victory-track{height:31px!important;background:#e8e3d5!important;border-color:#d7c9ad!important}
+  .header-victory-track #victoryBarFill{background:linear-gradient(90deg,#d99a35 0%,#e8b84a 58%,#ffd76a 78%,#8baf55 100%)!important;box-shadow:0 0 16px rgba(217,154,53,.38)!important}
+  .header-victory-track>strong{color:#9c5d0e!important;background:#fffdf7!important}
+  .header-victory-values b{color:#24584a!important}
+  .dashboard-finance{filter:drop-shadow(0 10px 22px rgba(36,88,74,.08))}
+  .finance-shell{border-color:#b9cfc5!important;box-shadow:inset 0 4px 0 #3e7b65,0 10px 28px rgba(36,88,74,.08)!important}
+  .finance-tabs{padding:12px 12px 10px!important;gap:7px!important;background:#f4f8f6!important;border-bottom-color:#dbe7e1!important}
+  .finance-tab{min-height:44px!important;padding:10px 7px!important;border:1px solid transparent!important;border-radius:11px!important;color:#68756f!important}
+  .finance-tab:hover{background:#e8f0ec!important;color:#315c4c!important}
+  .finance-tab.active{background:#3e7b65!important;border-color:#3e7b65!important;color:#fff!important;box-shadow:0 5px 13px rgba(62,123,101,.22)!important}
+  .finance-tab-symbol{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:6px;background:rgba(62,123,101,.1);font-style:normal;font-size:.72rem}
+  .finance-tab.active .finance-tab-symbol{background:rgba(255,255,255,.16)}
+  .balance-hero,.cashflow-hero{background:linear-gradient(135deg,#e7f1ec,#f3f7f4)!important;border:1px solid #cfe0d8}
+  .balance-hero strong,.cashflow-hero strong{color:#24584a!important}
+  .market-card{background:#f5f2e9!important;border-color:#ded8cc!important;box-shadow:none!important}
+  .market-card .sidebar-eyebrow,.market-card-title{color:#68736e!important}
+  .market-card-indicator{background:#ebe9e2!important;color:#69736f!important}
+  .market-card .market-buy-actions .choice-btn{background:transparent!important;border-color:#c8d1cc!important;color:#61716a!important;box-shadow:none!important}
+  .market-card .market-buy-actions .choice-btn:hover{background:#edf4f0!important;border-color:#7fa38f!important;color:#315c4c!important}
+  .market-card-note{border-top-color:#ded9cf!important;color:#8a918d!important}
+}
+@media(max-width:820px){
+  .mobile-victory-bar{border-color:#dfc47e!important;background:linear-gradient(145deg,#fffaf0,#fff2cb)!important;box-shadow:0 7px 20px rgba(170,118,28,.1)!important}
+  .mobile-race-track>div{background:linear-gradient(90deg,#d99a35,#ffd76a 75%,#8baf55)!important}
+  .game-area[data-mobile-view="assets"] .finance-shell{border-top:4px solid #3e7b65!important}
+  .game-area[data-mobile-view="assets"] .finance-tabs{background:#f4f8f6!important}
+  .game-area[data-mobile-view="status"] .market-card{background:#f5f2e9!important;border-color:#ded8cc!important}
+}
+/* 手机端收口：压缩净资产卡，并让底部胜利进度与前方内容保持间距。 */
+@media(max-width:820px){
+  .dashboard-finance .balance-hero{position:relative!important;height:100px!important;min-height:100px!important;padding:15px 16px!important;overflow:hidden!important;border:0!important;border-radius:14px!important;background:#eef4f1!important;box-shadow:none!important}
+  .dashboard-finance .balance-hero-eyebrow{display:block!important;margin:0 0 7px!important;color:#7d8984!important;font-size:.7rem!important;line-height:1.2!important}
+  .dashboard-finance .balance-hero-eyebrow .mobile-only{display:block!important;color:inherit!important;font-size:inherit!important;margin:0!important}
+  .dashboard-finance .balance-hero-title{display:inline!important;color:#24352e!important;font-size:1.45rem!important;line-height:1.15!important}
+  .dashboard-finance .balance-hero>strong{display:inline!important;margin:0 0 0 6px!important;color:#24352e!important;font-family:inherit!important;font-size:1.45rem!important;line-height:1.15!important;letter-spacing:-.035em!important}
+  .dashboard-finance .balance-hero-change,.dashboard-finance .balance-hero-chart{display:none!important}
+  .dashboard-main .mobile-victory-bar{margin:10px 0 0!important}
+}
+
+/* 参考图视觉定稿（置于样式表末尾，确保为最终桌面规则） */
+@media(min-width:821px){html{scrollbar-width:none}html::-webkit-scrollbar{display:none}}
+@media(min-width:821px){
+  body{padding:0 16px 20px!important;background:radial-gradient(circle at 52% 8%,#fffdf7 0,#f8f5ec 42%,#f1eee5 100%)!important}
+  .container{width:100%!important;max-width:1280px!important;background:transparent!important;border-radius:0!important;box-shadow:none!important;overflow:visible!important}
+  .header{height:216px!important;min-height:216px!important;grid-template-columns:220px minmax(0,1fr) 58px!important;gap:14px!important;padding:16px 0!important;border:1px solid #eee6d7!important;border-top:0!important;border-radius:0 0 20px 20px!important;background:linear-gradient(110deg,#fffdf7 0%,#fffaf0 58%,#faf5e7 100%)!important;box-shadow:0 8px 28px rgba(69,61,41,.07)!important}
+  .header-left{height:184px!important;padding:14px 15px!important;border:1px solid #e9e3d8!important;border-radius:18px!important;background:#fff!important;box-shadow:0 6px 20px rgba(44,57,50,.07)!important}
+  .mission-title{padding-bottom:9px!important}.mission-goals{gap:6px!important;margin-top:8px!important;padding:8px 9px!important;background:#fbf9f4!important}.mission-statuses span{min-height:23px!important;border-radius:9px!important;background:#fff!important}
+  .header-victory{max-width:none!important;margin:0!important;padding:5px 22px 0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important}.header-victory-title span{color:#173b35!important;font-size:1.14rem!important}.victory-subtitle{color:#6e7772!important;font-size:.65rem!important}.victory-milestones{margin:10px 10px 8px!important}
+  .header-victory-track{height:34px!important;border-color:#e3ded2!important;background:#eeece5!important;box-shadow:inset 0 2px 5px rgba(54,57,48,.12),0 5px 12px rgba(89,72,34,.09)!important}.header-victory-track #victoryBarFill{background:linear-gradient(90deg,#eda900 0%,#f8c32e 58%,#ffd95e 84%,#7dac55 100%)!important;box-shadow:0 0 15px rgba(226,165,24,.3)!important}.header-victory-values{margin-top:10px!important}.header-victory-values b{color:#153f37!important}.victory-gap{border-color:#ecd7ae!important;background:#fff9ea!important}
+  .game-area{grid-template-columns:220px minmax(0,1fr) 309px!important;gap:15px!important;padding:15px 0 0!important}.dashboard-sidebar,.dashboard-main{min-width:0}.dashboard-finance{top:231px!important;right:max(16px,calc((100vw - 1280px)/2))!important;width:309px!important;height:calc(100vh - 247px)!important;max-height:calc(100vh - 247px)!important}
+  .game-board-card{border-radius:18px!important}.board-card-head{padding:16px 17px 11px!important}.board-card-head strong{font-size:1.08rem!important;color:#173b35!important}.board-wrap{height:360px!important;min-height:360px!important}.board-actions.dice-section{padding:13px 16px 4px!important}.board-actions .roll-btn{background:#f3af08!important;border-color:#d69800!important;color:#3f351e!important}.board-actions .bank-btn{background:#286a58!important;color:#fff!important}
+  .sidebar-card,.game-board-card,.event-experience-card,.finance-shell{background:#fff!important;border-color:#e8e2d8!important;box-shadow:0 7px 22px rgba(48,55,49,.065)!important}.sidebar-mini-grid .sidebar-mini:first-child{background:linear-gradient(135deg,#fff5d9,#ffe6aa)!important}.sidebar-mini-grid .sidebar-mini:last-child{background:linear-gradient(135deg,#eef3e7,#dfe9d5)!important}.sidebar-mini-grid .sidebar-mini:first-child strong{color:#e84c42!important}.sidebar-mini-grid .sidebar-mini:last-child strong{color:#346451!important}
+  .market-card{background:linear-gradient(145deg,#f7faef,#edf4e7)!important;border-color:#d5dfcc!important;box-shadow:0 6px 18px rgba(60,90,67,.05)!important}.market-card-indicator{background:rgba(255,255,255,.7)!important}.finance-shell{border-color:#e5e0d7!important;box-shadow:0 7px 22px rgba(48,55,49,.065)!important}.finance-tabs{background:#fff!important}.finance-tab.active{background:#296c5d!important;border-color:#296c5d!important;color:#fff!important}
+  .balance-hero{padding:21px 18px!important;border:0!important;background:linear-gradient(135deg,#296c61 0%,#1f6157 58%,#236d63 100%)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.14)!important}.balance-hero span{color:rgba(255,255,255,.68)!important}.balance-hero strong{color:#fff!important;font-size:1.8rem!important}.balance-hero .positive{color:#9bdd8b!important}.cashflow-hero{border:0!important;background:linear-gradient(135deg,#296c61,#1f6157)!important}.cashflow-hero span,.cashflow-hero strong{color:#fff!important}
+  .balance-hero{position:relative!important;min-height:150px!important;padding:16px 18px!important;overflow:hidden!important}.balance-hero-eyebrow,.balance-hero-title,.balance-hero>strong,.balance-hero-change{position:relative;z-index:2}.balance-hero-eyebrow{display:block!important;margin:0 0 4px!important;color:rgba(255,255,255,.65)!important;font-size:.72rem!important}.balance-hero-title{display:block;color:#fff;font-size:1.25rem;line-height:1.2}.balance-hero>strong{display:block;margin-top:2px!important;font-family:ui-monospace,"SFMono-Regular",monospace!important;font-size:1.7rem!important;line-height:1.15!important;letter-spacing:-.045em!important}.balance-hero-change{display:block!important;margin-top:8px!important;color:#a8dd8b!important;font-size:.65rem!important;font-weight:750}.balance-hero-change.negative{color:#ffb2a6!important}.balance-hero-chart{position:absolute;right:10px;bottom:5px;z-index:1;width:45%;height:auto;pointer-events:none}
+  /* 与左侧栏使用同一文档流：顶部平齐，滚动时同步移动。 */
+  .dashboard-finance{position:static!important;inset:auto!important;align-self:start!important;width:auto!important;height:auto!important;max-height:none!important;overflow:visible!important;filter:none!important}
+}
 </style>
 </head>
 <body>
@@ -507,7 +614,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
       <div class="mission-goals mission-statuses"><b>当前目标</b><span id="cashBufferDisplay">💰 现金缓冲: --</span><span id="highInterestDebtDisplay">🟢 高息债务: ¥0</span><span id="freedomStreakDisplay">🟠 连续达标: 0/3个月</span></div>
     </div>
     <div class="header-victory desktop-only" aria-label="胜利进度">
-      <div class="header-victory-title"><span id="victoryStatus">🐭 还在老鼠赛跑</span></div><div class="victory-subtitle">距离财富快车道还有一段路，继续积累</div>
+      <div class="header-victory-title"><span id="victoryStatus">🏆人生胜利进度条</span></div><div class="victory-subtitle">离财富自由还有一步之遥，继续加油！</div>
       <div class="victory-milestones"><span class="active">🐭<i>0%</i></span><span>25%</span><span>50%</span><span>75%</span><span>🚗<i>100%</i></span></div>
       <div class="header-victory-track"><div id="victoryBarFill"></div><strong id="victoryBarLabel">0%</strong></div>
       <div class="header-victory-values"><span>被动收入 <b id="victoryPassive">¥0</b></span><span class="victory-gap" id="victoryGapText">每月差额 ¥0</span><span>必要支出 <b id="victoryTarget">¥0</b></span></div>
@@ -588,22 +695,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
           <div class="stat-item"><div class="stat-label">💰 月总收入</div><div class="stat-value income" id="totalIncome">¥0</div></div>
           <div class="stat-item"><div class="stat-label">📉 月总支出</div><div class="stat-value expense" id="totalExpense">¥0</div></div>
         </div>
-        <!-- 手机端紧凑胜利进度 -->
-        <div class="mobile-victory-bar mobile-only">
-          <div class="mobile-race-title"><strong id="mobileVictoryTitle">🐭 还在老鼠赛跑</strong><span id="mobileVictorySubtitle">距离财富快车道还有一段路，继续积累</span></div>
-          <div class="mobile-race-milestones"><span class="active">🐭 <b>0%</b></span><span>25%</span><span>50%</span><span>75%</span><span>🚗 100%</span></div>
-          <div class="mobile-race-track">
-            <div id="mobileVictoryFill"></div>
-            <strong id="mobileVictoryPct">0%</strong>
-          </div>
-          <span id="mobileVictoryStatus" hidden>🐭</span>
-          <div class="mobile-race-values"><span>被动收入<b id="mobileVictoryPassive">¥0</b></span><span class="mobile-race-gap" id="mobileVictoryGap">每月差额 ¥0</span><span>必要支出<b id="mobileVictoryTarget">¥0</b></span></div>
-          <div class="mobile-win-goals">
-            <span class="win-goal-tag" id="mvGoalBuffer">💰 现金缓冲 ≥6个月</span>
-            <span class="win-goal-tag" id="mvGoalDebt">🟢 无高息债务</span>
-            <span class="win-goal-tag" id="mvGoalStreak">🟠 连续达标 0/3个月</span>
-          </div>
-        </div>
         <div class="game-board-card">
           <div class="board-card-head">
             <div><strong>人生棋盘</strong></div>
@@ -634,21 +725,40 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
           <div id="choiceArea" class="choice-area"></div>
         </div>
         <div class="log-area" id="logArea"><div class="log-entry">🎮 请先选择角色开始游戏</div></div>
+        <!-- 手机端胜利进度置于主内容末尾，让棋盘与事件信息优先展示 -->
+        <div class="mobile-victory-bar mobile-only">
+          <div class="mobile-race-title"><strong id="mobileVictoryTitle">🏆人生胜利进度条</strong><span id="mobileVictorySubtitle">离财富自由还有一步之遥，继续加油！</span></div>
+          <div class="mobile-race-milestones"><span class="active">🐭 <b>0%</b></span><span>25%</span><span>50%</span><span>75%</span><span>🚗 100%</span></div>
+          <div class="mobile-race-track"><div id="mobileVictoryFill"></div><strong id="mobileVictoryPct">0%</strong></div>
+          <span id="mobileVictoryStatus" hidden>🐭</span>
+          <div class="mobile-race-values"><span>被动收入<b id="mobileVictoryPassive">¥0</b></span><span class="mobile-race-gap" id="mobileVictoryGap">每月差额 ¥0</span><span>必要支出<b id="mobileVictoryTarget">¥0</b></span></div>
+          <div class="mobile-win-goals">
+            <span class="win-goal-tag" id="mvGoalBuffer">💰 现金缓冲 ≥6个月</span>
+            <span class="win-goal-tag" id="mvGoalDebt">🟢 无高息债务</span>
+            <span class="win-goal-tag" id="mvGoalStreak">🟠 连续达标 0/3个月</span>
+          </div>
+        </div>
       </div>
     </main>
     <aside class="dashboard-finance">
       <div class="finance-shell">
         <div class="finance-tabs desktop-only" role="tablist" aria-label="财务报表">
-          <button class="finance-tab active" type="button" role="tab" aria-selected="true" data-finance-tab="balance">资产负债表</button>
-          <button class="finance-tab" type="button" role="tab" aria-selected="false" data-finance-tab="profit">个人利润表</button>
-          <button class="finance-tab" type="button" role="tab" aria-selected="false" data-finance-tab="cashflow">现金流量表</button>
+          <button class="finance-tab active" type="button" role="tab" aria-selected="true" data-finance-tab="balance"><span class="finance-tab-label"><i class="finance-tab-symbol">◈</i>资产负债表</span></button>
+          <button class="finance-tab" type="button" role="tab" aria-selected="false" data-finance-tab="profit"><span class="finance-tab-label"><i class="finance-tab-symbol">↗</i>个人利润表</span></button>
+          <button class="finance-tab" type="button" role="tab" aria-selected="false" data-finance-tab="cashflow"><span class="finance-tab-label"><i class="finance-tab-symbol">≋</i>现金流量表</span></button>
         </div>
         <div class="tables-grid">
         <!-- 财务报表完整表格 -->
         <div class="table-card desktop-only finance-tab-panel active" data-finance-panel="balance" role="tabpanel">
           <div class="table-body">
-            <div class="balance-hero"><span>你此刻的家底</span><strong id="netWorthLabel">净资产 ¥0</strong></div>
-            <div class="table-row" style="background:#eafaf1;font-weight:700"><span class="label">🏠 资产</span><span class="amount positive" id="totalAssets">¥0</span></div>
+            <div class="balance-hero">
+              <span class="balance-hero-eyebrow"><span class="desktop-only">你的财富状况</span><span class="mobile-only">你此刻的家底</span></span>
+              <b class="balance-hero-title">净资产</b>
+              <strong id="netWorthLabel">¥0</strong>
+              <span class="balance-hero-change" id="netWorthChange">较上月 — ¥0 (0.00%)</span>
+              <svg class="balance-hero-chart" viewBox="0 0 150 58" aria-hidden="true"><defs><linearGradient id="netWorthArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a8d58b" stop-opacity=".30"/><stop offset="1" stop-color="#a8d58b" stop-opacity="0"/></linearGradient></defs><path d="M2 53 L18 47 L31 39 L44 42 L58 31 L72 35 L86 25 L101 29 L116 18 L130 22 L147 8 L147 57 L2 57 Z" fill="url(#netWorthArea)"/><polyline points="2,53 18,47 31,39 44,42 58,31 72,35 86,25 101,29 116,18 130,22 147,8" fill="none" stroke="#9bc47c" stroke-opacity=".42" stroke-width="2"/></svg>
+            </div>
+            <div class="table-row" style="background:#eafaf1;font-weight:700"><span class="label">🏠 资产总额</span><span class="amount positive" id="totalAssets">¥0</span></div>
             <div class="table-row"><span class="label">&nbsp;&nbsp;💵 现金</span><span class="amount" id="assetCash">¥0</span></div>
             <div class="table-row expand-head" data-target="investDesktopItems"><span class="label"><span class="expand-arrow">▶</span>&nbsp;📊 投资组合</span><span class="amount" id="assetInvestments">¥0</span></div>
             <div id="investDesktopItems" class="sub-items"></div>
@@ -656,7 +766,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
             <div id="propDesktopItems" class="sub-items"></div>
             <div class="table-row expand-head" data-target="vehDesktopItems"><span class="label"><span class="expand-arrow">▶</span>&nbsp;🚗 车辆</span><span class="amount" id="assetVehicle">¥0</span></div>
             <div id="vehDesktopItems" class="sub-items"></div>
-            <div class="table-row" style="background:#fdedec;font-weight:700;margin-top:8px"><span class="label">💳 负债</span><span class="amount negative" id="totalLiabilities">¥0</span></div>
+            <div class="table-row" style="background:#fdedec;font-weight:700;margin-top:8px"><span class="label">💳 负债总额</span><span class="amount negative" id="totalLiabilities">¥0</span></div>
             <div class="table-row expand-head" data-target="loanDesktopItems"><span class="label"><span class="expand-arrow">▶</span>&nbsp;🏦 贷款</span><span class="amount negative" id="liabLoans">¥0</span></div>
             <div id="loanDesktopItems" class="sub-items"></div>
             <div class="table-row"><span class="label">&nbsp;&nbsp;💳 信用卡欠款</span><span class="table-row-actions"><span class="amount negative" id="liabCredit">¥0</span><button class="table-inline-action" id="creditRepayBtn" type="button" onclick="openCreditRepayDialog()">还款</button></span></div>
@@ -688,7 +798,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
         <div class="table-card desktop-only finance-tab-panel" data-finance-panel="cashflow" role="tabpanel">
           <h3>🌊 现金流量表 <span class="subtotal">本月</span></h3>
           <div class="table-body">
-            <div class="cashflow-hero"><span>经营活动净现金流</span><strong id="cashflowNet">¥0</strong></div>
+            <div class="cashflow-hero"><span>净现金流</span><strong id="cashflowNet">¥0</strong></div>
             <div class="table-row" style="background:#eafaf1;font-weight:700"><span class="label">现金流入</span><span class="amount positive" id="cashflowIncome">¥0</span></div>
             <div class="table-row"><span class="label">&nbsp;&nbsp;工资收入</span><span class="amount" id="cashflowSalary">¥0</span></div>
             <div class="table-row"><span class="label">&nbsp;&nbsp;副业收入</span><span class="amount" id="cashflowSide">¥0</span></div>
@@ -745,7 +855,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
     <div class="table-card" style="margin-bottom:8px;box-shadow:0 1px 6px rgba(0,0,0,0.1)">
       <h3 style="font-size:.85em;padding:8px 10px">📋 资产负债表 <span class="subtotal" id="fmNetWorth">净资产: ¥0</span></h3>
       <div class="table-body">
-        <div class="table-row" style="background:#eafaf1;font-weight:700;padding:5px 10px;font-size:.82em"><span class="label">🏠 资产</span><span class="amount positive" id="fmAssets">¥0</span></div>
+        <div class="table-row" style="background:#eafaf1;font-weight:700;padding:5px 10px;font-size:.82em"><span class="label">🏠 资产总额</span><span class="amount positive" id="fmAssets">¥0</span></div>
         <div class="table-row" style="padding:4px 10px;font-size:.78em"><span class="label">&nbsp;&nbsp;💵 现金</span><span class="amount" id="fmCash">¥0</span></div>
         <div class="table-row" style="padding:4px 10px;font-size:.72em;color:#666;border-bottom:1px dashed #eee"><span class="label">📊 市场</span><span class="amount" id="marketIndicatorMobile" style="font-weight:500;font-size:.9em"></span></div>
         <div class="table-row expand-head" data-target="investSubItems" style="padding:4px 10px;font-size:.78em;cursor:pointer"><span class="label"><span class="expand-arrow">▶</span>&nbsp;📊 投资组合</span><span class="amount" id="fmInvestments">¥0</span></div>
@@ -754,7 +864,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
         <div id="propSubItems" class="sub-items"></div>
       <div class="table-row expand-head" data-target="vehSubItems" style="padding:4px 10px;font-size:.78em;cursor:pointer"><span class="label"><span class="expand-arrow">▶</span>&nbsp;🚗 车辆</span><span class="amount" id="fmVehicle">¥0</span></div>
         <div id="vehSubItems" class="sub-items"></div>
-        <div class="table-row" style="background:#fdedec;font-weight:700;padding:5px 10px;font-size:.82em"><span class="label">💳 负债</span><span class="amount negative" id="fmLiability">¥0</span></div>
+        <div class="table-row" style="background:#fdedec;font-weight:700;padding:5px 10px;font-size:.82em"><span class="label">💳 负债总额</span><span class="amount negative" id="fmLiability">¥0</span></div>
       <div class="table-row expand-head" data-target="loanSubItems" style="padding:4px 10px;font-size:.78em;cursor:pointer"><span class="label"><span class="expand-arrow">▶</span>&nbsp;🏦 贷款</span><span class="amount negative" id="fmLoans">¥0</span></div>
         <div id="loanSubItems" class="sub-items"></div>
         <div class="table-row" style="padding:4px 10px;font-size:.78em"><span class="label">&nbsp;&nbsp;💳 信用卡欠款</span><span class="amount negative" id="fmCredit">¥0</span></div>
@@ -1021,6 +1131,8 @@ function initGame(charId, mode){
   if(G.rentIncome > 0){
     G._incomeSources.push({id:'inc_rent_init', name:'租金收入', amount:G.rentIncome, type:'rent'});
   }
+
+  G._monthStartNetWorth = calcNetWorth();
 
   unlockedAchievements = new Set();
   prevCash = G.cash;
@@ -2582,8 +2694,14 @@ function updateAll(){
   flashValue('liabLoans',G.loans);document.getElementById('liabLoans').textContent=formatMoney(G.loans);
   flashValue('liabCredit',G.creditCard);document.getElementById('liabCredit').textContent=formatMoney(G.creditCard);
   const creditRepayBtn=document.getElementById('creditRepayBtn');if(creditRepayBtn)creditRepayBtn.disabled=!(G.creditCard>0&&G.cash>0);
-  document.getElementById('netWorthLabel').textContent='净资产 '+formatMoney(nw);
+  document.getElementById('netWorthLabel').textContent=formatMoney(nw);
   flashValue('netWorthLabel',nw);
+  const netWorthChange=document.getElementById('netWorthChange');
+  if(netWorthChange){
+    const baseline=Number(G._monthStartNetWorth??nw),delta=nw-baseline,pct=baseline!==0?Math.abs(delta/baseline*100):0;
+    netWorthChange.textContent=`较上月 ${delta>0?'↑':delta<0?'↓':'—'} ${formatMoney(Math.abs(delta))} (${pct.toFixed(2)}%)`;
+    netWorthChange.classList.toggle('negative',delta<0);
+  }
   // 市场行情指示器（桌面端）
   const mktEl=document.getElementById('marketIndicatorDesk');
   if(mktEl){
@@ -2701,13 +2819,8 @@ function updateAll(){
   if(vp)vp.textContent=formatMoney(tp);
   if(vt)vt.textContent=formatMoney(te);
   if(bf)bf.style.transform='scaleX('+ratio+')';
-  if(bl&&se){
-    if(gap<=0){bl.textContent='100%';se.innerHTML='🎉 财务自由！';se.style.background='#d5f5e3';}
-    else if(ratio>=0.8){bl.textContent=`${Math.round(ratio*100)}%`;se.innerHTML='🔥 接近目标！';se.style.background='#fef9e7';}
-    else if(ratio>=0.5){bl.textContent=`${Math.round(ratio*100)}%`;se.innerHTML='💪 进度过半！';se.style.background='#fef9e7';}
-    else if(ratio>=0.25){bl.textContent=`${Math.round(ratio*100)}%`;se.innerHTML='🏃‍♂️ 继续加油！';se.style.background='#f8f9fa';}
-    else{bl.textContent=`${Math.round(ratio*100)}%`;se.innerHTML='🐭 还在老鼠赛跑';se.style.background='#fdedec';}
-  }
+  if(bl)bl.textContent=gap<=0?'100%':`${Math.round(ratio*100)}%`;
+  if(se){se.textContent='🏆人生胜利进度条';se.style.background='transparent';}
   const gapText=document.getElementById('victoryGapText');if(gapText)gapText.textContent=gap<=0?'每月已覆盖':'每月差额 '+formatMoney(gap);
   document.querySelectorAll('.victory-milestones span').forEach((node,index)=>node.classList.toggle('active',ratio*100>=index*25));
   // 风险保障信息更新
@@ -2745,8 +2858,8 @@ function updateAll(){
     mf.style.width=(ratio*100)+'%';
   }
   const mobileTitle=document.getElementById('mobileVictoryTitle'),mobileSubtitle=document.getElementById('mobileVictorySubtitle'),mobilePassive=document.getElementById('mobileVictoryPassive'),mobileTarget=document.getElementById('mobileVictoryTarget'),mobileGap=document.getElementById('mobileVictoryGap');
-  if(mobileTitle)mobileTitle.textContent=gap<=0?'🎉 财务自由！':ratio>=.8?'🔥 即将进入财富快车道':ratio>=.5?'💪 已经跑过一半':'🐭 还在老鼠赛跑';
-  if(mobileSubtitle)mobileSubtitle.textContent=gap<=0?'被动收入已覆盖必要支出':ratio>=.5?'继续提升被动收入，稳住现金流':'距离财富快车道还有一段路，继续积累';
+  if(mobileTitle)mobileTitle.textContent='🏆人生胜利进度条';
+  if(mobileSubtitle)mobileSubtitle.textContent='离财富自由还有一步之遥，继续加油！';
   if(mobilePassive)mobilePassive.textContent=formatMoney(tp);
   if(mobileTarget)mobileTarget.textContent=formatMoney(te);
   if(mobileGap)mobileGap.textContent=gap<=0?'每月已覆盖':'每月差额 '+formatMoney(gap);
@@ -3003,6 +3116,7 @@ function doMonthlySettlement(){
   const bkStatus=checkBankruptcy();
   if(bkStatus==='bankrupt'){setTimeout(()=>showBankruptcy(),1500);return;}
   if(bkStatus==='warn'){setTimeout(()=>showBankruptcyWarning(),1500);return;}
+  G._monthStartNetWorth=calcNetWorth();
   G.month++;G.roundInMonth=0;G.phase='waiting';
   G._monthStartLifeState=G.lifeState;G._monthStartMarketIndex=G._marketIndex;G.monthlyBulletins=[];
   setTimeout(()=>{document.getElementById('dice').textContent='🎲';document.getElementById('monthProgress').style.width='0%';updateAll();document.getElementById('eventCard').innerHTML=`<div class="event-type-badge badge-opportunity">📅 新的一月</div><div class="event-title">第 ${G.month} 个月开始</div><div class="event-desc">🎯 可持续被动收入需覆盖 ${formatMoney(te)}，现金缓冲≥6个月，无高息债务<br>当前连续达标：${G._freedomStreak||0}/3个月</div>`;},2000);
