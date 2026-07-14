@@ -603,6 +603,77 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
   /* 与左侧栏使用同一文档流：顶部平齐，滚动时同步移动。 */
   .dashboard-finance{position:static!important;inset:auto!important;align-self:start!important;width:auto!important;height:auto!important;max-height:none!important;overflow:visible!important;filter:none!important}
 }
+
+/* 财务明细层级：一级分组、二级科目、三级展开项各自使用稳定的视觉语法。 */
+.finance-tab-panel .table-body,#financeModal .table-body{--finance-toggle-col:17px;--finance-icon-col:21px;--finance-level-gap:5px}
+.finance-tab-panel .table-row.finance-level-1,#financeModal .table-row.finance-level-1{min-height:40px;align-items:center;margin-top:8px!important;padding:9px 10px!important;border:1px solid transparent;border-left-width:3px;border-radius:9px;font-size:.84rem!important;font-weight:750!important}
+.finance-tab-panel .table-row.finance-level-1:first-of-type,#financeModal .table-row.finance-level-1:first-of-type{margin-top:0!important}
+.finance-tab-panel .finance-level-1.tone-positive,#financeModal .finance-level-1.tone-positive{border-color:#d8e8df;border-left-color:#5d967d;background:#f1f7f3!important}
+.finance-tab-panel .finance-level-1.tone-negative,#financeModal .finance-level-1.tone-negative{border-color:#f0ddd8;border-left-color:#d08277;background:#fff5f2!important}
+.finance-tab-panel .finance-level-1.tone-neutral,#financeModal .finance-level-1.tone-neutral{border-color:#e7e1d6;border-left-color:#c29a55;background:#f8f6f1!important}
+.finance-level-1 .hierarchy-label{display:flex;min-width:0;align-items:center;gap:7px;color:#2d3e37}
+.finance-level-1 .finance-label-icon{display:inline-grid;flex:0 0 var(--finance-icon-col);place-items:center;width:var(--finance-icon-col);line-height:1}
+.finance-level-1 .finance-label-icon:empty{display:none}
+.finance-level-1 .finance-label-title{line-height:1.35}
+
+.finance-tab-panel .table-row.finance-level-2,#financeModal .table-row.finance-level-2{min-height:42px;align-items:center;padding:9px 6px!important;border-bottom:1px dashed #e8e2d7;font-size:.82rem!important;color:#66736d;font-weight:450!important}
+.finance-level-2 .hierarchy-label{display:grid;grid-template-columns:var(--finance-toggle-col) var(--finance-icon-col) minmax(0,1fr);column-gap:var(--finance-level-gap);align-items:center;min-width:0;padding:0}
+.finance-level-2 .finance-label-toggle-spacer{display:block;width:var(--finance-toggle-col);height:1px}
+.finance-level-2 .finance-label-icon{display:inline-grid;place-items:center;width:var(--finance-icon-col);height:21px;line-height:1}
+.finance-level-2 .finance-label-title{min-width:0;color:#354941;font-weight:620;line-height:1.4}
+.finance-tab-panel .finance-level-2 .amount,#financeModal .finance-level-2 .amount{color:#71807a;font-size:.92em;font-weight:520}
+
+.finance-tab-panel .expand-head,#financeModal .expand-head{border-radius:8px;transition:background .18s ease,border-color .18s ease}
+.finance-tab-panel .expand-head:hover,#financeModal .expand-head:hover{background:#f5f8f6!important}
+.finance-tab-panel .expand-head:focus-visible,#financeModal .expand-head:focus-visible{outline:2px solid rgba(49,92,76,.38);outline-offset:2px}
+.finance-tab-panel .expand-head:has(.expand-arrow.open),#financeModal .expand-head:has(.expand-arrow.open){border-bottom-color:transparent;background:#f6f8f6!important}
+.finance-tab-panel .expand-arrow,#financeModal .expand-arrow{display:grid;width:17px;height:17px;margin:0;place-items:center;border:1px solid #cfd8d3;border-radius:5px;background:#fff;color:#60766c;font-size:0;font-weight:400;line-height:1;transform:none;transition:border-color .2s ease,background .2s ease,color .2s ease}
+.finance-tab-panel .expand-arrow::before,#financeModal .expand-arrow::before{content:"";width:5px;height:5px;margin-left:-2px;border-right:1.4px solid currentColor;border-bottom:1.4px solid currentColor;transform:rotate(-45deg);transition:transform .22s ease,margin .22s ease}
+.finance-tab-panel .expand-arrow.open,#financeModal .expand-arrow.open{border-color:#a7beb3;background:#eaf2ee;color:#315c4c;transform:none}
+.finance-tab-panel .expand-arrow.open::before,#financeModal .expand-arrow.open::before{margin-top:-2px;margin-left:0;transform:rotate(45deg)}
+
+.finance-tab-panel .sub-items,#financeModal .sub-items{position:relative;margin-left:calc(var(--finance-toggle-col) + var(--finance-level-gap) + 4px);border-left:1px solid #d9e0dc;background:linear-gradient(90deg,rgba(239,244,241,.78),rgba(250,249,245,.2) 72%)}
+.finance-tab-panel .sub-items.open,#financeModal .sub-items.open{margin-bottom:5px;padding:2px 0 4px}
+.finance-tab-panel .sub-items .sub-item,#financeModal .sub-items .sub-item{position:relative;min-height:37px;padding:8px 5px 8px 20px!important;border-bottom:0;background:transparent;color:#69766f;font-size:.76rem;font-weight:400;line-height:1.45}
+.finance-tab-panel .sub-items .sub-item::before,#financeModal .sub-items .sub-item::before{content:"";position:absolute;top:50%;left:0;width:10px;border-top:1px solid #d9e0dc}
+.finance-tab-panel .sub-items .sub-item:hover,#financeModal .sub-items .sub-item:hover{background:rgba(226,236,231,.55)}
+.finance-tab-panel .sub-item-title,#financeModal .sub-item-title{color:#596760;font-weight:500;letter-spacing:0}
+.finance-tab-panel .sub-item .item-meta,#financeModal .sub-item .item-meta{margin-top:2px;color:#929a96;font-size:.69rem;font-weight:400}
+.finance-tab-panel .sub-items .sub-item>span:first-child,#financeModal .sub-items .sub-item>span:first-child{font-weight:450}
+.finance-tab-panel .sub-items .sub-item>span:last-child,#financeModal .sub-items .sub-item>span:last-child{color:#7b8882;font-weight:500;white-space:nowrap}
+.finance-tab-panel .sub-items .sub-item.positive,#financeModal .sub-items .sub-item.positive{color:#557367}
+.finance-tab-panel .sub-items .sub-item.negative,#financeModal .sub-items .sub-item.negative{color:#a9665f}
+.finance-tab-panel .sub-item-action,#financeModal .sub-item-action{min-height:27px;padding:4px 9px;border-color:#d8d5cc;background:rgba(255,253,248,.78);color:#607269;font-size:.68rem;font-weight:600}
+
+@media(max-width:820px){
+  #financeModal .table-row.finance-level-1{min-height:36px;padding:7px 9px!important;font-size:.76rem!important}
+  #financeModal .table-row.finance-level-2{min-height:34px;padding:6px 7px!important;font-size:.72rem!important}
+  #financeModal .sub-items .sub-item{min-height:32px;padding:6px 5px 6px 18px!important;font-size:.68rem}
+}
+
+/* 游戏记录：随内容自然增高，只在达到合理上限后滚动。 */
+.dashboard-main .log-area{box-sizing:border-box;height:auto;max-height:min(180px,24vh)!important;margin-top:10px!important;padding:3px 14px!important;overflow-y:auto;overscroll-behavior:contain;scroll-padding-block:3px;scrollbar-width:thin;scrollbar-color:#c3c7c4 transparent}
+.dashboard-main .log-entry{min-height:35px;padding:8px 0!important;font-size:.74rem!important;line-height:1.55!important;overflow-wrap:anywhere}
+.dashboard-main .log-area::-webkit-scrollbar{width:7px}
+.dashboard-main .log-area::-webkit-scrollbar-track{background:transparent}
+.dashboard-main .log-area::-webkit-scrollbar-thumb{border:2px solid transparent;border-radius:99px;background:#c3c7c4;background-clip:padding-box}
+@media(max-width:820px){
+  .dashboard-main .log-area{max-height:min(144px,22dvh)!important;margin:0 0 8px!important;padding:2px 10px!important;border-radius:12px!important}
+  .dashboard-main .log-entry{min-height:31px;padding:6px 0!important;font-size:.7rem!important;line-height:1.55!important}
+}
+
+/* 宽屏三栏等高：右侧内容不再参与页面高度计算，超出部分在报表内部滚动。 */
+@media(min-width:1201px){
+  .game-area{align-items:stretch!important}
+  .dashboard-sidebar,.dashboard-main{align-self:start!important}
+  .dashboard-finance{contain:size;display:flex!important;align-self:stretch!important;width:auto!important;height:auto!important;max-height:none!important;overflow:hidden!important}
+  .dashboard-finance .finance-shell{display:flex;flex:1;flex-direction:column;width:100%;height:100%;min-height:0;overflow:hidden!important}
+  .dashboard-finance .finance-tabs{flex:0 0 auto}
+  .dashboard-finance .tables-grid{display:flex;flex:1;min-height:0;overflow:hidden}
+  .dashboard-finance .finance-tab-panel.active{display:flex;flex:1;flex-direction:column;width:100%;height:100%;min-height:0;overflow:hidden}
+  .dashboard-finance .finance-tab-panel>h3{flex:0 0 auto}
+  .dashboard-finance .finance-tab-panel>.table-body{flex:1;min-height:0;max-height:none!important;overflow-y:auto!important;overscroll-behavior:contain;scrollbar-gutter:stable}
+}
 </style>
 </head>
 <body>
@@ -2763,7 +2834,7 @@ function updateAll(){
       });
     }
     divSub.innerHTML=html||'<div class="sub-item" style="color:#999">暂无明细</div>';
-    if(html){divSub.classList.add('open');const head=document.querySelector('[data-target="dividendSubItems"]');if(head){const arrow=head.querySelector('.expand-arrow');if(arrow)arrow.classList.add('open');}}
+    if(html){const head=document.querySelector('[data-target="dividendSubItems"]');if(head)setFinanceExpandedState(head,divSub,true);}
   }
   flashValue('incomeRent',G.rentIncome);document.getElementById('incomeRent').textContent=formatMoney(G.rentIncome);
   flashValue('incomeSide',G.sideIncome);document.getElementById('incomeSide').textContent=formatMoney(G.sideIncome);
@@ -2777,7 +2848,7 @@ function updateAll(){
       });
     }
     sideSub.innerHTML=html||'<div class="sub-item" style="color:#999">暂无</div>';
-    if(html){sideSub.classList.add('open');const head=document.querySelector('[data-target="sideIncomeSubItems"]');if(head){const arrow=head.querySelector('.expand-arrow');if(arrow)arrow.classList.add('open');}}
+    if(html){const head=document.querySelector('[data-target="sideIncomeSubItems"]');if(head)setFinanceExpandedState(head,sideSub,true);}
   }
   // 生活状态加成独立收入行
   const bonusVal=G._autoIncome||0;
@@ -3662,14 +3733,74 @@ function updateFinanceModal(){
   flashValue('fmCashFlow',ti-te);document.getElementById('fmCashFlow').textContent='月现金流: ¥'+(ti-te).toLocaleString();
 }
 
+// 统一财务表格的层级结构，避免箭头或空格改变同级标题的起始位置。
+function prepareFinanceHierarchy(){
+  const rows=document.querySelectorAll('.finance-tab-panel .table-body>.table-row,#financeModal .table-body>.table-row');
+  rows.forEach(row=>{
+    const label=row.querySelector(':scope>.label');
+    if(!label||label.classList.contains('hierarchy-label'))return;
+    const style=(row.getAttribute('style')||'').toLowerCase();
+    const toneMatch=style.match(/background:\s*#(eafaf1|fdedec|f8f9fa)/);
+    const isLevelOne=Boolean(toneMatch);
+    row.classList.add(isLevelOne?'finance-level-1':'finance-level-2');
+    if(toneMatch){
+      row.classList.add(toneMatch[1]==='eafaf1'?'tone-positive':toneMatch[1]==='fdedec'?'tone-negative':'tone-neutral');
+    }
+
+    const arrow=label.querySelector('.expand-arrow');
+    if(arrow)arrow.remove();
+    const raw=label.textContent.replace(/\u00a0/g,' ').trim().replace(/^▶\s*/,'');
+    const tokenMatch=raw.match(/^(\S+)\s+(.+)$/);
+    const hasIcon=Boolean(tokenMatch&&/\p{Extended_Pictographic}/u.test(tokenMatch[1]));
+    const iconText=hasIcon?tokenMatch[1]:'';
+    const titleText=hasIcon?tokenMatch[2]:raw;
+    const icon=document.createElement('span');
+    icon.className='finance-label-icon';
+    icon.setAttribute('aria-hidden','true');
+    icon.textContent=iconText;
+    const title=document.createElement('span');
+    title.className='finance-label-title';
+    title.textContent=titleText;
+    label.replaceChildren();
+    label.classList.add('hierarchy-label');
+
+    if(isLevelOne){
+      label.append(icon,title);
+    }else{
+      const toggle=arrow||document.createElement('span');
+      if(arrow){
+        arrow.setAttribute('aria-hidden','true');
+      }else{
+        toggle.className='finance-label-toggle-spacer';
+        toggle.setAttribute('aria-hidden','true');
+      }
+      label.append(toggle,icon,title);
+    }
+
+    if(row.classList.contains('expand-head')){
+      const sub=document.getElementById(row.dataset.target);
+      row.setAttribute('role','button');
+      row.setAttribute('tabindex','0');
+      row.setAttribute('aria-controls',row.dataset.target);
+      row.setAttribute('aria-expanded',String(Boolean(sub&&sub.classList.contains('open'))));
+    }
+  });
+}
+
+function setFinanceExpandedState(head,sub,expanded){
+  if(!head||!sub)return;
+  if(sub.classList.contains('open')!==expanded)sub.classList.toggle('open');
+  const arrow=head.querySelector('.expand-arrow');
+  if(arrow)arrow.classList.toggle('open',expanded);
+  head.setAttribute('aria-expanded',String(expanded));
+}
+
 // 自动展开子项（数据存在时）
 function autoExpand(targetId){
   const sub=document.getElementById(targetId);
   const head=document.querySelector(`[data-target="${targetId}"]`);
   if(!sub||!head)return;
-  sub.classList.add('open');
-  const arrow=head.querySelector('.expand-arrow');
-  if(arrow)arrow.classList.add('open');
+  setFinanceExpandedState(head,sub,true);
 }
 // 桌面端子项渲染 + 自动展开
 function renderDesktopSubItems(containerId, data, renderFn){
@@ -3681,12 +3812,8 @@ function renderDesktopSubItems(containerId, data, renderFn){
   }
   container.innerHTML=html || '<div class="sub-item" style="color:#999;cursor:default">暂无</div>';
   if(html){
-    container.classList.add('open');
     const head=document.querySelector(`[data-target="${containerId}"]`);
-    if(head){
-      const arrow=head.querySelector('.expand-arrow');
-      if(arrow)arrow.classList.add('open');
-    }
+    if(head)setFinanceExpandedState(head,container,true);
   }
 }
 
@@ -3875,9 +4002,14 @@ document.addEventListener('click',function(e){
   const targetId=head.dataset.target;
   const sub=document.getElementById(targetId);
   if(!sub)return;
-  const arrow=head.querySelector('.expand-arrow');
-  sub.classList.toggle('open');
-  if(arrow)arrow.classList.toggle('open');
+  setFinanceExpandedState(head,sub,!sub.classList.contains('open'));
+});
+
+document.addEventListener('keydown',function(e){
+  const head=e.target.closest&&e.target.closest('.expand-head');
+  if(!head||e.target!==head||(e.key!=='Enter'&&e.key!==' '))return;
+  e.preventDefault();
+  head.click();
 });
 
 function showCharSelect(){
@@ -3965,6 +4097,7 @@ document.querySelectorAll('.mobile-view-nav [data-mobile-view]').forEach(button=
     setMobileView(button.dataset.mobileView);
   });
 });
+prepareFinanceHierarchy();
 showCharSelect();
 </script>
 <div style="text-align:center;padding:12px;color:#999;font-size:.8em;border-top:1px solid #eee;background:#fff">
